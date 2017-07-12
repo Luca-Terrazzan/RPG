@@ -1,4 +1,4 @@
-using UnityEngine;
+ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Pathfinding;
@@ -25,6 +25,9 @@ using Pathfinding.Util;
 [AddComponentMenu("Pathfinding/AI/AILerp (2D,3D)")]
 [HelpURL("http://arongranberg.com/astar/docs/class_a_i_lerp.php")]
 public class AILerp : VersionedMonoBehaviour {
+
+    public int cellMovementAmount;
+    public GameObject movementSprite;
 
     
 	/** Determines how often it will search for new paths.
@@ -136,7 +139,14 @@ public class AILerp : VersionedMonoBehaviour {
 
         var nodes = AstarPath.active.astarData.gridGraph;
         nodes.GetNodes(node => {
-            Debug.Log(""+(Vector3)node.position);
+            Path p = seeker.StartPath(transform.position, (Vector3)node.position);
+            p.BlockUntilCalculated();
+            if (p.GetTotalLength() <= cellMovementAmount)
+            {
+                GameObject clone = Instantiate(movementSprite, (Vector3)node.position, Quaternion.identity);
+                Debug.Log("" + (Vector3)node.position);
+
+            }
         });
         
         
