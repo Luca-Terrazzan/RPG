@@ -236,8 +236,8 @@ public class AIPath : AIBase {
 		if (path.vectorPath.Count == 1) path.vectorPath.Add(path.vectorPath[0]);
 		interpolator.SetPath(path.vectorPath);
 
-        Vector3 graphRotation = new Vector3(90, 0, 0);
-        movementPlane = new GraphTransform(Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(graphRotation), Vector3.one));
+		var graph = AstarData.GetGraph(path.path[0]) as ITransformedGraph;
+		movementPlane = graph != null ? graph.transform : GraphTransform.identityTransform;
 
 		// Reset some variables
 		TargetReached = false;

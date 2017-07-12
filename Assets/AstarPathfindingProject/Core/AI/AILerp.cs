@@ -25,6 +25,8 @@ using Pathfinding.Util;
 [AddComponentMenu("Pathfinding/AI/AILerp (2D,3D)")]
 [HelpURL("http://arongranberg.com/astar/docs/class_a_i_lerp.php")]
 public class AILerp : VersionedMonoBehaviour {
+
+    
 	/** Determines how often it will search for new paths.
 	 * If you have fast moving targets or AIs, you might want to set it to a lower value.
 	 * The value is in seconds between path requests.
@@ -131,6 +133,13 @@ public class AILerp : VersionedMonoBehaviour {
 	protected virtual void Start () {
 		startHasRun = true;
 		Init();
+
+        var nodes = AstarPath.active.astarData.gridGraph;
+        nodes.GetNodes(node => {
+            Debug.Log(""+(Vector3)node.position);
+        });
+        
+        
 	}
 
 	/** Called when the component is enabled */
@@ -192,6 +201,7 @@ public class AILerp : VersionedMonoBehaviour {
 	 */
 	public virtual void SearchPath () {
 		ForceSearchPath();
+        
 	}
 
 	/** Requests a path to the target.
