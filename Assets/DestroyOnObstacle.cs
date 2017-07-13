@@ -13,5 +13,5 @@ public class DestroyOnObstacle : MonoBehaviour {
             Debug.Log("mannaggadd");
             Destroy(this.gameObject);
         }
-    }
+    }   
 }

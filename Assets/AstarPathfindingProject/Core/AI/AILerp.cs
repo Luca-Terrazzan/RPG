@@ -26,8 +26,7 @@ using Pathfinding.Util;
 [HelpURL("http://arongranberg.com/astar/docs/class_a_i_lerp.php")]
 public class AILerp : VersionedMonoBehaviour {
 
-    public int cellMovementAmount;
-    public GameObject movementSprite;
+    private PlayerActions playerActions;
 
     
 	/** Determines how often it will search for new paths.
@@ -135,21 +134,8 @@ public class AILerp : VersionedMonoBehaviour {
 	 */
 	protected virtual void Start () {
 		startHasRun = true;
-		Init();
-
-        var nodes = AstarPath.active.astarData.gridGraph;
-        nodes.GetNodes(node => {
-            Path p = seeker.StartPath(transform.position, (Vector3)node.position);
-            p.BlockUntilCalculated();
-            if (p.GetTotalLength() <= cellMovementAmount)
-            {
-                GameObject clone = Instantiate(movementSprite, (Vector3)node.position, Quaternion.identity);
-                Debug.Log("" + (Vector3)node.position);
-
-            }
-        });
-        
-        
+        Init();
+        playerActions = GetComponent<PlayerActions>();
 	}
 
 	/** Called when the component is enabled */
@@ -253,6 +239,8 @@ public class AILerp : VersionedMonoBehaviour {
 	 * and override the function in that script.
 	 */
 	public virtual void OnTargetReached () {
+
+        
 	}
 
 	/** Called when a requested path has finished calculation.
