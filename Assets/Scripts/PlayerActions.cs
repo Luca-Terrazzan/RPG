@@ -20,10 +20,12 @@ public class PlayerActions : MonoBehaviour{
 
     // Use this for initialization
     void Start () {
+
         clickableSpriteList = new List<GameObject>();
         grid = AstarPath.active.data.gridGraph;
         seeker = GetComponent<Seeker>();
         aiLerp = GetComponent<AILerp>();
+
     }
 	
 	// Update is called once per frame
@@ -31,6 +33,8 @@ public class PlayerActions : MonoBehaviour{
 
         if (isMyTurn)
         {
+
+            
             if (canCreateGrid)
             {
                 CreateClickableGrid();
@@ -57,8 +61,9 @@ public class PlayerActions : MonoBehaviour{
 
             if (transform.position == aiLerp.target.position && aiLerp.canMove)
             {
+                transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), transform.position.z);
                 aiLerp.canMove = false;
-                canCreateGrid = true;
+                canCreateGrid = true;                
             }
 
             if (playerActionsAmount <= 0)
@@ -77,7 +82,7 @@ public class PlayerActions : MonoBehaviour{
             p.BlockUntilCalculated();
             if (p.GetTotalLength() <= playerActionsAmount+0.1f)
             {
-                if (p.GetTotalLength() > 0.9f)
+                if (p.GetTotalLength() >0.9f)
                 {
                     GameObject clone = Instantiate(clickableSprite, (Vector3)node.position, Quaternion.identity);
                     clickableSpriteList.Add(clone);
