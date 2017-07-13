@@ -14,11 +14,16 @@ public class Bracciante : MonoBehaviour {
     public bool isMyTurn;
     public bool isPatroling;
     public Transform[] waypoints;
+    public Transform sprite;
+    public GameObject visionSprite;
+    private Transform direction;
 
-    public bool hasToCalculateLength;
+    public bool settingNodePath;
     public bool hasToSetPath=false;
     private List<Vector3> pathNodesList;
-    private int i = 0;
+    private Vector3[] vectorNodesArray;
+    private int nodesCounter = 0;
+    private int waypointsCounter = 0;
 
     // Use this for initialization
     void Start () {
@@ -26,6 +31,9 @@ public class Bracciante : MonoBehaviour {
         grid = AstarPath.active.data.gridGraph;
         seeker = GetComponent<Seeker>();
         aiLerp = GetComponent<AILerp>();
+        direction = GetComponentInChildren<Transform>();
+
+
 
     }
 
@@ -36,33 +44,79 @@ public class Bracciante : MonoBehaviour {
         {
             if (isPatroling)
             {
+
                 if (hasToSetPath)
                 {
-                    Path p = seeker.StartPath(transform.position, waypoints[0].position);
-                    p.BlockUntilCalculated();
-                    pathNodesList = p.vectorPath;
-                    pathNodesList.Add(new Vector3(-100, -200));
+                    GetWayPointPath();
+                    settingNodePath = true;
                     hasToSetPath = false;
                 }
 
-                if (Vector2.Distance(transform.position, pathNodesList[i+1]) < 0.1f && pathNodesList.Count>i)
+                else if(settingNodePath)
                 {
-                    
-                    i++;
-                    actionsAmount -= 1;
+                    if(vectorNodesArray[nodesCounter]!=Vector3.zero)
+                    {
+                        CreateVisionSprites();
+                        Path p = seeker.StartPath(transform.position, vectorNodesArray[nodesCounter]);
+                        p.BlockUntilCalculated();
+                        nodesCounter++;
+                        settingNodePath = false;
+                        aiLerp.canMove = true;
+                    }
+                    else
+                    {
+                        nodesCounter = 0;
+                        settingNodePath = false;
+                        hasToSetPath = true;
+                    }
+                   
                 }
-
-                if (actionsAmount<=0)
-                {
-                    aiLerp.canMove = false;
-                    actionsAmount = 0;
-                }
+                Debug.Log("direction position: " + direction.position.ToString());
                 
+
 
             }
 
         }	
     }
 
+    void CreateVisionSprites()
+    {
+        int i = 2;
+        GameObject clone = Instantiate(visionSprite, transform.position + transform.up, Quaternion.identity);
+    }
+
+    void GetWayPointPath()
+    {
+        Path p = seeker.StartPath(transform.position, waypoints[waypointsCounter].position);
+        if (waypointsCounter < waypoints.Length-1)
+        {
+            waypointsCounter++;
+        }else
+        {
+            waypointsCounter = 0;
+        }
+
+        p.BlockUntilCalculated();
+        pathNodesList = p.vectorPath;
+
+        vectorNodesArray = new Vector3[15];
+
+        for (int j=0; j<pathNodesList.Count;j++)
+        {
+            vectorNodesArray[j] = pathNodesList[j];
+        }     
+    }
+
+    public void TargetReached()
+    {
+       // aiLerp.canMove = false;
+        settingNodePath = true;
+    }
+
+    void LateUpdate()
+    {
+        sprite.position = transform.position;
+    }
 
 }

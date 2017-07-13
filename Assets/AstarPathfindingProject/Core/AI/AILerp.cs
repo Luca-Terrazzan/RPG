@@ -26,7 +26,8 @@ using Pathfinding.Util;
 [HelpURL("http://arongranberg.com/astar/docs/class_a_i_lerp.php")]
 public class AILerp : VersionedMonoBehaviour {
 
-    private PlayerActions playerActions;
+    private Bracciante bracciante;
+    private PlayerActions player;
 
     
 	/** Determines how often it will search for new paths.
@@ -135,7 +136,8 @@ public class AILerp : VersionedMonoBehaviour {
 	protected virtual void Start () {
 		startHasRun = true;
         Init();
-        playerActions = GetComponent<PlayerActions>();
+        bracciante = GetComponent<Bracciante>();
+        player = GetComponent<PlayerActions>();
 	}
 
 	/** Called when the component is enabled */
@@ -239,8 +241,15 @@ public class AILerp : VersionedMonoBehaviour {
 	 * and override the function in that script.
 	 */
 	public virtual void OnTargetReached () {
-
-        
+        if(bracciante!=null)
+        {
+            bracciante.TargetReached();
+            Debug.Log("dio");
+        }
+        if(player!=null)
+        {
+            player.TargetReached();
+        }
 	}
 
 	/** Called when a requested path has finished calculation.

@@ -59,13 +59,6 @@ public class PlayerActions : MonoBehaviour{
 
             }
 
-            if (transform.position == aiLerp.target.position && aiLerp.canMove)
-            {
-                transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), transform.position.z);
-                aiLerp.canMove = false;
-                canCreateGrid = true;                
-            }
-
             if (playerActionsAmount <= 0)
             {
                 isMyTurn = false;
@@ -73,6 +66,13 @@ public class PlayerActions : MonoBehaviour{
         }
 		
 	}
+
+    public void TargetReached()
+    {
+        transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), transform.position.z);
+        aiLerp.canMove = false;
+        canCreateGrid = true;
+    }
 
     void CreateClickableGrid()
     {
@@ -82,7 +82,7 @@ public class PlayerActions : MonoBehaviour{
             p.BlockUntilCalculated();
             if (p.GetTotalLength() <= playerActionsAmount+0.1f)
             {
-                if (p.GetTotalLength() >0.9f)
+                if (p.GetTotalLength() >0.9f&&node.Walkable)
                 {
                     GameObject clone = Instantiate(clickableSprite, (Vector3)node.position, Quaternion.identity);
                     clickableSpriteList.Add(clone);
