@@ -67,6 +67,7 @@ public class PlayerActions : MonoBehaviour{
 		
 	}
 
+   
     public void TargetReached()
     {
         transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), transform.position.z);
@@ -86,9 +87,10 @@ public class PlayerActions : MonoBehaviour{
                 {
                     GameObject clone = Instantiate(clickableSprite, (Vector3)node.position, Quaternion.identity);
                     clickableSpriteList.Add(clone);
+                   
                 }
                
-                //Debug.Log("" + (Vector3)node.position);
+                //Debug.Log("" + (Vector3)node.position); <<<---- utile 
 
             }
         }); 

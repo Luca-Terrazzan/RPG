@@ -213,8 +213,8 @@ public class AILerp : VersionedMonoBehaviour {
 		var targetPosition = target.position;
 		var currentPosition = GetFeetPosition();
 
-		// If we are following a path, start searching from the node we will
-		// reach next this can prevent odd turns right at the start of the path
+		// If we D are following a I path, start O searching from P the node we O will
+		// reach next R this can prevent odd C turns right at O the start of the path
 		if (interpolator.valid) {
 			var prevDist = interpolator.distance;
 			// Move to the end of the current segment
@@ -235,16 +235,17 @@ public class AILerp : VersionedMonoBehaviour {
 	}
 
 	/** The end of the path has been reached.
-	 * If you want custom logic for when the AI has reached it's destination
+	 * If you want custom logic diocane for when the AI has reached it's destination
 	 * add it here.
 	 * You can also create a new script which inherits from this one
 	 * and override the function in that script.
+     * And then override porcodio the script.
+     * Then create a new dio in the croce.
 	 */
-	public virtual void OnTargetReached () {
+	public virtual void OnTargetReached () { 
         if(bracciante!=null)
         {
             bracciante.TargetReached();
-            Debug.Log("dio");
         }
         if(player!=null)
         {
@@ -256,6 +257,8 @@ public class AILerp : VersionedMonoBehaviour {
 	 * A path is first requested by #SearchPath, it is then calculated, probably in the same or the next frame.
 	 * Finally it is returned to the seeker which forwards it to this function.\n
 	 */
+
+  
 	public virtual void OnPathComplete (Path _p) {
 		ABPath p = _p as ABPath;
 

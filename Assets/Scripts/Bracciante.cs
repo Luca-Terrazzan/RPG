@@ -23,7 +23,14 @@ public class Bracciante : MonoBehaviour {
     private List<Vector3> pathNodesList;
     private Vector3[] vectorNodesArray;
     private int nodesCounter = 0;
-    private int waypointsCounter = 0;
+    private int waypointsCounter = -1;
+    public bool stopPatroling;
+    private int numberOfPathNodes;
+
+    
+       
+
+    public Transform playerTransform;
 
     // Use this for initialization
     void Start () {
@@ -42,12 +49,26 @@ public class Bracciante : MonoBehaviour {
         
         if (isMyTurn)
         {
+            if (actionsAmount <= 0)
+            {
+                isMyTurn = false;
+                
+            }
+
             if (isPatroling)
             {
 
                 if (hasToSetPath)
                 {
-                    GetWayPointPath();
+                    if (waypointsCounter < waypoints.Length - 1)
+                    {
+                        waypointsCounter++;
+                    }
+                    else
+                    {
+                        waypointsCounter = 0;
+                    }
+                    GetWayPointPath(waypoints[waypointsCounter].position);
                     settingNodePath = true;
                     hasToSetPath = false;
                 }
@@ -56,7 +77,6 @@ public class Bracciante : MonoBehaviour {
                 {
                     if(vectorNodesArray[nodesCounter]!=Vector3.zero)
                     {
-                        CreateVisionSprites();
                         Path p = seeker.StartPath(transform.position, vectorNodesArray[nodesCounter]);
                         p.BlockUntilCalculated();
                         nodesCounter++;
@@ -71,36 +91,53 @@ public class Bracciante : MonoBehaviour {
                     }
                    
                 }
-                Debug.Log("direction position: " + direction.position.ToString());
-                
+   
 
+            }
+            else
+            {
+                if (hasToSetPath)
+                {
+                    GetWayPointPath(playerTransform.position);
+                    settingNodePath = true;
+                    hasToSetPath = false;
+                }
+                else if (settingNodePath)
+                {
+                    if (nodesCounter < numberOfPathNodes-1)
+                    {
+                        Path p = seeker.StartPath(transform.position, vectorNodesArray[nodesCounter]);
+                        p.BlockUntilCalculated();
+                        nodesCounter++;
+                        settingNodePath = false;
+                        aiLerp.canMove = true;
+                    }
+                    else
+                    {
+                        nodesCounter = 0;
+                        settingNodePath = false;
+                        hasToSetPath = true;
+                    }
+
+                }
 
             }
 
-        }	
-    }
-
-    void CreateVisionSprites()
-    {
-        int i = 2;
-        GameObject clone = Instantiate(visionSprite, transform.position + transform.up, Quaternion.identity);
-    }
-
-    void GetWayPointPath()
-    {
-        Path p = seeker.StartPath(transform.position, waypoints[waypointsCounter].position);
-        if (waypointsCounter < waypoints.Length-1)
-        {
-            waypointsCounter++;
-        }else
-        {
-            waypointsCounter = 0;
         }
+    }
+  
+
+
+    void GetWayPointPath(Vector3 target)
+    {
+        Path p = seeker.StartPath(transform.position, target);
+        
 
         p.BlockUntilCalculated();
         pathNodesList = p.vectorPath;
+        numberOfPathNodes = pathNodesList.Count;
 
-        vectorNodesArray = new Vector3[15];
+        vectorNodesArray = new Vector3[20];
 
         for (int j=0; j<pathNodesList.Count;j++)
         {
@@ -110,8 +147,19 @@ public class Bracciante : MonoBehaviour {
 
     public void TargetReached()
     {
-       // aiLerp.canMove = false;
-        settingNodePath = true;
+        actionsAmount -= 1;
+        // aiLerp.canMove = false; <-- utile
+        if (stopPatroling)
+        {
+            isPatroling = false;
+            aiLerp.canMove = false;
+            hasToSetPath = true;
+        }
+        else
+        {
+            settingNodePath = true;
+        }
+
     }
 
     void LateUpdate()
