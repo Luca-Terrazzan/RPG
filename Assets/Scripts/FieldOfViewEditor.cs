@@ -24,5 +24,5 @@ public class FieldOfViewEditor : Editor {
         }
     }
 
-    O
+    
 }

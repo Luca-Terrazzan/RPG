@@ -12,19 +12,17 @@ public class Bracciante : MonoBehaviour {
 
     public int actionsAmount;
     public bool isMyTurn;
-    public bool isPatroling;
+    private bool isPatroling=true;
     public Transform[] waypoints;
     public Transform sprite;
     public GameObject visionSprite;
     private Transform direction;
 
-    public bool settingNodePath;
-    public bool hasToSetPath=false;
-    private List<Vector3> pathNodesList;
+    private bool hasToSetPath=true;
     private Vector3[] vectorNodesArray;
     private int nodesCounter = 0;
     private int waypointsCounter = -1;
-    public bool stopPatroling;
+    public bool hasSeenPlayer;
     private int numberOfPathNodes;
 
     
@@ -46,81 +44,30 @@ public class Bracciante : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+
         
         if (isMyTurn)
         {
-            if (actionsAmount <= 0)
+            if (isPatroling)       //se sto pattugliando
             {
-                isMyTurn = false;
-                
-            }
-
-            if (isPatroling)
-            {
-
-                if (hasToSetPath)
+                if (hasToSetPath)       //se devo settare un path
                 {
-                    if (waypointsCounter < waypoints.Length - 1)
-                    {
-                        waypointsCounter++;
-                    }
-                    else
-                    {
-                        waypointsCounter = 0;
-                    }
-                    GetWayPointPath(waypoints[waypointsCounter].position);
-                    settingNodePath = true;
+                    ChooseNextWaypoint();          //scelgo qual è il prossimo waypoint   
+                    GetPathNodes(waypoints[waypointsCounter].position);    //prendo tutti i nodi del path verso il waypoint scelto
+                    GoToNode(vectorNodesArray[nodesCounter]);              //vado al primo nodo del path
+                    nodesCounter++;
                     hasToSetPath = false;
                 }
-
-                else if(settingNodePath)
-                {
-                    if(vectorNodesArray[nodesCounter]!=Vector3.zero)
-                    {
-                        Path p = seeker.StartPath(transform.position, vectorNodesArray[nodesCounter]);
-                        p.BlockUntilCalculated();
-                        nodesCounter++;
-                        settingNodePath = false;
-                        aiLerp.canMove = true;
-                    }
-                    else
-                    {
-                        nodesCounter = 0;
-                        settingNodePath = false;
-                        hasToSetPath = true;
-                    }
-                   
-                }
-   
-
             }
-            else
+            else if (!isPatroling)            //se ho visto il player
             {
-                if (hasToSetPath)
+                if (hasToSetPath)       //se devo settare un path
                 {
-                    GetWayPointPath(playerTransform.position);
-                    settingNodePath = true;
+                    GetPathNodes(playerTransform.position);         //prendo tutti i nodi del path verso il player
+                    GoToNode(vectorNodesArray[nodesCounter]);       //vado al primo nodo del path
+                    nodesCounter++;
                     hasToSetPath = false;
                 }
-                else if (settingNodePath)
-                {
-                    if (nodesCounter < numberOfPathNodes-1)
-                    {
-                        Path p = seeker.StartPath(transform.position, vectorNodesArray[nodesCounter]);
-                        p.BlockUntilCalculated();
-                        nodesCounter++;
-                        settingNodePath = false;
-                        aiLerp.canMove = true;
-                    }
-                    else
-                    {
-                        nodesCounter = 0;
-                        settingNodePath = false;
-                        hasToSetPath = true;
-                    }
-
-                }
-
             }
 
         }
@@ -128,38 +75,90 @@ public class Bracciante : MonoBehaviour {
   
 
 
-    void GetWayPointPath(Vector3 target)
+    void GetPathNodes(Vector3 target)       //estrapola i nodi del path verso il target in un array, eccetto il nodo della nostra posizione (vectorNodesArray)
     {
-        Path p = seeker.StartPath(transform.position, target);
-        
-
+        Path p = seeker.StartPath(transform.position, target);        
         p.BlockUntilCalculated();
-        pathNodesList = p.vectorPath;
-        numberOfPathNodes = pathNodesList.Count;
+        List<Vector3> pathNodesList = p.vectorPath;
+        numberOfPathNodes = pathNodesList.Count-1;
 
         vectorNodesArray = new Vector3[20];
 
-        for (int j=0; j<pathNodesList.Count;j++)
+        for (int j=0; j<pathNodesList.Count-1;j++)
         {
-            vectorNodesArray[j] = pathNodesList[j];
+
+            vectorNodesArray[j] = pathNodesList[j+1];
         }     
     }
 
-    public void TargetReached()
+    void ChooseNextWaypoint()
     {
-        actionsAmount -= 1;
-        // aiLerp.canMove = false; <-- utile
-        if (stopPatroling)
+        if (waypointsCounter < waypoints.Length - 1)        //scelgo quale waypoint prendere per il path da settare
         {
-            isPatroling = false;
-            aiLerp.canMove = false;
-            hasToSetPath = true;
+            waypointsCounter++;
         }
         else
         {
-            settingNodePath = true;
+            waypointsCounter = 0;
         }
 
+
+    }
+
+
+
+    public void TargetReached()     //chiamato quando ho raggiunto il nodo
+    {
+        actionsAmount -= 1;
+        Debug.Log(nodesCounter);
+        if (actionsAmount > 0)      //se ho ancora azioni disponibili
+        {
+            if (isPatroling)        //se sto pattugliando
+            {
+                if (hasSeenPlayer)  //se ho visto il player smetto di pattugliare
+                {
+                    hasToSetPath = true;
+                    isPatroling = false;
+                    nodesCounter = 0;
+                    hasSeenPlayer = false;
+                }
+                else                //se non ho visto il player
+                {
+                    if (nodesCounter < numberOfPathNodes)       //se i nodi del path non sono finiti, vai al prossimo nodo
+                    {
+                        GoToNode(vectorNodesArray[nodesCounter]);
+                        nodesCounter++;
+                    }
+                    else                                        //se i nodi del path sono finiti, devo settare un altro path
+                    {
+                        hasToSetPath = true;
+                        nodesCounter = 0;
+                    }
+                }
+            }
+            else if(!isPatroling)           //se ho visto il player
+            {
+                if (nodesCounter < numberOfPathNodes - 1)       //se i nodi del path non sono finiti, vai al prossimo nodo
+                {
+                    GoToNode(vectorNodesArray[nodesCounter]);
+                    nodesCounter++;
+                }
+                else                              //se i nodi del path sono finiti mi trovo nella casella adiacente al player quindi lo killo quel bastardo
+                {
+                    //uccidi il player
+                }                
+            }            
+        }
+        else
+        {
+            isMyTurn = false;
+        }
+    }
+
+    public void GoToNode(Vector3 targetPos)     //vai al nodo scelto
+    {
+        Path p = seeker.StartPath(transform.position, targetPos);
+        p.BlockUntilCalculated();
     }
 
     void LateUpdate()
