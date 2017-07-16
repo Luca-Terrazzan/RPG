@@ -21,8 +21,11 @@ public class Bracciante : MonoBehaviour {
     public bool hasToSetPath=true;
     private Vector3[] vectorNodesArray;
     private int nodesCounter = 0;
-    [SerializeField] private int waypointsCounter = -1;
+    private int waypointsCounter = 0;
     public bool hasSeenPlayer;
+    public bool hasHeardPlayer;
+    private bool hasToSetPlayerPath = true;
+
     private int numberOfPathNodes;
 
     
@@ -38,43 +41,136 @@ public class Bracciante : MonoBehaviour {
         aiLerp = GetComponent<AILerp>();
         direction = GetComponentInChildren<Transform>();
 
-
-
     }
 
-    // Update is called once per frame
-    void Update () {
-
-        
-        if (isMyTurn)
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
         {
-            if (isPatroling)       //se sto pattugliando
-            {
-                if (hasToSetPath)       //se devo settare un path
-                {
-                    ChooseNextWaypoint();          //scelgo qual è il prossimo waypoint   
-                    GetPathNodes(waypoints[waypointsCounter].position);    //prendo tutti i nodi del path verso il waypoint scelto
-                    GoToNode(vectorNodesArray[nodesCounter]);              //vado al primo nodo del path
-                    nodesCounter++;                                       
-                    hasToSetPath = false;
-                }
-            }
-            else if (!isPatroling)            //se ho visto il player
-            {
-                if (hasToSetPath)       //se devo settare un path
-                {
-                    GetPathNodes(playerTransform.position);         //prendo tutti i nodi del path verso il player
-                    GoToNode(vectorNodesArray[nodesCounter]);       //vado al primo nodo del path
-                    nodesCounter++;
-                    hasToSetPath = false;
-                }
-            }
-
+            OnTurnStart();
         }
     }
+
+    public void OnTurnStart()                   //chiamato all'inizio del mio turno
+    {
+        nodesCounter = 0;
+        isMyTurn = true;
+        Vector3 target = new Vector3();
+        if (hasSeenPlayer)                           //se ho visto il player
+        {
+            target = playerTransform.position;            //setto il target alla posizione del player
+            hasToSetPlayerPath = false;
+        }
+        else if (hasHeardPlayer)                    //se ho sentito il player
+        {
+                            //settare il target nell'ultimo punto in cui il player è passato sul range uditivo di sto negro
+        }
+        else                                       //se non ho visto ne sentito il player
+        {
+            target = waypoints[waypointsCounter].position;
+        }
+        Debug.Log("Inizio turno vado a waypoint: " + waypoints[waypointsCounter].position.ToString());
+        GetPathNodes(target);                            //prendo tutti i nodi del path verso il target scelto
+        GoToNode(vectorNodesArray[nodesCounter]);              //vado al primo nodo del path
+        nodesCounter+=1;
+    }
+
+    public void TargetReached()     //chiamato quando ho raggiunto il nodo
+    {
+        actionsAmount -= 1;
+
+        if(hasSeenPlayer)       //se ho visto il player
+        {
+            if(hasToSetPlayerPath)      //se devo ancora settare il path verso il player
+            {
+                if(actionsAmount>0)         //se ho ancora azioni disponibili
+                {
+                    nodesCounter = 0;
+                    GetPathNodes(playerTransform.position);         //estrapolo i nodi del path verso il player
+                    GoToNode(vectorNodesArray[nodesCounter]);       //vado al primo nodo del path
+                }
+                else       //se non ho azioni finisco il mio turno
+                {
+                    isMyTurn = false;
+                }
+
+            }
+            else if(!hasToSetPlayerPath)        //se ho già settato il path verso il player
+            {
+                if (actionsAmount > 0)          //se ho ancora azioni disponibili
+                {
+                    if(nodesCounter<numberOfPathNodes-1)        //se non sono ancora arrivato al penultimo nodo del path verso il player
+                    {
+                        GoToNode(vectorNodesArray[nodesCounter]);       //vado al nodo successivo
+                        nodesCounter++;
+                    }
+                    else               
+                    {
+                        /////////////////////////////se i nodi del path sono finiti mi trovo nella casella adiacente al player quindi lo killo quel bastardo e gli dico git gud casual
+                    }
+                }
+                else       //se non ho azioni finisco il mio cazzo di turno
+                {
+                    isMyTurn = false;
+                }
+
+            }
+        }else if (hasHeardPlayer)     //se ho sentito il player
+        {
+            if(actionsAmount>0)
+            {
+                if(nodesCounter<numberOfPathNodes-1)         //se non sono ancora arrivato al penultimo nodo del path verso dove ho sentito il player
+                {
+                    GoToNode(vectorNodesArray[nodesCounter]);       //vado al nodo successivo
+                    nodesCounter++;
+                }
+                else                //se sono arrivato al penultimo nodo del path
+                {
+                    //Sto negro fa un controllo di tot gradi in giro per cercare il player
+                    hasHeardPlayer = false;
+                }
+            }
+            else       //se non ho azioni finisco il mio cazzo di turno
+            {
+                isMyTurn = false;
+            }
+        }
+        else         //se non ho ne visto ne sentito il player
+        {
+            if(nodesCounter<numberOfPathNodes)    //se non ho raggiunto ancora l'ultimo nodo del path verso il waypoint
+            {
+                if(actionsAmount>0)  //se ho ancora azioni disponibili
+                {
+                    Debug.Log(nodesCounter+" "+numberOfPathNodes);
+
+                    GoToNode(vectorNodesArray[nodesCounter]);
+                    nodesCounter++;
+                }
+                else                   //se non ho più azioni disponibili finisco il mio porco dio di turno
+                {
+                    isMyTurn = false;
+                }
+            }else
+            {
+                ChooseNextWaypoint();      //scelgo il prossimo waypoint
+
+                if(actionsAmount>0)
+                {
+                    Debug.Log("Arrivo al waypoint: " + waypoints[waypointsCounter].position.ToString());
+                    GetPathNodes(waypoints[waypointsCounter].position);         //estrapolo i nodi del path verso il player
+                    nodesCounter = 0;
+                    GoToNode(vectorNodesArray[nodesCounter]);                  //vado al primo nodo del path
+                    nodesCounter++;                     
+                }
+                else        //se non ho più azioni disponibili FINISCO IL MIO DIO CANE DI TURNO MADONNA LADRA
+                {
+                    isMyTurn = false;
+                }
+            }
+        }
+    }
+   
   
-
-
     void GetPathNodes(Vector3 target)       //estrapola i nodi del path verso il target in un array, eccetto il nodo della nostra posizione (vectorNodesArray)
     {
         Path p = seeker.StartPath(transform.position, target);
@@ -93,7 +189,7 @@ public class Bracciante : MonoBehaviour {
 
     void ChooseNextWaypoint()
     {
-        if (waypointsCounter < waypoints.Length - 1)        //scelgo quale waypoint prendere per il path da settare
+        if (waypointsCounter < waypoints.Length-1)        //scelgo quale waypoint prendere per il path da settare
         {
             waypointsCounter++;
         }
@@ -103,57 +199,6 @@ public class Bracciante : MonoBehaviour {
         }
 
 
-    }
-
-
-
-    public void TargetReached()     //chiamato quando ho raggiunto il nodo
-    {
-        actionsAmount -= 1;
-        Debug.Log(nodesCounter);
-        if (actionsAmount > 0)      //se ho ancora azioni disponibili
-        {
-            if (isPatroling)        //se sto pattugliando
-            {
-                if (hasSeenPlayer)  //se ho visto il player smetto di pattugliare
-                {
-                    hasToSetPath = true;
-                    isPatroling = false;
-                    nodesCounter = 0;
-                    hasSeenPlayer = false;
-                }
-                else                //se non ho visto il player
-                {
-                    if (nodesCounter < numberOfPathNodes)       //se i nodi del path non sono finiti, vai al prossimo nodo
-                    {
-                        GoToNode(vectorNodesArray[nodesCounter]);
-                        nodesCounter++;
-                    }
-                    else                                        //se i nodi del path sono finiti, devo settare un altro path
-                    {
-                        hasToSetPath = true;
-                        nodesCounter = 0;
-                    }
-                }
-            }
-            else if(!isPatroling)           //se ho visto il player
-            {
-                if (nodesCounter < numberOfPathNodes - 1)       //se i nodi del path non sono finiti, vai al prossimo nodo
-                {
-                    GoToNode(vectorNodesArray[nodesCounter]);
-                    nodesCounter++;
-                }
-                else                              //se i nodi del path sono finiti mi trovo nella casella adiacente al player quindi lo killo quel bastardo e gli dico git gud casual
-                {
-
-                    //uccidi il player
-                }                
-            }            
-        }
-        else
-        {
-            isMyTurn = false;
-        }
     }
 
 
