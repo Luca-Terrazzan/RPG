@@ -31,9 +31,6 @@ public class PlayerActions : MonoBehaviour{
 	// Update is called once per frame
 	void Update ()
     {
-        Debug.DrawRay(cam.ScreenToWorldPoint(Input.mousePosition), cam.transform.forward);
-
-
 
         if (isMyTurn)
         {
@@ -47,23 +44,26 @@ public class PlayerActions : MonoBehaviour{
 
             if (Input.GetMouseButtonDown(0))
             {
-                RaycastHit2D hit = Physics2D.Raycast(cam.ScreenToWorldPoint(Input.mousePosition), cam.transform.forward);
-
-                if (hit.collider != null)
+                RaycastHit hit;
+                if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit))
                 {
-                    Debug.Log(hit.collider.tag);
-                    
-                    if (hit.collider.tag == "ClickableSprite")
+
+                    if (hit.collider != null)
                     {
-                        Debug.Log("LBLBLBLBDBJNJ FUNZIONA PLZ");
-                        SubtractMovementActions(hit.transform.position);
-                        aiLerp.target.position = hit.transform.position;
-                        DestroyClickableGrid();
-                        aiLerp.canMove = true;
+                        Debug.Log(hit.collider.tag);
 
+                        if (hit.collider.tag == "ClickableSprite")
+                        {
+                            Debug.Log("LBLBLBLBDBJNJ FUNZIONA PLZ");
+                            SubtractMovementActions(hit.transform.position);
+                            aiLerp.target.position = hit.transform.position;
+                            DestroyClickableGrid();
+                            aiLerp.canMove = true;
+
+                        }
                     }
-                }
 
+                }
             }
 
             if (playerActionsAmount <= 0)
