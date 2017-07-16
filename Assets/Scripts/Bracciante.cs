@@ -48,7 +48,6 @@ public class Bracciante : MonoBehaviour {
         
         if (isMyTurn)
         {
-            aiLerp.canMove = true;
             if (isPatroling)       //se sto pattugliando
             {
                 if (hasToSetPath)       //se devo settare un path
@@ -147,7 +146,6 @@ public class Bracciante : MonoBehaviour {
                 else                              //se i nodi del path sono finiti mi trovo nella casella adiacente al player quindi lo killo quel bastardo e gli dico git gud casual
                 {
 
-                    aiLerp.canMove = false;
                     //uccidi il player
                 }                
             }            
@@ -155,7 +153,6 @@ public class Bracciante : MonoBehaviour {
         else
         {
             isMyTurn = false;
-            aiLerp.canMove = false;
         }
     }
 
