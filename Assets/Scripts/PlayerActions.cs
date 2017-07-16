@@ -18,6 +18,8 @@ public class PlayerActions : MonoBehaviour{
     public bool isMyTurn = false;
     public bool canCreateGrid = true;
 
+    public bool isFreeRoaming = false;
+
     // Use this for initialization
     void Start () {
 
@@ -70,6 +72,37 @@ public class PlayerActions : MonoBehaviour{
             {
                 isMyTurn = false;
             }
+        }
+
+        if (isFreeRoaming)
+
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+              //  Debug.Log("Ciao");
+
+                RaycastHit hit;
+
+                if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit))
+                {
+                    if (hit.collider != null)
+                    {
+                       
+                            GraphNode node = AstarPath.active.GetNearest(hit.point).node;
+                            if (node.Walkable)
+                            {
+                                
+                                
+                                Path p = seeker.StartPath(transform.position, (Vector3)node.position);
+                                p.BlockUntilCalculated();
+                            }
+                                Debug.Log("ciao");
+                            
+                        
+                    }
+                }
+            }
+            
         }
 		
 	}
