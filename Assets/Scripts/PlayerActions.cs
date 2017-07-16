@@ -89,14 +89,15 @@ public class PlayerActions : MonoBehaviour{
                     {
                        
                             GraphNode node = AstarPath.active.GetNearest(hit.point).node;
+
                             if (node.Walkable)
                             {
-                                
-                                
                                 Path p = seeker.StartPath(transform.position, (Vector3)node.position);
                                 p.BlockUntilCalculated();
+                                Debug.Log("hit point" +  hit.point);
+                                Debug.Log("node " + (Vector3)node.position );
                             }
-                                Debug.Log("ciao");
+                               // Debug.Log("ciao");
                             
                         
                     }
@@ -111,7 +112,7 @@ public class PlayerActions : MonoBehaviour{
     public void TargetReached()
     {
         transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), transform.position.z);
-        aiLerp.canMove = false;
+       // aiLerp.canMove = false;
         canCreateGrid = true;
     }
 
