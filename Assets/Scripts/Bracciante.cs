@@ -12,16 +12,16 @@ public class Bracciante : MonoBehaviour {
 
     public int actionsAmount;
     public bool isMyTurn;
-    private bool isPatroling=true;
+    public bool isPatroling=true;
     public Transform[] waypoints;
     public Transform sprite;
     public GameObject visionSprite;
     private Transform direction;
 
-    private bool hasToSetPath=true;
+    public bool hasToSetPath=true;
     private Vector3[] vectorNodesArray;
     private int nodesCounter = 0;
-    private int waypointsCounter = -1;
+    [SerializeField] private int waypointsCounter = -1;
     public bool hasSeenPlayer;
     private int numberOfPathNodes;
 
@@ -48,6 +48,7 @@ public class Bracciante : MonoBehaviour {
         
         if (isMyTurn)
         {
+            aiLerp.canMove = true;
             if (isPatroling)       //se sto pattugliando
             {
                 if (hasToSetPath)       //se devo settare un path
@@ -55,7 +56,7 @@ public class Bracciante : MonoBehaviour {
                     ChooseNextWaypoint();          //scelgo qual è il prossimo waypoint   
                     GetPathNodes(waypoints[waypointsCounter].position);    //prendo tutti i nodi del path verso il waypoint scelto
                     GoToNode(vectorNodesArray[nodesCounter]);              //vado al primo nodo del path
-                    nodesCounter++;
+                    nodesCounter++;                                       
                     hasToSetPath = false;
                 }
             }
@@ -77,9 +78,9 @@ public class Bracciante : MonoBehaviour {
 
     void GetPathNodes(Vector3 target)       //estrapola i nodi del path verso il target in un array, eccetto il nodo della nostra posizione (vectorNodesArray)
     {
-        Path p = seeker.StartPath(transform.position, target);        
+        Path p = seeker.StartPath(transform.position, target);
         p.BlockUntilCalculated();
-        List<Vector3> pathNodesList = p.vectorPath;
+        List<Vector3> pathNodesList =  p.vectorPath;
         numberOfPathNodes = pathNodesList.Count-1;
 
         vectorNodesArray = new Vector3[20];
@@ -99,7 +100,7 @@ public class Bracciante : MonoBehaviour {
         }
         else
         {
-            waypointsCounter = 0;
+            waypointsCounter = 0 ;
         }
 
 
@@ -143,8 +144,10 @@ public class Bracciante : MonoBehaviour {
                     GoToNode(vectorNodesArray[nodesCounter]);
                     nodesCounter++;
                 }
-                else                              //se i nodi del path sono finiti mi trovo nella casella adiacente al player quindi lo killo quel bastardo
+                else                              //se i nodi del path sono finiti mi trovo nella casella adiacente al player quindi lo killo quel bastardo e gli dico git gud casual
                 {
+
+                    aiLerp.canMove = false;
                     //uccidi il player
                 }                
             }            
@@ -152,14 +155,16 @@ public class Bracciante : MonoBehaviour {
         else
         {
             isMyTurn = false;
+            aiLerp.canMove = false;
         }
     }
+
 
     public void GoToNode(Vector3 targetPos)     //vai al nodo scelto
     {
         Path p = seeker.StartPath(transform.position, targetPos);
         p.BlockUntilCalculated();
-    }
+    } 
 
     void LateUpdate()
     {

@@ -9,7 +9,7 @@ public class PlayerActions : MonoBehaviour{
     public int playerActionsAmount;
     public GameObject clickableSprite;
     public Camera cam;
-
+   
     private GridGraph grid;
     private Seeker seeker;
     private AILerp aiLerp;
@@ -29,7 +29,11 @@ public class PlayerActions : MonoBehaviour{
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
+        Debug.DrawRay(cam.ScreenToWorldPoint(Input.mousePosition), cam.transform.forward);
+
+
 
         if (isMyTurn)
         {
@@ -43,12 +47,15 @@ public class PlayerActions : MonoBehaviour{
 
             if (Input.GetMouseButtonDown(0))
             {
-                RaycastHit2D hit = Physics2D.Raycast(cam.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+                RaycastHit2D hit = Physics2D.Raycast(cam.ScreenToWorldPoint(Input.mousePosition), cam.transform.forward);
 
                 if (hit.collider != null)
                 {
+                    Debug.Log(hit.collider.tag);
+                    
                     if (hit.collider.tag == "ClickableSprite")
                     {
+                        Debug.Log("LBLBLBLBDBJNJ FUNZIONA PLZ");
                         SubtractMovementActions(hit.transform.position);
                         aiLerp.target.position = hit.transform.position;
                         DestroyClickableGrid();
