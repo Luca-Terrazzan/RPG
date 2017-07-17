@@ -4,15 +4,72 @@ using UnityEngine;
 
 public class RagazzoMucca : MonoBehaviour {
 
-    public bool isMyTurn;
+    public TurnManager turnManager;
+    public PlayerActions player; //da mettere se si vuole gestire la morte del player tramite un metodo
 
-	// Use this for initialization
-	void Start () {
-		
+    public bool isMyTurn;
+    public bool isSleeping;
+    public bool hasSeenPlayer;
+
+
+    
+    void Update ()
+    {
+	    if (player.isMyTurn)
+        {
+             if (!isSleeping && hasSeenPlayer)
+             {
+                KillThePlayer();
+             }
+        }
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+	public void StartTurn()
+    {
+        isMyTurn = true;
+
+        if (isSleeping)
+        {
+            // feeback snore
+            isMyTurn = false;
+            turnManager.changeTurn();
+            SleepingManager();
+
+        }
+        else
+        {
+            // remove snore feedback
+            if (hasSeenPlayer)
+            {
+                KillThePlayer();
+                
+            }
+            else
+            {
+                isMyTurn = false;
+                turnManager.changeTurn();
+                SleepingManager();
+            }
+        }
+    }
+
+    public void KillThePlayer()
+    {
+        // animazione sparo 
+        // bool player morto
+        Debug.Log("Pew pew pew. Git Gud sei morto casual");
+    }
+
+    private void SleepingManager()
+    {
+        if (isSleeping)
+        {
+            isSleeping = false;
+        }
+        else
+        {
+            isSleeping = true;
+        }
+    }
+	
 }

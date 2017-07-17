@@ -15,6 +15,7 @@ public class FieldOfView : MonoBehaviour {
     Transform target;
 
     private Bracciante bracciante;
+    private RagazzoMucca cowBoy;
     public Vector3 lastPlayerSeenPoint;
     public Transform playerTransform;
 
@@ -29,6 +30,7 @@ public class FieldOfView : MonoBehaviour {
     {
         StartCoroutine("FindTargetsWithDelay", 0f);
         bracciante = GetComponent<Bracciante>();
+        cowBoy = GetComponent<RagazzoMucca>();
         viewMesh = new Mesh();
         viewMesh.name = "View Mesh";
         viewMeshFilter.mesh = viewMesh;
@@ -77,6 +79,10 @@ public class FieldOfView : MonoBehaviour {
                     {
                         lastPlayerSeenPoint = new Vector3(playerTransform.position.x,playerTransform.position.y,0);
                         bracciante.hasHeardPlayer = true;
+                    }
+                    if (!cowBoy.isSleeping)
+                    {
+                        cowBoy.hasSeenPlayer = true;
                     }
 
                 }
