@@ -6,8 +6,9 @@ using Pathfinding.Util;
 
 public class PlayerActions : MonoBehaviour{
 
-    public int playerActionsAmount;
-    public int maxPlayerActions;
+    public int playerActions;
+    public int playerActionsPerTurn;
+    private int playerActionsTemp;
     public GameObject clickableSprite;
     public Camera cam;
     public TurnManager turnManager;
@@ -19,8 +20,11 @@ public class PlayerActions : MonoBehaviour{
 
     public bool isMyTurn = false;
     private bool canCreateGrid = true;
+    public bool isCrouched = false;
 
     public bool isFreeRoaming = false;
+
+    private SpriteRenderer sprite;
 
     // Use this for initialization
     void Start () {
@@ -29,6 +33,8 @@ public class PlayerActions : MonoBehaviour{
         grid = AstarPath.active.data.gridGraph;
         seeker = GetComponent<Seeker>();
         aiLerp = GetComponent<AILerp>();
+        sprite = GetComponent<SpriteRenderer>();
+        playerActions = playerActionsPerTurn;
 
     }
 	
@@ -42,8 +48,32 @@ public class PlayerActions : MonoBehaviour{
             
             if (canCreateGrid)
             {
-                CreateClickableGrid();
+                if (!isCrouched)
+                {
+                    CreateClickableGrid(playerActions);
+                }
+                else if (isCrouched)
+                {
+                    CreateClickableGrid((int)Mathf.Floor(playerActions / 2));
+                }
                 canCreateGrid = false;
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftControl)&&aiLerp.canMove==false)
+            {
+                DestroyClickableGrid();
+                if (!isCrouched)
+                {
+                    CreateClickableGrid((int)Mathf.Floor(playerActions / 2));
+                    isCrouched = true;
+                    sprite.color = Color.magenta;
+                }
+                else if (isCrouched)
+                {
+                    CreateClickableGrid(playerActions);
+                    isCrouched = false;
+                    sprite.color = Color.red;
+                }
             }
 
             if (Input.GetMouseButtonDown(0))
@@ -75,7 +105,7 @@ public class PlayerActions : MonoBehaviour{
                 isMyTurn = false;
                 DestroyClickableGrid();
                 turnManager.changeTurn();
-                playerActionsAmount = maxPlayerActions;
+                playerActions = playerActionsPerTurn;
                 canCreateGrid = true;
             }
         }
@@ -122,13 +152,13 @@ public class PlayerActions : MonoBehaviour{
         canCreateGrid = true;
     }
 
-    void CreateClickableGrid()
+    void CreateClickableGrid(int numberOfMovements)
     {
         grid.GetNodes(node =>
         {
             Path p = seeker.StartPath(transform.position, (Vector3)node.position);
             p.BlockUntilCalculated();
-            if (p.GetTotalLength() <= playerActionsAmount+0.1f)
+            if (p.GetTotalLength() <= numberOfMovements+0.1f)
             {
                 if (p.GetTotalLength() >0.9f&&node.Walkable)
                 {
@@ -155,6 +185,13 @@ public class PlayerActions : MonoBehaviour{
     {
         Path p = seeker.StartPath(transform.position, target);
         p.BlockUntilCalculated();
-        playerActionsAmount -= Mathf.RoundToInt(p.GetTotalLength());
+        if (isCrouched)
+        {
+            playerActions -= Mathf.RoundToInt(p.GetTotalLength()) * 2;
+        }
+        else
+        {
+            playerActions -= Mathf.RoundToInt(p.GetTotalLength());
+        }
     }
 }
