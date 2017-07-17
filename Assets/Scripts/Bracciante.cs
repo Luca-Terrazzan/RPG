@@ -9,10 +9,11 @@ public class Bracciante : MonoBehaviour {
     private GridGraph grid;
     private Seeker seeker;
     private AILerp aiLerp;
+    public TurnManager turnManager;
 
     public int actionsAmount;
+    public int maxActionsAmount;
     public bool isMyTurn;
-    public bool isPatroling=true;
     public Transform[] waypoints;
     public Transform sprite;
     public GameObject visionSprite;
@@ -42,13 +43,6 @@ public class Bracciante : MonoBehaviour {
 
     }
 
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            StartTurn();
-        }
-    }
 
     public void StartTurn()                   //chiamato all'inizio del mio turno
     {
@@ -93,6 +87,9 @@ public class Bracciante : MonoBehaviour {
                 else       //se non ho azioni finisco il mio turno
                 {
                     isMyTurn = false;
+                    turnManager.changeTurn();
+                    actionsAmount = maxActionsAmount;
+
                 }
 
             }
@@ -114,6 +111,8 @@ public class Bracciante : MonoBehaviour {
                 else       //se non ho azioni finisco il mio cazzo di turno
                 {
                     isMyTurn = false;
+                    turnManager.changeTurn();
+                    actionsAmount = maxActionsAmount;
                 }
 
             }
@@ -135,6 +134,8 @@ public class Bracciante : MonoBehaviour {
             else       //se non ho azioni finisco il mio cazzo di turno
             {
                 isMyTurn = false;
+                turnManager.changeTurn();
+                actionsAmount = maxActionsAmount;
             }
         }
         else         //se non ho ne visto ne sentito il player
@@ -151,6 +152,8 @@ public class Bracciante : MonoBehaviour {
                 else                   //se non ho più azioni disponibili finisco il mio porco dio di turno
                 {
                     isMyTurn = false;
+                    turnManager.changeTurn();
+                    actionsAmount = maxActionsAmount;
                 }
             }else
             {
@@ -167,6 +170,8 @@ public class Bracciante : MonoBehaviour {
                 else        //se non ho più azioni disponibili FINISCO IL MIO DIO CANE DI TURNO MADONNA LADRA
                 {
                     isMyTurn = false;
+                    turnManager.changeTurn();
+                    actionsAmount = maxActionsAmount;
                 }
             }
         }

@@ -7,8 +7,10 @@ using Pathfinding.Util;
 public class PlayerActions : MonoBehaviour{
 
     public int playerActionsAmount;
+    public int maxPlayerActions;
     public GameObject clickableSprite;
     public Camera cam;
+    public TurnManager turnManager;
    
     private GridGraph grid;
     private Seeker seeker;
@@ -16,7 +18,7 @@ public class PlayerActions : MonoBehaviour{
     private List<GameObject> clickableSpriteList;
 
     public bool isMyTurn = false;
-    public bool canCreateGrid = true;
+    private bool canCreateGrid = true;
 
     public bool isFreeRoaming = false;
 
@@ -68,9 +70,13 @@ public class PlayerActions : MonoBehaviour{
                 }
             }
 
-            if (playerActionsAmount <= 0)
+            if (Input.GetKeyDown(KeyCode.KeypadEnter))
             {
                 isMyTurn = false;
+                DestroyClickableGrid();
+                turnManager.changeTurn();
+                playerActionsAmount = maxPlayerActions;
+                canCreateGrid = true;
             }
         }
 
@@ -112,7 +118,7 @@ public class PlayerActions : MonoBehaviour{
     public void TargetReached()
     {
         transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), transform.position.z);
-       // aiLerp.canMove = false;
+        aiLerp.canMove = false;
         canCreateGrid = true;
     }
 

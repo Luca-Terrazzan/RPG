@@ -12,8 +12,7 @@ public class TurnManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        charactersArray[i].GetComponent<PlayerActions>().isMyTurn = true;
-        i++;
+        changeTurn();
 	}
 	// Update is called once per frame
 	void Update ()
@@ -27,7 +26,7 @@ public class TurnManager : MonoBehaviour {
     {
         if (charactersArray[i].gameObject.tag == "Bracciante")
         {
-            charactersArray[i].GetComponent<Bracciante>().isMyTurn = true;
+            charactersArray[i].GetComponent<Bracciante>().StartTurn();
         }
         else if (charactersArray[i].gameObject.tag == "Prostituta")
         {
@@ -41,7 +40,14 @@ public class TurnManager : MonoBehaviour {
         {
             charactersArray[i].GetComponent<PlayerActions>().isMyTurn = true;
         }
-        i++;
+        if (i < charactersArray.Length-1)
+        {
+            i++;
+        }
+        else
+        {
+            i = 0;
+        }
      
     }
 }
