@@ -18,7 +18,6 @@ public class Bracciante : MonoBehaviour {
     public GameObject visionSprite;
     private Transform direction;
 
-    public bool hasToSetPath=true;
     private Vector3[] vectorNodesArray;
     private int nodesCounter = 0;
     private int waypointsCounter = 0;
@@ -47,11 +46,11 @@ public class Bracciante : MonoBehaviour {
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            OnTurnStart();
+            StartTurn();
         }
     }
 
-    public void OnTurnStart()                   //chiamato all'inizio del mio turno
+    public void StartTurn()                   //chiamato all'inizio del mio turno
     {
         nodesCounter = 0;
         isMyTurn = true;
@@ -88,6 +87,8 @@ public class Bracciante : MonoBehaviour {
                     nodesCounter = 0;
                     GetPathNodes(playerTransform.position);         //estrapolo i nodi del path verso il player
                     GoToNode(vectorNodesArray[nodesCounter]);       //vado al primo nodo del path
+                    nodesCounter++;
+                    hasToSetPlayerPath = false;
                 }
                 else       //se non ho azioni finisco il mio turno
                 {
@@ -107,6 +108,7 @@ public class Bracciante : MonoBehaviour {
                     else               
                     {
                         /////////////////////////////se i nodi del path sono finiti mi trovo nella casella adiacente al player quindi lo killo quel bastardo e gli dico git gud casual
+                        Debug.Log("sei morto porcoddio");
                     }
                 }
                 else       //se non ho azioni finisco il mio cazzo di turno

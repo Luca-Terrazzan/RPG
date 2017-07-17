@@ -50,20 +50,20 @@ public class FieldOfView : MonoBehaviour {
 
     void FindVisibleTarget()
     {
-        Collider2D targetsInViewRadius = Physics2D.OverlapCircle(new Vector2(transform.position.x,transform.position.y), viewRadius,playerMask);
+        Collider[] targetsInViewRadius = Physics.OverlapSphere(new Vector3(transform.position.x,transform.position.y,transform.position.z), viewRadius,playerMask);
 
-        if (targetsInViewRadius != null)
+        if (targetsInViewRadius.Length>0)
         {
 
             visibleTargets.Clear();
-
-                target = targetsInViewRadius.transform;
+            target = targetsInViewRadius[0].transform;
             Vector3 dirToTarget = (target.position - transform.position).normalized;
+
             if (Vector3.Angle(transform.up, dirToTarget) < viewAngle / 2)
             {
                 float distToTarget = Vector3.Distance(transform.position, target.position);
 
-                if (!Physics2D.Raycast(transform.position, dirToTarget, distToTarget, obstacleMask))
+                if (!Physics.Raycast(transform.position, dirToTarget, distToTarget, obstacleMask))
                 {
                     visibleTargets.Add(target);
                     bracciante.hasSeenPlayer = true;
@@ -160,8 +160,8 @@ public class FieldOfView : MonoBehaviour {
     ViewCastInfo ViewCast(float globalAngle)
     {
         Vector3 dir = DirFromAngle(globalAngle, true);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, viewRadius, obstacleMask);
-        if (Physics2D.Raycast(transform.position,dir,viewRadius,obstacleMask) )     //(Physics.Raycast(transform.position, dir, out hit, viewRadius, obstacleMask))
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position,dir,out hit,viewRadius,obstacleMask) )     //(Physics.Raycast(transform.position, dir, out hit, viewRadius, obstacleMask))
         {
             return new ViewCastInfo(true, hit.point, hit.distance, globalAngle);
         }
