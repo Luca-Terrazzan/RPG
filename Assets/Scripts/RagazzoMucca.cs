@@ -26,6 +26,7 @@ public class RagazzoMucca : MonoBehaviour {
 	
 	public void StartTurn()
     {
+        SleepingManager();
         isMyTurn = true;
 
         if (isSleeping)
@@ -33,7 +34,7 @@ public class RagazzoMucca : MonoBehaviour {
             // feeback snore
             isMyTurn = false;
             turnManager.changeTurn();
-            SleepingManager();
+           
 
         }
         else
@@ -48,7 +49,7 @@ public class RagazzoMucca : MonoBehaviour {
             {
                 isMyTurn = false;
                 turnManager.changeTurn();
-                SleepingManager();
+                
             }
         }
     }
