@@ -136,7 +136,6 @@ public class Bracciante : MonoBehaviour {
                     nextTurnAngle[0].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 90);
                     nextTurnAngle[1].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, -180);
                     nextTurnAngle[2].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 90);
-                    StartCoroutine("LookAround");
                     hasHeardPlayer = false;
                 }
             }
@@ -183,25 +182,7 @@ public class Bracciante : MonoBehaviour {
         }
     }
 
-    IEnumerator LookAround()
-    {
-        timer = 0;
-        turnRate = 2;
-        while (whichAngle < 3)
-        {
-            timer += Time.deltaTime;
-            Quaternion.Lerp(transform.rotation, nextTurnAngle[whichAngle],timer/turnRate);
-            if (timer > turnRate)
-            {
-                whichAngle++;
-                timer = 0;
-            }
-            yield return null;
-        }
-        yield return new WaitForSeconds(2);
-        TargetReached();
-
-    }
+ 
 
 
     void GetPathNodes(Vector3 target)       //estrapola i nodi del path verso il target in un array, eccetto il nodo della nostra posizione (vectorNodesArray)
