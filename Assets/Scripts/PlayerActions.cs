@@ -101,7 +101,7 @@ public class PlayerActions : MonoBehaviour{
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.KeypadEnter))
+            if (Input.GetKeyDown(KeyCode.KeypadEnter)&&!aiLerp.canMove)
             {
                 isMyTurn = false;
                 DestroyClickableGrid();

@@ -15,7 +15,8 @@ public class FieldOfView : MonoBehaviour {
     Transform target;
 
     private Bracciante bracciante;
-
+    public Vector3 lastPlayerSeenPoint;
+    public Transform playerTransform;
 
     public float meshResolution;
     public int edgeResolveIterations;
@@ -31,7 +32,9 @@ public class FieldOfView : MonoBehaviour {
         viewMesh = new Mesh();
         viewMesh.name = "View Mesh";
         viewMeshFilter.mesh = viewMesh;
-        
+        playerTransform = GameObject.FindWithTag("Player").transform;
+
+
     }
 
     void LateUpdate()
@@ -48,7 +51,7 @@ public class FieldOfView : MonoBehaviour {
         }
     }
 
-    void FindVisibleTarget()
+    public void FindVisibleTarget()
     {
         Collider[] targetsInViewRadius = Physics.OverlapSphere(new Vector3(transform.position.x,transform.position.y,transform.position.z), viewRadius,playerMask);
 
@@ -63,10 +66,18 @@ public class FieldOfView : MonoBehaviour {
             {
                 float distToTarget = Vector3.Distance(transform.position, target.position);
 
-                if (!Physics.Raycast(transform.position, dirToTarget, distToTarget, obstacleMask))
+                if (!Physics.Raycast(transform.position, dirToTarget,distToTarget, obstacleMask))
                 {
                     visibleTargets.Add(target);
-                    bracciante.hasSeenPlayer = true;
+                    if (bracciante.isMyTurn == true)
+                    {
+                        bracciante.hasSeenPlayer = true;
+                    }
+                    else
+                    {
+                        lastPlayerSeenPoint = new Vector3(playerTransform.position.x,playerTransform.position.y,0);
+                        bracciante.hasHeardPlayer = true;
+                    }
 
                 }
             }

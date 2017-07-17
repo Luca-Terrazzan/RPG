@@ -10,6 +10,7 @@ public class Bracciante : MonoBehaviour {
     private Seeker seeker;
     private AILerp aiLerp;
     public TurnManager turnManager;
+    private FieldOfView fov;
 
     public int actionsAmount;
     public int maxActionsAmount;
@@ -27,9 +28,14 @@ public class Bracciante : MonoBehaviour {
     private bool hasToSetPlayerPath = true;
 
     private int numberOfPathNodes;
+    private float timer = 0;
+    public float turnRate = 2;
+    private int whichAngle = 0;
+    private int angleIndex = 0;
+    Quaternion[] nextTurnAngle = new Quaternion[3];
 
-    
-       
+
+
 
     public Transform playerTransform;
 
@@ -40,29 +46,31 @@ public class Bracciante : MonoBehaviour {
         seeker = GetComponent<Seeker>();
         aiLerp = GetComponent<AILerp>();
         direction = GetComponentInChildren<Transform>();
-
+        fov = GetComponent<FieldOfView>();
+        actionsAmount = maxActionsAmount;
     }
-
 
     public void StartTurn()                   //chiamato all'inizio del mio turno
     {
+        actionsAmount = maxActionsAmount;
         nodesCounter = 0;
         isMyTurn = true;
+        fov.FindVisibleTarget();
         Vector3 target = new Vector3();
         if (hasSeenPlayer)                           //se ho visto il player
         {
             target = playerTransform.position;            //setto il target alla posizione del player
             hasToSetPlayerPath = false;
         }
-        else if (hasHeardPlayer)                    //se ho sentito il player
+        else if (hasHeardPlayer)                    //se ho sentito o visto il player ma quel nigga se l'è svignata
         {
-                            //settare il target nell'ultimo punto in cui il player è passato sul range uditivo di sto negro
+            target = (Vector3)grid.GetNearest(new Vector3(fov.lastPlayerSeenPoint.x,fov.lastPlayerSeenPoint.y,0)).node.position;              //settare il target nell'ultimo punto in cui il player è passato sul range uditivo di sto negro
+            hasHeardPlayer = true;
         }
         else                                       //se non ho visto ne sentito il player
         {
             target = waypoints[waypointsCounter].position;
         }
-        Debug.Log("Inizio turno vado a waypoint: " + waypoints[waypointsCounter].position.ToString());
         GetPathNodes(target);                            //prendo tutti i nodi del path verso il target scelto
         GoToNode(vectorNodesArray[nodesCounter]);              //vado al primo nodo del path
         nodesCounter+=1;
@@ -88,8 +96,6 @@ public class Bracciante : MonoBehaviour {
                 {
                     isMyTurn = false;
                     turnManager.changeTurn();
-                    actionsAmount = maxActionsAmount;
-
                 }
 
             }
@@ -112,7 +118,6 @@ public class Bracciante : MonoBehaviour {
                 {
                     isMyTurn = false;
                     turnManager.changeTurn();
-                    actionsAmount = maxActionsAmount;
                 }
 
             }
@@ -128,6 +133,10 @@ public class Bracciante : MonoBehaviour {
                 else                //se sono arrivato al penultimo nodo del path
                 {
                     //Sto negro fa un controllo di tot gradi in giro per cercare il player
+                    nextTurnAngle[0].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 90);
+                    nextTurnAngle[1].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, -180);
+                    nextTurnAngle[2].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 90);
+                    StartCoroutine("LookAround");
                     hasHeardPlayer = false;
                 }
             }
@@ -135,7 +144,6 @@ public class Bracciante : MonoBehaviour {
             {
                 isMyTurn = false;
                 turnManager.changeTurn();
-                actionsAmount = maxActionsAmount;
             }
         }
         else         //se non ho ne visto ne sentito il player
@@ -153,7 +161,6 @@ public class Bracciante : MonoBehaviour {
                 {
                     isMyTurn = false;
                     turnManager.changeTurn();
-                    actionsAmount = maxActionsAmount;
                 }
             }else
             {
@@ -171,13 +178,32 @@ public class Bracciante : MonoBehaviour {
                 {
                     isMyTurn = false;
                     turnManager.changeTurn();
-                    actionsAmount = maxActionsAmount;
                 }
             }
         }
     }
-   
-  
+
+    IEnumerator LookAround()
+    {
+        timer = 0;
+        turnRate = 2;
+        while (whichAngle < 3)
+        {
+            timer += Time.deltaTime;
+            Quaternion.Lerp(transform.rotation, nextTurnAngle[whichAngle],timer/turnRate);
+            if (timer > turnRate)
+            {
+                whichAngle++;
+                timer = 0;
+            }
+            yield return null;
+        }
+        yield return new WaitForSeconds(2);
+        TargetReached();
+
+    }
+
+
     void GetPathNodes(Vector3 target)       //estrapola i nodi del path verso il target in un array, eccetto il nodo della nostra posizione (vectorNodesArray)
     {
         Path p = seeker.StartPath(transform.position, target);
