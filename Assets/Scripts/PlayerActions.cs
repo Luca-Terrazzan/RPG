@@ -23,6 +23,7 @@ public class PlayerActions : MonoBehaviour{
     public bool isCrouched = false;
 
     public bool isFreeRoaming = false;
+    public bool hasKey = false;
 
     private SpriteRenderer sprite;
 
