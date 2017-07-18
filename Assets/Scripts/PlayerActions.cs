@@ -85,11 +85,9 @@ public class PlayerActions : MonoBehaviour{
 
                     if (hit.collider != null)
                     {
-                        Debug.Log(hit.collider.tag);
 
                         if (hit.collider.tag == "ClickableSprite")
                         {
-                            Debug.Log("LBLBLBLBDBJNJ FUNZIONA PLZ");
                             SubtractMovementActions(hit.transform.position);
                             aiLerp.target.position = hit.transform.position;
                             DestroyClickableGrid();

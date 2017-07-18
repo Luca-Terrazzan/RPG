@@ -30,10 +30,6 @@ public class Bracciante : MonoBehaviour
     private Vector3 lastPositionHeard;
 
     private int numberOfPathNodes;
-    private float timer = 0;
-    public float turnRate = 2;
-    private int whichAngle = 0;
-    private int angleIndex = 0;
     Quaternion[] nextTurnAngle = new Quaternion[3];
 
 
@@ -68,6 +64,11 @@ public class Bracciante : MonoBehaviour
             {
                 hasHeardPlayer = true;
                 lastPositionHeard = new Vector3(playerTransform.position.x, playerTransform.position.y, 0);
+            }
+            else if (fov.AmIHearingPlayer())
+            {
+                hasHeardPlayer = true;
+                lastPositionHeard = new Vector3(playerTransform.position.x, playerTransform.position.y, 0);
                 Debug.Log(lastPositionHeard.ToString());
             }
         }
@@ -90,7 +91,7 @@ public class Bracciante : MonoBehaviour
         }
         else if (hasHeardPlayer)                    //se ho sentito o visto il player ma quel nigga se l'è svignata
         {
-            target = (Vector3)grid.GetNearest(lastPositionHeard).node.position;              //settare il target nell'ultimo punto in cui il player è passato sul range uditivo di sto negro
+            target = (Vector3)grid.GetNearest(lastPositionHeard).node.position;    //setto come target l'ultimo punto in cui il player è passato
             hasHeardPlayer = true;
         }
         else                                       //se non ho visto ne sentito il player
@@ -161,10 +162,11 @@ public class Bracciante : MonoBehaviour
                 {
                     //Sto negro fa un controllo di tot gradi in giro per cercare il player
                     aiLerp.enableRotation = false;
-                    StartCoroutine("LookAtTargetLocation");
+                    transform.up = vectorNodesArray[nodesCounter] - transform.position;
                     nextTurnAngle[0].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 90);
-                    nextTurnAngle[1].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, -180);
-                    nextTurnAngle[2].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 90);
+                    nextTurnAngle[1].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, -89);
+                    nextTurnAngle[2].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 0);
+                    StartCoroutine("LookAround");
                     hasHeardPlayer = false;
                 }
             }
@@ -214,7 +216,6 @@ public class Bracciante : MonoBehaviour
 
     IEnumerator LookAtTargetLocation()
     {
-        transform.up = vectorNodesArray[nodesCounter] - transform.position;
         yield return new WaitForSeconds(0.5f);
         aiLerp.enableRotation = true;
         turnManager.changeTurn();
@@ -222,11 +223,41 @@ public class Bracciante : MonoBehaviour
     }
     IEnumerator LookAround()
     {
-        while (true)
+        float timer = 0;
+        float turnRate = 2;
+        int whichAngle = 0;
+        Quaternion startingRotation = new Quaternion();
+        startingRotation.eulerAngles = new Vector3(0,0,transform.rotation.eulerAngles.z);
+        while (whichAngle<3)
         {
-            Quaternion.Lerp(transform.rotation, nextTurnAngle[0], Time.deltaTime);
+            if (fov.FindVisibleTarget())
+            {
+                break;
+            }
+            transform.rotation = Quaternion.Lerp(startingRotation, nextTurnAngle[whichAngle], timer/turnRate);
+            timer += Time.deltaTime;
+            if (timer > turnRate)
+            {
+                whichAngle++;
+                timer = 0;
+                yield return null;
+                startingRotation.eulerAngles = new Vector3(0, 0, transform.rotation.eulerAngles.z);
+            }
             yield return null;
         }
+        if (hasSeenPlayer)
+        {
+            TargetReached();
+        }
+        else
+        {
+            GetPathNodes(waypoints[waypointsCounter].position);         //estrapolo i nodi del path verso il waypoint corrente
+            nodesCounter = 0;
+            GoToNode(vectorNodesArray[nodesCounter]);                  //vado al primo nodo del path
+            nodesCounter++;
+        }
+        aiLerp.enableRotation = true;
+        yield return null;
     }
 
 
