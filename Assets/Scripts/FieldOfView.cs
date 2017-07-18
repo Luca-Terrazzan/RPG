@@ -54,7 +54,7 @@ public class FieldOfView : MonoBehaviour {
 
         if (targetsInViewRadius.Length > 0)
         {
-            if (!targetsInViewRadius[0].GetComponent<PlayerActions>().isCrouched)
+            if (targetsInViewRadius[0].GetComponent<PlayerActions>().canBeHeard)
             {
                 return true;
             }

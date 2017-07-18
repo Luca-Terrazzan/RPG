@@ -21,6 +21,7 @@ public class PlayerActions : MonoBehaviour{
     public bool isMyTurn = false;
     private bool canCreateGrid = true;
     public bool isCrouched = false;
+    public bool canBeHeard = false;
     public bool isFreeRoaming = false;
     public bool hasKey = false;
 
@@ -91,7 +92,14 @@ public class PlayerActions : MonoBehaviour{
                             aiLerp.target.position = hit.transform.position;
                             DestroyClickableGrid();
                             aiLerp.canMove = true;
-
+                            if (isCrouched)
+                            {
+                                canBeHeard = false;
+                            }
+                            else
+                            {
+                                canBeHeard = true;
+                            }
                         }
                     }
 
@@ -145,6 +153,7 @@ public class PlayerActions : MonoBehaviour{
    
     public void TargetReached()
     {
+        
         transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), transform.position.z);
         aiLerp.canMove = false;
         canCreateGrid = true;
