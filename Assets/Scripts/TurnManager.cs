@@ -35,11 +35,12 @@ public class TurnManager : MonoBehaviour {
         else if (charactersArray[i].gameObject.tag == "CowBoy")
         {
             charactersArray[i].GetComponent<RagazzoMucca>().StartTurn();
-            Debug.Log("sonodentro");
+
         }
         else if (charactersArray[i].gameObject.tag == "Player")
         {
             charactersArray[i].GetComponent<PlayerActions>().isMyTurn = true;
+            Debug.Log("sonodentro");
         }
         if (i < charactersArray.Length-1)
         {
@@ -48,6 +49,7 @@ public class TurnManager : MonoBehaviour {
         else
         {
             i = 0;
+            changeTurn();
         }
      
     }

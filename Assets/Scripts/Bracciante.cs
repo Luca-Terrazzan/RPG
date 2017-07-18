@@ -4,7 +4,8 @@ using UnityEngine;
 using Pathfinding;
 using Pathfinding.Util;
 
-public class Bracciante : MonoBehaviour {
+public class Bracciante : MonoBehaviour
+{
 
     private GridGraph grid;
     private Seeker seeker;
@@ -41,7 +42,8 @@ public class Bracciante : MonoBehaviour {
     public Transform playerTransform;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
 
         grid = AstarPath.active.data.gridGraph;
         seeker = GetComponent<Seeker>();
@@ -65,7 +67,7 @@ public class Bracciante : MonoBehaviour {
             if (fov.FindVisibleTarget())
             {
                 hasHeardPlayer = true;
-                lastPositionHeard = new Vector3(playerTransform.position.x,playerTransform.position.y,0);
+                lastPositionHeard = new Vector3(playerTransform.position.x, playerTransform.position.y, 0);
                 Debug.Log(lastPositionHeard.ToString());
             }
         }
@@ -73,7 +75,6 @@ public class Bracciante : MonoBehaviour {
 
     public void StartTurn()                   //chiamato all'inizio del mio turno
     {
-        Debug.Log("Ciao");
         actionsAmount = maxActionsAmount;
         nodesCounter = 0;
         isMyTurn = true;
@@ -98,18 +99,18 @@ public class Bracciante : MonoBehaviour {
         }
         GetPathNodes(target);                            //prendo tutti i nodi del path verso il target scelto
         GoToNode(vectorNodesArray[nodesCounter]);              //vado al primo nodo del path
-        nodesCounter+=1;
+        nodesCounter += 1;
     }
 
     public void TargetReached()     //chiamato quando ho raggiunto il nodo
     {
         actionsAmount -= 1;
 
-        if(hasSeenPlayer)       //se ho visto il player
+        if (hasSeenPlayer)       //se ho visto il player
         {
-            if(hasToSetPlayerPath)      //se devo ancora settare il path verso il player
+            if (hasToSetPlayerPath)      //se devo ancora settare il path verso il player
             {
-                if(actionsAmount>0)         //se ho ancora azioni disponibili
+                if (actionsAmount > 0)         //se ho ancora azioni disponibili
                 {
                     nodesCounter = 0;
                     GetPathNodes(playerTransform.position);         //estrapolo i nodi del path verso il player
@@ -124,16 +125,16 @@ public class Bracciante : MonoBehaviour {
                 }
 
             }
-            else if(!hasToSetPlayerPath)        //se ho già settato il path verso il player
+            else if (!hasToSetPlayerPath)        //se ho già settato il path verso il player
             {
                 if (actionsAmount > 0)          //se ho ancora azioni disponibili
                 {
-                    if(nodesCounter<numberOfPathNodes-1)        //se non sono ancora arrivato al penultimo nodo del path verso il player
+                    if (nodesCounter < numberOfPathNodes - 1)        //se non sono ancora arrivato al penultimo nodo del path verso il player
                     {
                         GoToNode(vectorNodesArray[nodesCounter]);       //vado al nodo successivo
                         nodesCounter++;
                     }
-                    else               
+                    else
                     {
                         /////////////////////////////se i nodi del path sono finiti mi trovo nella casella adiacente al player quindi lo killo quel bastardo e gli dico git gud casual
                         Debug.Log("sei morto porcoddio");
@@ -146,11 +147,12 @@ public class Bracciante : MonoBehaviour {
                 }
 
             }
-        }else if (hasHeardPlayer)     //se ho sentito il player
+        }
+        else if (hasHeardPlayer)     //se ho sentito il player
         {
-            if(actionsAmount>0)
+            if (actionsAmount > 0)
             {
-                if(nodesCounter<numberOfPathNodes-1)         //se non sono ancora arrivato al penultimo nodo del path verso dove ho sentito il player
+                if (nodesCounter < numberOfPathNodes - 1)         //se non sono ancora arrivato al penultimo nodo del path verso dove ho sentito il player
                 {
                     GoToNode(vectorNodesArray[nodesCounter]);       //vado al nodo successivo
                     nodesCounter++;
@@ -174,11 +176,11 @@ public class Bracciante : MonoBehaviour {
         }
         else         //se non ho ne visto ne sentito il player
         {
-            if(nodesCounter<numberOfPathNodes)    //se non ho raggiunto ancora l'ultimo nodo del path verso il waypoint
+            if (nodesCounter < numberOfPathNodes)    //se non ho raggiunto ancora l'ultimo nodo del path verso il waypoint
             {
-                if(actionsAmount>0)  //se ho ancora azioni disponibili
+                if (actionsAmount > 0)  //se ho ancora azioni disponibili
                 {
-                    Debug.Log(nodesCounter+" "+numberOfPathNodes);
+                    Debug.Log(nodesCounter + " " + numberOfPathNodes);
 
                     GoToNode(vectorNodesArray[nodesCounter]);
                     nodesCounter++;
@@ -188,17 +190,18 @@ public class Bracciante : MonoBehaviour {
                     isMyTurn = false;
                     turnManager.changeTurn();
                 }
-            }else
+            }
+            else
             {
                 ChooseNextWaypoint();      //scelgo il prossimo waypoint
 
-                if(actionsAmount>0)
+                if (actionsAmount > 0)
                 {
                     Debug.Log("Arrivo al waypoint: " + waypoints[waypointsCounter].position.ToString());
                     GetPathNodes(waypoints[waypointsCounter].position);         //estrapolo i nodi del path verso il player
                     nodesCounter = 0;
                     GoToNode(vectorNodesArray[nodesCounter]);                  //vado al primo nodo del path
-                    nodesCounter++;                     
+                    nodesCounter++;
                 }
                 else        //se non ho più azioni disponibili FINISCO IL MIO DIO CANE DI TURNO MADONNA LADRA
                 {
@@ -226,34 +229,34 @@ public class Bracciante : MonoBehaviour {
         }
     }
 
- 
+
 
 
     void GetPathNodes(Vector3 target)       //estrapola i nodi del path verso il target in un array, eccetto il nodo della nostra posizione (vectorNodesArray)
     {
         Path p = seeker.StartPath(transform.position, target);
         p.BlockUntilCalculated();
-        List<Vector3> pathNodesList =  p.vectorPath;
-        numberOfPathNodes = pathNodesList.Count-1;
+        List<Vector3> pathNodesList = p.vectorPath;
+        numberOfPathNodes = pathNodesList.Count - 1;
 
         vectorNodesArray = new Vector3[20];
 
-        for (int j=0; j<pathNodesList.Count-1;j++)
+        for (int j = 0; j < pathNodesList.Count - 1; j++)
         {
 
-            vectorNodesArray[j] = pathNodesList[j+1];
-        }     
+            vectorNodesArray[j] = pathNodesList[j + 1];
+        }
     }
 
     void ChooseNextWaypoint()
     {
-        if (waypointsCounter < waypoints.Length-1)        //scelgo quale waypoint prendere per il path da settare
+        if (waypointsCounter < waypoints.Length - 1)        //scelgo quale waypoint prendere per il path da settare
         {
             waypointsCounter++;
         }
         else
         {
-            waypointsCounter = 0 ;
+            waypointsCounter = 0;
         }
 
 
@@ -264,7 +267,7 @@ public class Bracciante : MonoBehaviour {
     {
         Path p = seeker.StartPath(transform.position, targetPos);
         p.BlockUntilCalculated();
-    } 
+    }
 
     void LateUpdate()
     {
