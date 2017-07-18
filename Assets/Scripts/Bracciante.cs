@@ -157,8 +157,8 @@ public class Bracciante : MonoBehaviour {
                 else                //se sono arrivato al penultimo nodo del path
                 {
                     //Sto negro fa un controllo di tot gradi in giro per cercare il player
-                    transform.up = vectorNodesArray[nodesCounter] - transform.position;
-                    StartCoroutine("LookAround");
+                    aiLerp.enableRotation = false;
+                    StartCoroutine("LookAtTargetLocation");
                     nextTurnAngle[0].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 90);
                     nextTurnAngle[1].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, -180);
                     nextTurnAngle[2].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 90);
@@ -208,6 +208,14 @@ public class Bracciante : MonoBehaviour {
         }
     }
 
+    IEnumerator LookAtTargetLocation()
+    {
+        transform.up = vectorNodesArray[nodesCounter] - transform.position;
+        yield return new WaitForSeconds(0.5f);
+        aiLerp.enableRotation = true;
+        turnManager.changeTurn();
+
+    }
     IEnumerator LookAround()
     {
         while (true)
