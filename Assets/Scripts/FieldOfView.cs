@@ -14,8 +14,8 @@ public class FieldOfView : MonoBehaviour {
     public List<Transform> visibleTargets = new List<Transform>();
     Transform target;
 
-    private Bracciante bracciante;
-    private RagazzoMucca cowBoy;
+   // private Bracciante bracciante;
+    // private RagazzoMucca cowBoy;
     public Vector3 lastPlayerSeenPoint;
     public Transform playerTransform;
 
@@ -28,9 +28,9 @@ public class FieldOfView : MonoBehaviour {
 
     void Start()
     {
-        StartCoroutine("FindTargetsWithDelay", 0f);
-        bracciante = GetComponent<Bracciante>();
-        cowBoy = GetComponent<RagazzoMucca>();
+       
+      //  bracciante = GetComponent<Bracciante>();
+       // cowBoy = GetComponent<RagazzoMucca>();
         viewMesh = new Mesh();
         viewMesh.name = "View Mesh";
         viewMeshFilter.mesh = viewMesh;
@@ -43,6 +43,8 @@ public class FieldOfView : MonoBehaviour {
     {
         DrawFieldOfView();
     }
+
+   
 
 
     public bool FindVisibleTarget()
