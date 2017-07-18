@@ -45,7 +45,16 @@ public class FieldOfView : MonoBehaviour {
     }
 
    
+    public bool AmIHearingPlayer()
+    {
+        Collider[] targetsInViewRadius = Physics.OverlapSphere(new Vector3(transform.position.x, transform.position.y, transform.position.z), viewRadius, playerMask);
 
+        if (targetsInViewRadius.Length > 0)
+        {
+            return true;
+        }
+        else return false;
+    }
 
     public bool FindVisibleTarget()
     {
