@@ -21,7 +21,6 @@ public class PlayerActions : MonoBehaviour{
     public bool isMyTurn = false;
     private bool canCreateGrid = true;
     public bool isCrouched = false;
-
     public bool isFreeRoaming = false;
     public bool hasKey = false;
 

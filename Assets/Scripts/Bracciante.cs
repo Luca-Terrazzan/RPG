@@ -78,6 +78,7 @@ public class Bracciante : MonoBehaviour
     {
         actionsAmount = maxActionsAmount;
         nodesCounter = 0;
+        hasSeenPlayer = false;
         isMyTurn = true;
         if (fov.FindVisibleTarget())
         {
@@ -162,7 +163,7 @@ public class Bracciante : MonoBehaviour
                 {
                     //Sto negro fa un controllo di tot gradi in giro per cercare il player
                     aiLerp.enableRotation = false;
-                    transform.up = vectorNodesArray[nodesCounter] - transform.position;
+                    transform.up = new Vector3(0,0,vectorNodesArray[nodesCounter].z) - transform.position;
                     nextTurnAngle[0].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 90);
                     nextTurnAngle[1].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, -89);
                     nextTurnAngle[2].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 0);
