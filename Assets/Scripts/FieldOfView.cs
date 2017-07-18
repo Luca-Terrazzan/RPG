@@ -26,6 +26,8 @@ public class FieldOfView : MonoBehaviour {
     public MeshFilter viewMeshFilter;
     Mesh viewMesh;
 
+    private PlayerActions player;
+
     void Start()
     {
        
@@ -35,6 +37,7 @@ public class FieldOfView : MonoBehaviour {
         viewMesh.name = "View Mesh";
         viewMeshFilter.mesh = viewMesh;
         playerTransform = GameObject.FindWithTag("Player").transform;
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerActions>();
 
 
     }
@@ -75,26 +78,27 @@ public class FieldOfView : MonoBehaviour {
             {
                 float distToTarget = Vector3.Distance(transform.position, target.position);
 
-                if (!Physics.Raycast(transform.position, dirToTarget, distToTarget, obstacleMask))
+                RaycastHit hit;
+
+                
+
+                if (!Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, obstacleMask))
                 {
                     visibleTargets.Add(target);
                     return true;
-                    /*if (bracciante.isMyTurn == true)
-                    {
-                        bracciante.hasSeenPlayer = true;
-                    }
-                    else
-                    {
-                        lastPlayerSeenPoint = new Vector3(playerTransform.position.x,playerTransform.position.y,0);
-                        bracciante.hasHeardPlayer = true;
-                    }
-                    if (!cowBoy.isSleeping)
-                    {
-                        cowBoy.hasSeenPlayer = true;
-                    }*/
-
                 }
-                else return false;
+                else
+                {
+                    float distToObstacle = Vector3.Distance(player.transform.position, hit.collider.transform.position);
+
+                    if (hit.collider.tag == "LowObstacle" && player.isCrouched && distToObstacle > 1.0f)
+                    {
+                        visibleTargets.Add(target);
+                        return true;
+                    }
+                    else return false;
+                }
+               
             }
             else return false;
         }
