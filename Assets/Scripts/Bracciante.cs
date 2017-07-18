@@ -26,6 +26,7 @@ public class Bracciante : MonoBehaviour {
     public bool hasSeenPlayer;
     public bool hasHeardPlayer;
     private bool hasToSetPlayerPath = true;
+    private Vector3 lastPositionHeard;
 
     private int numberOfPathNodes;
     private float timer = 0;
@@ -50,6 +51,26 @@ public class Bracciante : MonoBehaviour {
         actionsAmount = maxActionsAmount;
     }
 
+    private void Update()
+    {
+        if (isMyTurn)
+        {
+            if (fov.FindVisibleTarget())
+            {
+                hasSeenPlayer = true;
+            }
+        }
+        else
+        {
+            if (fov.FindVisibleTarget())
+            {
+                hasHeardPlayer = true;
+                lastPositionHeard = new Vector3(playerTransform.position.x,playerTransform.position.y,0);
+                Debug.Log(lastPositionHeard.ToString());
+            }
+        }
+    }
+
     public void StartTurn()                   //chiamato all'inizio del mio turno
     {
         actionsAmount = maxActionsAmount;
@@ -67,7 +88,7 @@ public class Bracciante : MonoBehaviour {
         }
         else if (hasHeardPlayer)                    //se ho sentito o visto il player ma quel nigga se l'è svignata
         {
-            target = (Vector3)grid.GetNearest(new Vector3(fov.lastPlayerSeenPoint.x,fov.lastPlayerSeenPoint.y,0)).node.position;              //settare il target nell'ultimo punto in cui il player è passato sul range uditivo di sto negro
+            target = (Vector3)grid.GetNearest(lastPositionHeard).node.position;              //settare il target nell'ultimo punto in cui il player è passato sul range uditivo di sto negro
             hasHeardPlayer = true;
         }
         else                                       //se non ho visto ne sentito il player
@@ -136,6 +157,7 @@ public class Bracciante : MonoBehaviour {
                 else                //se sono arrivato al penultimo nodo del path
                 {
                     //Sto negro fa un controllo di tot gradi in giro per cercare il player
+                    transform.up = vectorNodesArray[nodesCounter] - transform.position;
                     StartCoroutine("LookAround");
                     nextTurnAngle[0].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 90);
                     nextTurnAngle[1].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, -180);
