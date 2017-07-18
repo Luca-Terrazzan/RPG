@@ -51,7 +51,11 @@ public class FieldOfView : MonoBehaviour {
 
         if (targetsInViewRadius.Length > 0)
         {
-            return true;
+            if (targetsInViewRadius[0].GetComponent<PlayerActions>().isCrouched)
+            {
+                return true;
+            }
+            else return false;
         }
         else return false;
     }
