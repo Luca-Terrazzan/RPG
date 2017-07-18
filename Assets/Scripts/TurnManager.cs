@@ -5,7 +5,7 @@ using UnityEngine;
 public class TurnManager : MonoBehaviour {
 
     public GameObject[] charactersArray;
-    private int i = 0;
+    [SerializeField] private int i = 0;
     
 
 
@@ -17,7 +17,7 @@ public class TurnManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-
+       
     }
     /// <summary>
     /// Cambio turno delle singole istnze dell'array 
@@ -32,9 +32,10 @@ public class TurnManager : MonoBehaviour {
         {
             charactersArray[i].GetComponent<RagazzaAmbiziosa>().isMyTurn = true;
         }
-        else if (charactersArray[i].gameObject.tag == "Cowboy")
+        else if (charactersArray[i].gameObject.tag == "CowBoy")
         {
             charactersArray[i].GetComponent<RagazzoMucca>().StartTurn();
+            Debug.Log("sonodentro");
         }
         else if (charactersArray[i].gameObject.tag == "Player")
         {

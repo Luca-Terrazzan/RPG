@@ -73,6 +73,7 @@ public class Bracciante : MonoBehaviour {
 
     public void StartTurn()                   //chiamato all'inizio del mio turno
     {
+        Debug.Log("Ciao");
         actionsAmount = maxActionsAmount;
         nodesCounter = 0;
         isMyTurn = true;

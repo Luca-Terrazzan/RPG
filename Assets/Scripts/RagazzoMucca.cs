@@ -30,17 +30,24 @@ public class RagazzoMucca : MonoBehaviour {
              }
         }
 	}
+
+    IEnumerator ChangeTurnDelay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        turnManager.changeTurn();
+    }
 	
 	public void StartTurn()
     {
-        SleepingManager();
         isMyTurn = true;
+        SleepingManager();
+        
 
         if (isSleeping)
         {
             // feeback snore
             isMyTurn = false;
-            turnManager.changeTurn();
+            ChangeTurnDelay(3);
         }
         else
         {
@@ -53,7 +60,7 @@ public class RagazzoMucca : MonoBehaviour {
             else
             {
                 isMyTurn = false;
-                turnManager.changeTurn();
+                ChangeTurnDelay(3);
                 
             }
         }
