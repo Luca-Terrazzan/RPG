@@ -55,7 +55,10 @@ public class Bracciante : MonoBehaviour {
         actionsAmount = maxActionsAmount;
         nodesCounter = 0;
         isMyTurn = true;
-        fov.FindVisibleTarget();
+        if (fov.FindVisibleTarget())
+        {
+            hasSeenPlayer = true;
+        }
         Vector3 target = new Vector3();
         if (hasSeenPlayer)                           //se ho visto il player
         {
@@ -133,6 +136,7 @@ public class Bracciante : MonoBehaviour {
                 else                //se sono arrivato al penultimo nodo del path
                 {
                     //Sto negro fa un controllo di tot gradi in giro per cercare il player
+                    StartCoroutine("LookAround");
                     nextTurnAngle[0].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 90);
                     nextTurnAngle[1].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, -180);
                     nextTurnAngle[2].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 90);
@@ -179,6 +183,15 @@ public class Bracciante : MonoBehaviour {
                     turnManager.changeTurn();
                 }
             }
+        }
+    }
+
+    IEnumerator LookAround()
+    {
+        while (true)
+        {
+            Quaternion.Lerp(transform.rotation, nextTurnAngle[0], Time.deltaTime);
+            yield return null;
         }
     }
 

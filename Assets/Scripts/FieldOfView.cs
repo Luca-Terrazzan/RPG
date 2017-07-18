@@ -44,20 +44,12 @@ public class FieldOfView : MonoBehaviour {
         DrawFieldOfView();
     }
 
-    IEnumerator FindTargetsWithDelay(float delay)
-    {
-        while (true)
-        {
-            yield return null;
-            FindVisibleTarget();
-        }
-    }
 
-    public void FindVisibleTarget()
+    public bool FindVisibleTarget()
     {
         Collider[] targetsInViewRadius = Physics.OverlapSphere(new Vector3(transform.position.x,transform.position.y,transform.position.z), viewRadius,playerMask);
 
-        if (targetsInViewRadius.Length>0)
+        if (targetsInViewRadius.Length > 0)
         {
 
             visibleTargets.Clear();
@@ -68,10 +60,11 @@ public class FieldOfView : MonoBehaviour {
             {
                 float distToTarget = Vector3.Distance(transform.position, target.position);
 
-                if (!Physics.Raycast(transform.position, dirToTarget,distToTarget, obstacleMask))
+                if (!Physics.Raycast(transform.position, dirToTarget, distToTarget, obstacleMask))
                 {
                     visibleTargets.Add(target);
-                    if (bracciante.isMyTurn == true)
+                    return true;
+                    /*if (bracciante.isMyTurn == true)
                     {
                         bracciante.hasSeenPlayer = true;
                     }
@@ -83,11 +76,14 @@ public class FieldOfView : MonoBehaviour {
                     if (!cowBoy.isSleeping)
                     {
                         cowBoy.hasSeenPlayer = true;
-                    }
+                    }*/
 
                 }
+                else return false;
             }
+            else return false;
         }
+        else return false;
         
     }
 
