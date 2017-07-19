@@ -21,15 +21,11 @@ public class RagazzoMucca : MonoBehaviour {
 
     void Update ()
     {
-        if (imDead)
-        {
-            turnManager.changeTurn();
-            return;
-        }
+      
 
         hasSeenPlayer = fieldOfView.FindVisibleTarget();
 
-	    if (player.isMyTurn)
+	    if (player.isMyTurn && !imDead)
         {
              if (!isSleeping && hasSeenPlayer)
              {
@@ -51,6 +47,7 @@ public class RagazzoMucca : MonoBehaviour {
             turnManager.changeTurn();
             return;
         }
+
         isMyTurn = true;
         SleepingManager();
         
@@ -59,7 +56,7 @@ public class RagazzoMucca : MonoBehaviour {
         {
             // feeback snore
             isMyTurn = false;
-            ChangeTurnDelay(3);
+           StartCoroutine("ChangeTurnDelay",3.14f);
         }
         else
         {
@@ -72,8 +69,8 @@ public class RagazzoMucca : MonoBehaviour {
             else
             {
                 isMyTurn = false;
-                ChangeTurnDelay(3);
-                
+                StartCoroutine("ChangeTurnDelay", 3.14f);
+
             }
         }
     }
