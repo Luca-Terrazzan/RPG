@@ -313,6 +313,7 @@ public class Bracciante : MonoBehaviour
 
     public void Die()
     {
+        aiLerp.canMove = false;
         this.transform.position = new Vector3(100, 100, 100);
         Debug.Log(this.transform.position);
         //imDead = true;
