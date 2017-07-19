@@ -164,8 +164,8 @@ public class Bracciante : MonoBehaviour
                     //Sto negro fa un controllo di tot gradi in giro per cercare il player
                     aiLerp.enableRotation = false;
                     transform.up = new Vector3(vectorNodesArray[nodesCounter].x, vectorNodesArray[nodesCounter].y,0) - transform.position;
-                    nextTurnAngle[0].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 90);
-                    nextTurnAngle[1].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, -89);
+                    nextTurnAngle[0].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 45);
+                    nextTurnAngle[1].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, -45);
                     nextTurnAngle[2].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 0);
                     StartCoroutine("LookAround");
                     hasHeardPlayer = false;
@@ -304,6 +304,7 @@ public class Bracciante : MonoBehaviour
     void LateUpdate()
     {
         sprite.position = transform.position;
+        transform.position = new Vector3(transform.position.x, transform.position.y, 0);
     }
 
 }

@@ -88,8 +88,8 @@ public class PlayerActions : MonoBehaviour{
 
                         if (hit.collider.tag == "ClickableSprite")
                         {
-                            SubtractMovementActions(hit.transform.position);
-                            aiLerp.target.position = hit.transform.position;
+                            SubtractMovementActions(hit.collider.transform.position);
+                            //aiLerp.target.position = hit.transform.position;
                             DestroyClickableGrid();
                             aiLerp.canMove = true;
                             if (isCrouched)
@@ -154,7 +154,7 @@ public class PlayerActions : MonoBehaviour{
     public void TargetReached()
     {
         
-        transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), transform.position.z);
+        transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), 0);
         aiLerp.canMove = false;
         canCreateGrid = true;
     }
@@ -200,5 +200,10 @@ public class PlayerActions : MonoBehaviour{
         {
             playerActions -= Mathf.RoundToInt(p.GetTotalLength());
         }
+    }
+
+    private void LateUpdate()
+    {
+        transform.position = new Vector3(transform.position.x,transform.position.y,0);
     }
 }
