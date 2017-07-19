@@ -40,12 +40,34 @@ public class PickUpItems : MonoBehaviour {
             // store object somewhere 
         }
 
-        if (collision.gameObject.tag == "EnemyRear")
-        {
-            player.canKill = true;
-        }
+       
     }
 
+    public void OnTriggerStay(Collider other)
+    {
+        
+        if (other.gameObject.tag == "EnemyRear")
+        {
+            float distToEnemy = Vector3.Distance(player.transform.position,other.transform.position);
+            if(Input.GetMouseButtonDown(0))
+            {
+                RaycastHit hit;
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
+                {
+                    if (hit.collider != null)
+                    {
+                        
+                       if ((hit.collider.gameObject.tag == "Bracciante" || hit.collider.tag == "CowBoy" || hit.collider.tag == "Puttana"))
+                       {
+                           
+                         player.BackStabEnemy(hit.collider.gameObject); // git gud
+                       }
+                    }
+                }
+
+            }           
+        }
+    }
     public void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "EnemyRear")

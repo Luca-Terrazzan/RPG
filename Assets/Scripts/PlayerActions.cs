@@ -177,18 +177,10 @@ public class PlayerActions : MonoBehaviour{
             {
                 if (p.GetTotalLength() > 0.9f && node.Walkable)
                 {
-                    GameObject clone = Instantiate(clickableSprite, (Vector3)node.position, Quaternion.identity);
+                    Vector3 nodePos = (Vector3)node.position;
+                    GameObject clone = Instantiate(clickableSprite, nodePos, Quaternion.identity);
                     clickableSpriteList.Add(clone);
-                    RaycastHit hit;
-                    if (Physics.BoxCast((Vector3)node.position, new Vector3(0.5f, 0.5f, 0), Vector3.zero, out hit) && canKill)
-                    {
-                        if(hit.collider.tag == "Bracciante" || hit.collider.tag == "CowBoy" || hit.collider.tag == "Roia" )
-                        {
-                            clone.GetComponent<SpriteRenderer>().color = Color.red;
-                            clone.tag = "KillSprite";
-                            Debug.Log("wow");
-                        }
-                    }
+                    
                 }
                
                 //Debug.Log("" + (Vector3)node.position); <<<---- utile 
@@ -218,6 +210,27 @@ public class PlayerActions : MonoBehaviour{
             playerActions -= Mathf.RoundToInt(p.GetTotalLength());
         }
     }
+    /// <summary>
+    /// Git Gud Casual
+    /// </summary>
+    /// <param name="enemy"> The Casual to kill</param>
+    public void BackStabEnemy(GameObject enemy)
+    {
+       if (enemy.tag == "Bracciante")
+        {
+            enemy.GetComponent<Bracciante>().Die();
+            Debug.Log("muori merda");
+        }
+       else if (enemy.tag == "CowBoy")
+        {
+            enemy.GetComponent<RagazzoMucca>().Die();
+        }
+       else if (enemy.tag == "Puttana")
+        {
+            enemy.GetComponent<RagazzaAmbiziosa>().Die();
+        }
+    }
+
 
     private void LateUpdate()
     {

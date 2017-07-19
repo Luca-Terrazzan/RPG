@@ -30,6 +30,7 @@ public class Bracciante : MonoBehaviour
     public bool hasHeardPlayer;
     private bool hasToSetPlayerPath = true;
     private Vector3 lastPositionHeard;
+    private bool imDead;
 
     private int numberOfPathNodes;
     Quaternion[] nextTurnAngle = new Quaternion[3];
@@ -77,6 +78,12 @@ public class Bracciante : MonoBehaviour
 
     public void StartTurn()                   //chiamato all'inizio del mio turno
     {
+        if (imDead)
+        {
+            turnManager.changeTurn();
+            return;
+            
+        }
         actionsAmount = maxActionsAmount;
         nodesCounter = 0;
         hasSeenPlayer = false;
@@ -295,7 +302,12 @@ public class Bracciante : MonoBehaviour
 
     }
 
-
+    public void Die()
+    {
+        imDead = true;
+        Debug.Log("Sono morto" + this.gameObject.tag);
+        //anim dead
+    }
     public void GoToNode(Vector3 targetPos)     //vai al nodo scelto
     {
         Path p = seeker.StartPath(transform.position, targetPos);

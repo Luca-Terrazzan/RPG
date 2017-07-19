@@ -4,15 +4,30 @@ using UnityEngine;
 
 public class RagazzaAmbiziosa : MonoBehaviour {
 
-    public bool isMyTurn;
+    public TurnManager turnManager;
 
+    public bool isMyTurn;
+    bool imDead;
+     
 	// Use this for initialization
-	void Start () {
-		
-	}
+	void Start ()
+    { 
+        if (imDead)
+        {
+            turnManager.changeTurn();
+            return;
+        }
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    public void Die()
+    {
+        imDead = true;
+        //anim dead
+    }
 }

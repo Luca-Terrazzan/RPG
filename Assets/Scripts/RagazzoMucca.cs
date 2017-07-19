@@ -11,6 +11,7 @@ public class RagazzoMucca : MonoBehaviour {
     public bool isMyTurn;
     public bool isSleeping;
     public bool hasSeenPlayer;
+    private bool imDead;
 
     private void Start()
     {
@@ -20,7 +21,13 @@ public class RagazzoMucca : MonoBehaviour {
 
     void Update ()
     {
-       hasSeenPlayer = fieldOfView.FindVisibleTarget();
+        if (imDead)
+        {
+            turnManager.changeTurn();
+            return;
+        }
+
+        hasSeenPlayer = fieldOfView.FindVisibleTarget();
 
 	    if (player.isMyTurn)
         {
@@ -39,6 +46,11 @@ public class RagazzoMucca : MonoBehaviour {
 	
 	public void StartTurn()
     {
+        if (imDead)
+        {
+            turnManager.changeTurn();
+            return;
+        }
         isMyTurn = true;
         SleepingManager();
         
@@ -84,5 +96,10 @@ public class RagazzoMucca : MonoBehaviour {
             isSleeping = true;
         }
     }
-	
+
+    public void Die()
+    {
+        imDead = true;
+        //anim dead
+    }
 }
