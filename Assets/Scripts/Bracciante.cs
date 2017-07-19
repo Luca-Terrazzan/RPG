@@ -20,6 +20,7 @@ public class Bracciante : MonoBehaviour
     public Transform sprite;
     public GameObject visionSprite;
     public Transform soundSprite;
+    public Transform enemyRear;
     private Transform direction;
 
     private Vector3[] vectorNodesArray;
@@ -70,7 +71,6 @@ public class Bracciante : MonoBehaviour
             {
                 hasHeardPlayer = true;
                 lastPositionHeard = new Vector3(playerTransform.position.x, playerTransform.position.y, 0);
-                Debug.Log(lastPositionHeard.ToString());
             }
         }
     }
@@ -307,6 +307,7 @@ public class Bracciante : MonoBehaviour
         sprite.position = transform.position;
         transform.position = new Vector3(transform.position.x, transform.position.y, 0);
         soundSprite.position = new Vector3(transform.position.x,transform.position.y,0);
+        enemyRear.position = transform.position - transform.up;
     }
 
 }

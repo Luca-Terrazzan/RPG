@@ -12,6 +12,7 @@ public class PlayerActions : MonoBehaviour{
     public GameObject clickableSprite;
     public Camera cam;
     public TurnManager turnManager;
+    public int attackActions;
    
     private GridGraph grid;
     private Seeker seeker;
@@ -24,6 +25,8 @@ public class PlayerActions : MonoBehaviour{
     public bool canBeHeard = false;
     public bool isFreeRoaming = false;
     public bool hasKey = false;
+    public bool canKill = false;
+
 
     private SpriteRenderer sprite;
 
@@ -101,6 +104,11 @@ public class PlayerActions : MonoBehaviour{
                                 canBeHeard = true;
                             }
                         }
+                        else if (hit.collider.tag == "KillSprite")
+                        {
+                            playerActions -= attackActions;
+                            Debug.Log("porcodio muori");
+                        }
                     }
 
                 }
@@ -167,11 +175,20 @@ public class PlayerActions : MonoBehaviour{
             p.BlockUntilCalculated();
             if (p.GetTotalLength() <= numberOfMovements+0.1f)
             {
-                if (p.GetTotalLength() >0.9f&&node.Walkable)
+                if (p.GetTotalLength() > 0.9f && node.Walkable)
                 {
                     GameObject clone = Instantiate(clickableSprite, (Vector3)node.position, Quaternion.identity);
                     clickableSpriteList.Add(clone);
-                   
+                    RaycastHit hit;
+                    if (Physics.BoxCast((Vector3)node.position, new Vector3(0.5f, 0.5f, 0), Vector3.zero, out hit) && canKill)
+                    {
+                        if(hit.collider.tag == "Bracciante" || hit.collider.tag == "CowBoy" || hit.collider.tag == "Roia" )
+                        {
+                            clone.GetComponent<SpriteRenderer>().color = Color.red;
+                            clone.tag = "KillSprite";
+                            Debug.Log("wow");
+                        }
+                    }
                 }
                
                 //Debug.Log("" + (Vector3)node.position); <<<---- utile 

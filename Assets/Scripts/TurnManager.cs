@@ -49,7 +49,6 @@ public class TurnManager : MonoBehaviour {
         else
         {
             i = 0;
-            changeTurn();
         }
      
     }

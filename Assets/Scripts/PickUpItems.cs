@@ -39,6 +39,19 @@ public class PickUpItems : MonoBehaviour {
             Debug.Log("Bravo hai preso un oggetto inutile.Amaze.");
             // store object somewhere 
         }
+
+        if (collision.gameObject.tag == "EnemyRear")
+        {
+            player.canKill = true;
+        }
     }
-    
+
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "EnemyRear")
+        {
+            player.canKill = false;
+        }
+    }
+
 }
