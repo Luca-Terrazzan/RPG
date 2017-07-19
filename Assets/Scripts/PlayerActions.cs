@@ -12,6 +12,7 @@ public class PlayerActions : MonoBehaviour{
     public GameObject clickableSprite;
     public Camera cam;
     public TurnManager turnManager;
+    public int attackActions;
    
     private GridGraph grid;
     private Seeker seeker;
@@ -24,6 +25,8 @@ public class PlayerActions : MonoBehaviour{
     public bool canBeHeard = false;
     public bool isFreeRoaming = false;
     public bool hasKey = false;
+    public bool canKill = false;
+
 
     private SpriteRenderer sprite;
 
@@ -101,6 +104,11 @@ public class PlayerActions : MonoBehaviour{
                                 canBeHeard = true;
                             }
                         }
+                        else if (hit.collider.tag == "KillSprite")
+                        {
+                            playerActions -= attackActions;
+                            Debug.Log("porcodio muori");
+                        }
                     }
 
                 }
@@ -167,11 +175,12 @@ public class PlayerActions : MonoBehaviour{
             p.BlockUntilCalculated();
             if (p.GetTotalLength() <= numberOfMovements+0.1f)
             {
-                if (p.GetTotalLength() >0.9f&&node.Walkable)
+                if (p.GetTotalLength() > 0.9f && node.Walkable)
                 {
-                    GameObject clone = Instantiate(clickableSprite, (Vector3)node.position, Quaternion.identity);
+                    Vector3 nodePos = (Vector3)node.position;
+                    GameObject clone = Instantiate(clickableSprite, nodePos, Quaternion.identity);
                     clickableSpriteList.Add(clone);
-                   
+                    
                 }
                
                 //Debug.Log("" + (Vector3)node.position); <<<---- utile 
@@ -201,6 +210,27 @@ public class PlayerActions : MonoBehaviour{
             playerActions -= Mathf.RoundToInt(p.GetTotalLength());
         }
     }
+    /// <summary>
+    /// Git Gud Casual
+    /// </summary>
+    /// <param name="enemy"> The Casual to kill</param>
+    public void BackStabEnemy(GameObject enemy)
+    {
+       if (enemy.tag == "Bracciante")
+        {
+            enemy.GetComponent<Bracciante>().Die();
+            Debug.Log("muori merda");
+        }
+       else if (enemy.tag == "CowBoy")
+        {
+            enemy.GetComponent<RagazzoMucca>().Die();
+        }
+       else if (enemy.tag == "Puttana")
+        {
+            enemy.GetComponent<RagazzaAmbiziosa>().Die();
+        }
+    }
+
 
     private void LateUpdate()
     {
