@@ -12,6 +12,7 @@ public class RagazzoMucca : MonoBehaviour {
     public bool isSleeping;
     public bool hasSeenPlayer;
     private bool imDead;
+    private float waitTimer = 1f;
 
     private void Start()
     {
@@ -44,7 +45,7 @@ public class RagazzoMucca : MonoBehaviour {
     {
         if (imDead)
         {
-            turnManager.changeTurn();
+            StartCoroutine("ChangeTurnDelay", waitTimer);
             return;
         }
 
@@ -56,7 +57,7 @@ public class RagazzoMucca : MonoBehaviour {
         {
             // feeback snore
             isMyTurn = false;
-           StartCoroutine("ChangeTurnDelay",3.14f);
+           StartCoroutine("ChangeTurnDelay", waitTimer);
         }
         else
         {
@@ -69,7 +70,7 @@ public class RagazzoMucca : MonoBehaviour {
             else
             {
                 isMyTurn = false;
-                StartCoroutine("ChangeTurnDelay", 3.14f);
+                StartCoroutine("ChangeTurnDelay", waitTimer);
 
             }
         }

@@ -13,7 +13,9 @@ public class PlayerActions : MonoBehaviour{
     public Camera cam;
     public TurnManager turnManager;
     public int attackActions;
-   
+    public LayerMask enemyMask;
+
+
     private GridGraph grid;
     private Seeker seeker;
     private AILerp aiLerp;
@@ -147,7 +149,6 @@ public class PlayerActions : MonoBehaviour{
                                 Debug.Log("hit point" +  hit.point);
                                 Debug.Log("node " + (Vector3)node.position );
                             }
-                               // Debug.Log("ciao");
                             
                         
                     }
@@ -171,18 +172,20 @@ public class PlayerActions : MonoBehaviour{
     {
         grid.GetNodes(node =>
         {
-            Path p = seeker.StartPath(transform.position, (Vector3)node.position);
-            p.BlockUntilCalculated();
-            if (p.GetTotalLength() <= numberOfMovements+0.1f)
+        Path p = seeker.StartPath(transform.position, (Vector3)node.position);
+        p.BlockUntilCalculated();
+            if (p.GetTotalLength() <= numberOfMovements + 0.1f)
             {
                 if (p.GetTotalLength() > 0.9f && node.Walkable)
                 {
                     Vector3 nodePos = (Vector3)node.position;
-                    GameObject clone = Instantiate(clickableSprite, nodePos, Quaternion.identity);
-                    clickableSpriteList.Add(clone);
-                    
+                    if (!Physics.Raycast(nodePos+ new Vector3(0,0,-0.1f), Vector3.forward, Mathf.Infinity, enemyMask))
+                    {
+                        GameObject clone = Instantiate(clickableSprite, nodePos, Quaternion.identity);
+                        clickableSpriteList.Add(clone);
+                    }
                 }
-               
+
                 //Debug.Log("" + (Vector3)node.position); <<<---- utile 
 
             }
@@ -216,7 +219,8 @@ public class PlayerActions : MonoBehaviour{
     /// <param name="enemy"> The Casual to kill</param>
     public void BackStabEnemy(GameObject enemy)
     {
-       if (enemy.tag == "Bracciante")
+        Vector3 lastEnemyPos = new Vector3 (enemy.transform.position.x, enemy.transform.position.y, 0);
+        if (enemy.tag == "Bracciante")
         {
             enemy.GetComponent<Bracciante>().Die();
             Debug.Log("muori merda");
@@ -229,6 +233,12 @@ public class PlayerActions : MonoBehaviour{
         {
             enemy.GetComponent<RagazzaAmbiziosa>().Die();
         }
+        if (playerActions > 0)
+        {
+            GameObject clone = Instantiate(clickableSprite, new Vector3(lastEnemyPos.x, lastEnemyPos.y, 0), Quaternion.identity);
+            clickableSpriteList.Add(clone);
+        }
+
     }
 
 
