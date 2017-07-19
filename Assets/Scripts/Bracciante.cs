@@ -316,16 +316,9 @@ public class Bracciante : MonoBehaviour
         aiLerp.canMove = false;
         this.transform.position = new Vector3(100, 100, 100);
         Debug.Log(this.transform.position);
-        //imDead = true;
+        imDead = true;
         Debug.Log("Sono morto" + this.gameObject.tag);
-        //GameObject clone = Instantiate(boom, transform.position+new Vector3(0,0,-1f), boom.transform.rotation);
-        Debug.Log("Ciao");
-        
-        Debug.Log("Sono una bestemmia bella immaginala");
-        
-        
-       // Destroy(clone, 3);
-        //anim dead
+
     }
     public void GoToNode(Vector3 targetPos)     //vai al nodo scelto
     {
