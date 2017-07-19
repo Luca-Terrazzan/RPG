@@ -59,7 +59,6 @@ public class PickUpItems : MonoBehaviour {
                         
                        if ((hit.collider.gameObject.tag == "Bracciante" || hit.collider.tag == "CowBoy" || hit.collider.tag == "Puttana"))
                        {
-                           
                          player.BackStabEnemy(hit.collider.gameObject); // git gud
                        }
                     }
