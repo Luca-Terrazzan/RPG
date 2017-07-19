@@ -19,6 +19,7 @@ public class Bracciante : MonoBehaviour
     public Transform[] waypoints;
     public Transform sprite;
     public GameObject visionSprite;
+    public Transform soundSprite;
     private Transform direction;
 
     private Vector3[] vectorNodesArray;
@@ -305,6 +306,7 @@ public class Bracciante : MonoBehaviour
     {
         sprite.position = transform.position;
         transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+        soundSprite.position = new Vector3(transform.position.x,transform.position.y,0);
     }
 
 }
