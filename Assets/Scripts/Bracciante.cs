@@ -30,6 +30,7 @@ public class Bracciante : MonoBehaviour
     private bool hasToSetPlayerPath = true;
     private Vector3 lastPositionHeard;
     public bool imDead;
+    public GameObject seiMorto;
 
     private int numberOfPathNodes;
     Quaternion[] nextTurnAngle = new Quaternion[3];
@@ -152,6 +153,7 @@ public class Bracciante : MonoBehaviour
                     {
                         /////////////////////////////se i nodi del path sono finiti mi trovo nella casella adiacente al player quindi lo killo quel bastardo e gli dico git gud casual
                         Debug.Log("sei morto porcoddio");
+                        Instantiate(seiMorto, transform.position, Quaternion.identity);
                     }
                 }
                 else       //se non ho azioni finisco il mio cazzo di turno
