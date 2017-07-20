@@ -52,7 +52,7 @@ public class Bracciante : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(transform.up.ToString());
+       // Debug.Log(transform.up.ToString());
         if (isMyTurn)
         {
             if (fov.FindVisibleTarget())

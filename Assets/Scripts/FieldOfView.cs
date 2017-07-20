@@ -28,6 +28,7 @@ public class FieldOfView : MonoBehaviour {
 
     private PlayerActions player;
 
+ 
     void Start()
     {
        
@@ -45,6 +46,7 @@ public class FieldOfView : MonoBehaviour {
     void LateUpdate()
     {
         DrawFieldOfView();
+       
     }
 
    
@@ -77,7 +79,7 @@ public class FieldOfView : MonoBehaviour {
             if (Vector3.Angle(transform.up, dirToTarget) < viewAngle / 2)
             {
                 float distToTarget = Vector3.Distance(transform.position, target.position);
-
+                
                 RaycastHit hit;
 
                 
@@ -91,20 +93,21 @@ public class FieldOfView : MonoBehaviour {
                 {
                     
                     float distToObstacle = Vector3.Distance(player.transform.position, hit.collider.transform.position);
+                    
 
-                    if (hit.collider.tag == "LowObstacle" && distToObstacle >= 2f)// && player.isCrouched && distToObstacle > 1.0f)
+                    if (hit.collider.tag == "LowObstacle" && distToObstacle >= 2f)
                     {
                         visibleTargets.Add(target);
                         return true;
                     }
-                    else if (hit.collider.tag == "LowObstacle" && distToObstacle < 1.1f && player.isCrouched)
+                    else if (hit.collider.tag == "LowObstacle" && distToObstacle < 1.5f && player.isCrouched)
                     {
-                        player.gameObject.layer = 13;
+                        
                         return false;
                     }
                     else
                     {
-                        player.gameObject.layer = 9;
+                       
                         return true;
                     }
                 }

@@ -68,17 +68,20 @@ public class PlayerActions : MonoBehaviour{
 
             if (Input.GetKeyDown(KeyCode.LeftControl)&&aiLerp.canMove==false)
             {
+                
                 DestroyClickableGrid();
                 if (!isCrouched)
                 {
                     CreateClickableGrid((int)Mathf.Floor(playerActions / 2));
                     isCrouched = true;
+                    
                     sprite.color = Color.magenta;
                 }
                 else if (isCrouched)
                 {
                     CreateClickableGrid(playerActions);
                     isCrouched = false;
+                    
                     sprite.color = Color.red;
                 }
             }
