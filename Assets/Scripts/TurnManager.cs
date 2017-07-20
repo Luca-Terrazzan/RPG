@@ -6,6 +6,7 @@ public class TurnManager : MonoBehaviour {
 
     public GameObject[] charactersArray;
     [SerializeField] private int i = 0;
+ 
     
 
 
@@ -24,31 +25,37 @@ public class TurnManager : MonoBehaviour {
     /// </summary>
     public void changeTurn()
     {
-        if (charactersArray[i].gameObject.tag == "Bracciante")
-        {
-            charactersArray[i].GetComponent<Bracciante>().StartTurn();
-        }
-        else if (charactersArray[i].gameObject.tag == "Prostituta")
-        {
-            charactersArray[i].GetComponent<RagazzaAmbiziosa>().isMyTurn = true;
-        }
-        else if (charactersArray[i].gameObject.tag == "CowBoy")
-        {
-            charactersArray[i].GetComponent<RagazzoMucca>().StartTurn();
-        }
-        else if (charactersArray[i].gameObject.tag == "Player")
-        {
-            charactersArray[i].GetComponent<PlayerActions>().isMyTurn = true;
-            Debug.Log("sonodentro");
-        }
-        if (i < charactersArray.Length-1)
-        {
-            i++;
-        }
-        else
-        {
-            i = 0;
-        }
-     
+        
+            if (charactersArray[i].gameObject.tag == "Player")
+            {
+
+            }
+
+            if (charactersArray[i].gameObject.tag == "Bracciante")
+            {
+                charactersArray[i].GetComponent<Bracciante>().StartTurn();
+            }
+            else if (charactersArray[i].gameObject.tag == "Prostituta")
+            {
+                charactersArray[i].GetComponent<RagazzaAmbiziosa>().isMyTurn = true;
+            }
+            else if (charactersArray[i].gameObject.tag == "CowBoy")
+            {
+                charactersArray[i].GetComponent<RagazzoMucca>().StartTurn();
+            }
+            else if (charactersArray[i].gameObject.tag == "Player")
+            {
+                charactersArray[i].GetComponent<PlayerActions>().isMyTurn = true;
+                Debug.Log("sonodentro");
+            }
+            if (i < charactersArray.Length - 1)
+            {
+                i++;
+            }
+            else
+            {
+                i = 0;
+            }
+        
     }
 }
