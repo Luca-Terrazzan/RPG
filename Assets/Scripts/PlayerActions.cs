@@ -47,6 +47,7 @@ public class PlayerActions : MonoBehaviour{
 	// Update is called once per frame
 	void Update ()
     {
+        
 
         if (isMyTurn)
         {
@@ -123,12 +124,15 @@ public class PlayerActions : MonoBehaviour{
                 turnManager.changeTurn();
                 playerActions = playerActionsPerTurn;
                 canCreateGrid = true;
+                canBeHeard = false;
             }
         }
 
         if (isFreeRoaming)
 
         {
+            DestroyClickableGrid();
+           
             if (Input.GetMouseButtonDown(0))
             {
               //  Debug.Log("Ciao");
@@ -137,8 +141,9 @@ public class PlayerActions : MonoBehaviour{
 
                 if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit))
                 {
-                    if (hit.collider != null)
+                    if (hit.collider != null && hit.collider.gameObject.tag  != "Obstalce")
                     {
+                        aiLerp.canMove = true;
                        
                             GraphNode node = AstarPath.active.GetNearest(hit.point).node;
 
@@ -156,6 +161,7 @@ public class PlayerActions : MonoBehaviour{
             }
             
         }
+        
 		
 	}
 
