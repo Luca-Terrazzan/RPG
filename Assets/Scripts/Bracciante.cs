@@ -30,10 +30,13 @@ public class Bracciante : MonoBehaviour
     public bool hasHeardPlayer;
     private bool hasToSetPlayerPath = true;
     private Vector3 lastPositionHeard;
-    private bool imDead;
+    public bool imDead;
 
     private int numberOfPathNodes;
     Quaternion[] nextTurnAngle = new Quaternion[3];
+
+    public GameObject boom;
+    
 
 
 
@@ -76,11 +79,17 @@ public class Bracciante : MonoBehaviour
         }
     }
 
+    IEnumerator ChangeTurnDelay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        turnManager.changeTurn();
+    }
+
     public void StartTurn()                   //chiamato all'inizio del mio turno
     {
         if (imDead)
         {
-            turnManager.changeTurn();
+            StartCoroutine("ChangeTurnDelay", 1);
             return;
             
         }
@@ -304,9 +313,12 @@ public class Bracciante : MonoBehaviour
 
     public void Die()
     {
+        aiLerp.canMove = false;
+        this.transform.position = new Vector3(100, 100, 100);
+        Debug.Log(this.transform.position);
         imDead = true;
         Debug.Log("Sono morto" + this.gameObject.tag);
-        //anim dead
+
     }
     public void GoToNode(Vector3 targetPos)     //vai al nodo scelto
     {
@@ -317,7 +329,6 @@ public class Bracciante : MonoBehaviour
     void LateUpdate()
     {
         sprite.position = transform.position;
-        transform.position = new Vector3(transform.position.x, transform.position.y, 0);
         soundSprite.position = new Vector3(transform.position.x,transform.position.y,0);
         enemyRear.position = transform.position - transform.up;
     }

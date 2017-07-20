@@ -49,7 +49,7 @@ public class PickUpItems : MonoBehaviour {
         if (other.gameObject.tag == "EnemyRear")
         {
             float distToEnemy = Vector3.Distance(player.transform.position,other.transform.position);
-            if(Input.GetMouseButtonDown(0))
+            if(Input.GetMouseButtonUp(0))
             {
                 RaycastHit hit;
                 if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
@@ -59,7 +59,6 @@ public class PickUpItems : MonoBehaviour {
                         
                        if ((hit.collider.gameObject.tag == "Bracciante" || hit.collider.tag == "CowBoy" || hit.collider.tag == "Puttana"))
                        {
-                           
                          player.BackStabEnemy(hit.collider.gameObject); // git gud
                        }
                     }
@@ -68,12 +67,6 @@ public class PickUpItems : MonoBehaviour {
             }           
         }
     }
-    public void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "EnemyRear")
-        {
-            player.canKill = false;
-        }
-    }
+
 
 }

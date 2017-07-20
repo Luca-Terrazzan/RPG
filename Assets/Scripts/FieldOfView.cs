@@ -91,14 +91,18 @@ public class FieldOfView : MonoBehaviour {
                 {
                     float distToObstacle = Vector3.Distance(player.transform.position, hit.collider.transform.position);
 
-                    if (hit.collider.tag == "LowObstacle" && player.isCrouched && distToObstacle > 1.0f)
+                    if (hit.collider.tag == "LowObstacle" && distToObstacle > 1.1f )// && player.isCrouched && distToObstacle > 1.0f)
                     {
-                        visibleTargets.Add(target);
                         return true;
                     }
-                    else return false;
+                    else if (hit.collider.tag == "LowObstacle" && distToObstacle <= 1.1f && player.isCrouched)
+                    {
+                        return false;
+                    }
+                    else return true;
                 }
-               
+                 
+
             }
             else return false;
         }
