@@ -7,11 +7,11 @@ public class CameraMovement : MonoBehaviour
 
 	public GameObject Player;
 	private Vector3 offset;
-	public float minimum, maximum;
+	private float minimum = 3f, maximum =6f;
 
 	void Start ()
 	{
-		offset = new Vector3 (3f, -5f, -5f);
+		offset = new Vector3 (5f, -5f, -5f);
 	}
 
 	void LateUpdate ()
