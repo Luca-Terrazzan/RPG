@@ -18,7 +18,6 @@ public class Bracciante : MonoBehaviour
     public bool isMyTurn;
     public Transform[] waypoints;
     public Transform sprite;
-    public GameObject visionSprite;
     public Transform soundSprite;
     public Transform enemyRear;
     private Transform direction;
@@ -35,13 +34,8 @@ public class Bracciante : MonoBehaviour
     private int numberOfPathNodes;
     Quaternion[] nextTurnAngle = new Quaternion[3];
 
-    public GameObject boom;
-    
-
-
-
-
     public Transform playerTransform;
+
 
     // Use this for initialization
     void Start()
@@ -57,6 +51,7 @@ public class Bracciante : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(transform.up.ToString());
         if (isMyTurn)
         {
             if (fov.FindVisibleTarget())
