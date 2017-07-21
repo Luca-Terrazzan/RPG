@@ -14,6 +14,7 @@ public class PlayerActions : MonoBehaviour{
     public TurnManager turnManager;
     public int attackActions;
     public LayerMask enemyMask;
+    public LayerMask obstacle;
 
 
     private GridGraph grid;
@@ -51,7 +52,7 @@ public class PlayerActions : MonoBehaviour{
 
         if (isMyTurn)
         {
-
+            
             
             if (canCreateGrid)
             {
@@ -144,22 +145,25 @@ public class PlayerActions : MonoBehaviour{
 
                 if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit))
                 {
-                    if (hit.collider != null && hit.collider.gameObject.tag  != "Obstalce")
+                    Debug.Log(hit.collider.gameObject.tag);
+                    if ( hit.collider.tag != "Obstacle")
                     {
+                        Debug.Log("yes");
                         aiLerp.canMove = true;
-                       
-                            GraphNode node = AstarPath.active.GetNearest(hit.point).node;
 
-                            if (node.Walkable)
-                            {
-                                Path p = seeker.StartPath(transform.position, (Vector3)node.position);
-                                p.BlockUntilCalculated();
-                                Debug.Log("hit point" +  hit.point);
-                                Debug.Log("node " + (Vector3)node.position );
-                            }
-                            
+                        GraphNode node = AstarPath.active.GetNearest(hit.point).node;
+
+                        if (node.Walkable)
+                        {
+                            Path p = seeker.StartPath(transform.position, (Vector3)node.position);
+                            p.BlockUntilCalculated();
+                            Debug.Log("hit point" + hit.point);
+                            Debug.Log("node " + (Vector3)node.position);
+                        }
+
                         
                     }
+                 
                 }
             }
             
@@ -254,5 +258,10 @@ public class PlayerActions : MonoBehaviour{
     private void LateUpdate()
     {
         transform.position = new Vector3(transform.position.x,transform.position.y,0);
+    }
+
+    private void OnMouseOver()
+    {
+        
     }
 }
