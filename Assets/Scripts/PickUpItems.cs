@@ -40,6 +40,12 @@ public class PickUpItems : MonoBehaviour {
             // store object somewhere 
         }
 
+       if(collision.gameObject.tag == "EnemyFront")
+        {
+            player.GetComponent<AILerp>().canMove = false;
+            collision.GetComponentInParent<AILerp>().canMove = false;
+            collision.GetComponentInParent<Bracciante>().KillPlayer();
+        }
        
     }
 
