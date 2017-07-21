@@ -30,8 +30,10 @@ public class PlayerActions : MonoBehaviour{
     public bool hasKey = false;
     public bool canKill = false;
 
-
+    private int numerOfPathNode;
+    private Vector3[] nodeArray;
     private SpriteRenderer sprite;
+    private int i;
 
     // Use this for initialization
     void Start () {
@@ -52,7 +54,30 @@ public class PlayerActions : MonoBehaviour{
 
         if (isMyTurn)
         {
-            
+            //non cancellare mi serve da finire
+
+          /*  RaycastHit colpito;
+            if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out colpito))
+            {
+               
+                Path p = seeker.StartPath(this.transform.position, colpito.transform.position);
+                p.BlockUntilCalculated();
+                List<Vector3> pathNodeList = p.vectorPath;
+                Debug.Log(p.vectorPath.Count);
+
+                nodeArray = new Vector3[15];
+
+                for ( i = 0; i < pathNodeList.Count -1; i++)
+                {
+                    
+                    Debug.DrawLine(pathNodeList[i], pathNodeList[i+1] );
+                }
+                */ 
+                
+                
+
+               
+            }
             
             if (canCreateGrid)
             {
@@ -260,8 +285,5 @@ public class PlayerActions : MonoBehaviour{
         transform.position = new Vector3(transform.position.x,transform.position.y,0);
     }
 
-    private void OnMouseOver()
-    {
-        
-    }
+   
 }
