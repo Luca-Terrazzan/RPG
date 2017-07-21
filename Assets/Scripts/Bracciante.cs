@@ -19,7 +19,6 @@ public class Bracciante : MonoBehaviour
     public Transform[] waypoints;
     public Transform sprite;
     public Transform soundSprite;
-    public Transform enemyRear;
     private Transform direction;
 
     private Vector3[] vectorNodesArray;
@@ -36,6 +35,8 @@ public class Bracciante : MonoBehaviour
     Quaternion[] nextTurnAngle = new Quaternion[3];
 
     public Transform playerTransform;
+    public Transform enemyRear;
+    public Transform enemyFront;
 
 
     // Use this for initialization
@@ -152,8 +153,7 @@ public class Bracciante : MonoBehaviour
                     else
                     {
                         /////////////////////////////se i nodi del path sono finiti mi trovo nella casella adiacente al player quindi lo killo quel bastardo e gli dico git gud casual
-                        Debug.Log("sei morto porcoddio");
-                        Instantiate(seiMorto, transform.position, Quaternion.identity);
+                        KillPlayer();
                     }
                 }
                 else       //se non ho azioni finisco il mio cazzo di turno
@@ -275,7 +275,11 @@ public class Bracciante : MonoBehaviour
         yield return null;
     }
 
-
+    public void KillPlayer()
+    {
+        Debug.Log("Sei morto porcoddio");
+        Instantiate(seiMorto, transform.position, Quaternion.identity);
+    }
 
 
     void GetPathNodes(Vector3 target)       //estrapola i nodi del path verso il target in un array, eccetto il nodo della nostra posizione (vectorNodesArray)
@@ -328,6 +332,7 @@ public class Bracciante : MonoBehaviour
         sprite.position = transform.position;
         soundSprite.position = new Vector3(transform.position.x,transform.position.y,0);
         enemyRear.position = transform.position - transform.up;
+        enemyFront.position = transform.position + transform.up;
     }
 
 }
