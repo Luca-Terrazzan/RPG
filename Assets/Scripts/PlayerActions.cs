@@ -28,7 +28,6 @@ public class PlayerActions : MonoBehaviour{
     public bool canBeHeard = false;
     public bool isFreeRoaming = false;
     public bool hasKey = false;
-    public bool canKill = false;
 
     private int numerOfPathNode;
     private Vector3[] nodeArray;
@@ -56,7 +55,7 @@ public class PlayerActions : MonoBehaviour{
         {
             //non cancellare mi serve da finire
 
-          /*  RaycastHit colpito;
+           /* RaycastHit colpito;
             if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out colpito))
             {
                
@@ -72,12 +71,14 @@ public class PlayerActions : MonoBehaviour{
                     
                     Debug.DrawLine(pathNodeList[i], pathNodeList[i+1] );
                 }
-                */ 
+
+                }
                 
+                */
                 
 
                
-            }
+            
             
             if (canCreateGrid)
             {
@@ -136,11 +137,8 @@ public class PlayerActions : MonoBehaviour{
                                 canBeHeard = true;
                             }
                         }
-                        else if (hit.collider.tag == "KillSprite")
-                        {
-                            playerActions -= attackActions;
-                            Debug.Log("porcodio muori");
-                        }
+
+                        
                     }
 
                 }
@@ -203,7 +201,8 @@ public class PlayerActions : MonoBehaviour{
         
         transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), 0);
         aiLerp.canMove = false;
-        canCreateGrid = true;
+
+            canCreateGrid = true;
     }
 
     void CreateClickableGrid(int numberOfMovements)
@@ -230,7 +229,7 @@ public class PlayerActions : MonoBehaviour{
         }); 
     }
 
-    void DestroyClickableGrid()
+    public void DestroyClickableGrid()
     {
         foreach (GameObject c in clickableSpriteList)
         {

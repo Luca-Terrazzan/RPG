@@ -6,11 +6,14 @@ public class PickUpItems : MonoBehaviour {
 
     private PlayerActions player;
 
+
 	// Use this for initialization
 	void Start ()
     {
         player = GetComponent<PlayerActions>();
-	}
+
+
+    }
     // Metodo a caso per la collisione con gli oggetti, amazing.
     private void OnTriggerEnter (Collider collision)
     {
@@ -72,6 +75,8 @@ public class PickUpItems : MonoBehaviour {
 
             }           
         }
+
+        
     }
 
 
