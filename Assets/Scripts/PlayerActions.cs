@@ -29,6 +29,10 @@ public class PlayerActions : MonoBehaviour{
     public bool isFreeRoaming = false;
     public bool hasKey = false;
     private int fakePlayerActions;
+    public bool canHide = false;
+    public bool isHidden = false;
+    [HideInInspector]
+    public Transform armadioFrontTransform;
 
     private int numerOfPathNode;
     private Vector3[] nodeArray;
@@ -83,13 +87,23 @@ public class PlayerActions : MonoBehaviour{
             
             if (canCreateGrid)
             {
-                if (!isCrouched)
+                if(!isHidden)
                 {
-                    CreateClickableGrid(playerActions);
+                    if (!isCrouched)
+                    {
+                        CreateClickableGrid(playerActions);
+                    }
+                    else if (isCrouched)
+                    {
+                        CreateClickableGrid((int)Mathf.Floor(playerActions / 2));
+                    }
                 }
-                else if (isCrouched)
+                else if(isHidden)
                 {
-                    CreateClickableGrid((int)Mathf.Floor(playerActions / 2));
+                    GameObject clone = Instantiate(clickableSprite, armadioFrontTransform.position, Quaternion.identity);
+                    clone.tag = "HideSprite";
+                    clickableSpriteList.Add(clone);
+                    clone.GetComponent<SpriteRenderer>().color = Color.green;
                 }
                 canCreateGrid = false;
             }
@@ -134,23 +148,58 @@ public class PlayerActions : MonoBehaviour{
                         }
 
                         fakePlayerActions = Mathf.RoundToInt(p.GetTotalLength());
+
+                        if (Input.GetMouseButton(0))
+                        {
+                            aiLerp.canMove = true;
+                            SubtractMovementActions(hit.transform.position);
+                            DestroyClickableGrid();
+
+                            if (isCrouched)
+                            {
+                                canBeHeard = false;
+                            }
+                            else
+                            {
+                                canBeHeard = true;
+                            }
+                        }
                     }
 
-                    if (Input.GetMouseButton(0))
+                    if(hit.collider.tag =="Armadio" && canHide && !isHidden)
                     {
-                        aiLerp.canMove = true;
-                        SubtractMovementActions(hit.transform.position);
-                        DestroyClickableGrid();
-
-                        if (isCrouched)
+                        if (Input.GetMouseButton(0))
                         {
-                            canBeHeard = false;
-                        }
-                        else
-                        {
-                            canBeHeard = true;
+                            if (playerActions >= 3)
+                            {
+                                DestroyClickableGrid();
+                                isHidden = true;
+                                Path p = seeker.StartPath(this.transform.position, hit.transform.position);
+                                p.BlockUntilCalculated();
+                                aiLerp.canMove = true;
+                                playerActions -= 3;
+                                canBeHeard = false;
+                                GetComponent<Collider>().enabled = false;
+                            }
                         }
                     }
+
+                    if (hit.collider.tag == "HideSprite" && isHidden)
+                    {
+                        if (Input.GetMouseButton(0))
+                        {
+                            DestroyClickableGrid();
+                            isHidden = false;
+                            Path p = seeker.StartPath(this.transform.position, hit.transform.position);
+                            p.BlockUntilCalculated();
+                            aiLerp.canMove = true;
+                            playerActions -= 3;
+                            canBeHeard = false;
+                            GetComponent<Collider>().enabled = true;
+                        }
+                    }
+
+                    
 
 
 
@@ -247,14 +296,27 @@ public class PlayerActions : MonoBehaviour{
 		
 	}
 
-   
+
     public void TargetReached()
     {
-        
-        transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), 0);
-        aiLerp.canMove = false;
 
+        if (isHidden)
+        {
+            if(playerActions>=3)
+            {
+                GameObject clone = Instantiate(clickableSprite, armadioFrontTransform.position, Quaternion.identity);
+                clone.tag = "HideSprite";
+                clickableSpriteList.Add(clone);
+                clone.GetComponent<SpriteRenderer>().color = Color.green;
+                aiLerp.canMove = false;
+            }
+        }
+        else
+        {
+            transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), 0);
+            aiLerp.canMove = false;
             canCreateGrid = true;
+        }       
     }
 
     void CreateClickableGrid(int numberOfMovements)

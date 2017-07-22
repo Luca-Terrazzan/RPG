@@ -49,7 +49,19 @@ public class PickUpItems : MonoBehaviour {
             collision.GetComponentInParent<AILerp>().canMove = false;
             collision.GetComponentInParent<Bracciante>().KillPlayer();
         }
-       
+        if (collision.gameObject.tag == "ArmadioFront")
+        {
+            player.canHide = true;
+            player.armadioFrontTransform = collision.transform;
+        }
+    }
+
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "ArmadioFront")
+        {
+            player.canHide = false;
+        }
     }
 
     public void OnTriggerStay(Collider other)
@@ -77,6 +89,8 @@ public class PickUpItems : MonoBehaviour {
         }
 
         
+
+
     }
 
 
