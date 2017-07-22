@@ -331,8 +331,8 @@ public class Bracciante : MonoBehaviour
     {
         sprite.position = transform.position;
         soundSprite.position = new Vector3(transform.position.x,transform.position.y,0);
-        enemyRear.position = transform.position - transform.up;
-        enemyFront.position = transform.position + transform.up;
+     //   enemyRear.position = transform.position - transform.up;
+   //     enemyFront.position = transform.position + transform.up;
     }
 
 }

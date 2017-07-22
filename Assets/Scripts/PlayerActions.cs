@@ -113,10 +113,59 @@ public class PlayerActions : MonoBehaviour{
                 }
             }
 
-            if (Input.GetMouseButtonDown(0))
+            RaycastHit hit;
+            if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit) )
             {
-                RaycastHit hit;
-                if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit))
+                if (hit.collider != null)
+                {
+
+                    if (hit.collider.tag == "ClickableSprite")
+                    {
+                        Path p = seeker.StartPath(this.transform.position, hit.transform.position);
+                        p.BlockUntilCalculated();
+                        List<Vector3> pathNodeList = p.vectorPath;
+                        //Debug.Log(p.vectorPath.Count);
+
+                        for (i = 0; i < pathNodeList.Count - 1; i++)
+                        {
+
+                            Debug.DrawLine(pathNodeList[i], pathNodeList[i + 1]);
+                        }
+                        playerActions -= Mathf.RoundToInt(p.GetTotalLength());
+                    }
+                    if (Input.GetMouseButton(0))
+                    {
+                        aiLerp.canMove = true;
+                     //   SubtractMovementActions(hit.transform.position,);
+                        DestroyClickableGrid();
+
+                        if (isCrouched)
+                        {
+                            canBeHeard = false;
+                        }
+                        else
+                        {
+                            canBeHeard = true;
+                        }
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         /*       if (Input.GetMouseButtonDown(0))
                 {
 
                     if (hit.collider != null)
@@ -127,7 +176,7 @@ public class PlayerActions : MonoBehaviour{
                             SubtractMovementActions(hit.collider.transform.position);
                             //aiLerp.target.position = hit.transform.position;
                             DestroyClickableGrid();
-                            aiLerp.canMove = true;
+                           // aiLerp.canMove = true;
                             if (isCrouched)
                             {
                                 canBeHeard = false;
@@ -141,7 +190,7 @@ public class PlayerActions : MonoBehaviour{
                         
                     }
 
-                }
+                } */
             }
 
             if (Input.GetKeyDown(KeyCode.KeypadEnter)&&!aiLerp.canMove)
@@ -160,7 +209,7 @@ public class PlayerActions : MonoBehaviour{
         {
             DestroyClickableGrid();
            
-            if (Input.GetMouseButtonDown(0))
+           /* if (Input.GetMouseButtonDown(0))
             {
               //  Debug.Log("Ciao");
 
@@ -187,7 +236,7 @@ public class PlayerActions : MonoBehaviour{
                         
                     }
                  
-                }
+                } */
             }
             
         }
@@ -237,17 +286,18 @@ public class PlayerActions : MonoBehaviour{
         }
     }
 
-    void SubtractMovementActions(Vector3 target)
+    void SubtractMovementActions(Vector3 target,float totLengh)
     {
-        Path p = seeker.StartPath(transform.position, target);
-        p.BlockUntilCalculated();
+     //   Path p = seeker.StartPath(transform.position, target);
+      //  p.BlockUntilCalculated();
+       
         if (isCrouched)
         {
-            playerActions -= Mathf.RoundToInt(p.GetTotalLength()) * 2;
+            playerActions -= Mathf.RoundToInt(totLengh) * 2;
         }
         else
         {
-            playerActions -= Mathf.RoundToInt(p.GetTotalLength());
+            playerActions -= Mathf.RoundToInt(totLengh);
         }
     }
     /// <summary>
