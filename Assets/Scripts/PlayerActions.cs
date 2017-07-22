@@ -28,11 +28,12 @@ public class PlayerActions : MonoBehaviour{
     public bool canBeHeard = false;
     public bool isFreeRoaming = false;
     public bool hasKey = false;
+    private int fakePlayerActions;
 
     private int numerOfPathNode;
     private Vector3[] nodeArray;
     private SpriteRenderer sprite;
-    private int i;
+   
 
     // Use this for initialization
     void Start () {
@@ -124,19 +125,21 @@ public class PlayerActions : MonoBehaviour{
                         Path p = seeker.StartPath(this.transform.position, hit.transform.position);
                         p.BlockUntilCalculated();
                         List<Vector3> pathNodeList = p.vectorPath;
-                        //Debug.Log(p.vectorPath.Count);
+                        
 
-                        for (i = 0; i < pathNodeList.Count - 1; i++)
+                        for (int i = 0; i < pathNodeList.Count - 1; i++)
                         {
 
                             Debug.DrawLine(pathNodeList[i], pathNodeList[i + 1]);
                         }
-                        playerActions -= Mathf.RoundToInt(p.GetTotalLength());
+
+                        fakePlayerActions = Mathf.RoundToInt(p.GetTotalLength());
                     }
+
                     if (Input.GetMouseButton(0))
                     {
                         aiLerp.canMove = true;
-                     //   SubtractMovementActions(hit.transform.position,);
+                        SubtractMovementActions(hit.transform.position);
                         DestroyClickableGrid();
 
                         if (isCrouched)
@@ -286,18 +289,18 @@ public class PlayerActions : MonoBehaviour{
         }
     }
 
-    void SubtractMovementActions(Vector3 target,float totLengh)
+    void SubtractMovementActions(Vector3 target)
     {
      //   Path p = seeker.StartPath(transform.position, target);
       //  p.BlockUntilCalculated();
        
         if (isCrouched)
         {
-            playerActions -= Mathf.RoundToInt(totLengh) * 2;
+            playerActions -= fakePlayerActions * 2;
         }
         else
         {
-            playerActions -= Mathf.RoundToInt(totLengh);
+            playerActions -= fakePlayerActions ;
         }
     }
     /// <summary>
