@@ -308,15 +308,16 @@ public class PlayerActions : MonoBehaviour{
                 clone.tag = "HideSprite";
                 clickableSpriteList.Add(clone);
                 clone.GetComponent<SpriteRenderer>().color = Color.green;
-                aiLerp.canMove = false;
             }
         }
         else
         {
             transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), 0);
-            aiLerp.canMove = false;
             canCreateGrid = true;
-        }       
+        }
+
+        aiLerp.canMove = false;
+
     }
 
     void CreateClickableGrid(int numberOfMovements)

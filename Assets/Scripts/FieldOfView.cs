@@ -108,7 +108,7 @@ public class FieldOfView : MonoBehaviour {
                     else
                     {
                        
-                        return true;
+                        return false;
                     }
                 }
                  

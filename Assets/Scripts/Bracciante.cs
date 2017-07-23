@@ -138,6 +138,7 @@ public class Bracciante : MonoBehaviour
                 {
                     isMyTurn = false;
                     turnManager.changeTurn();
+                    hasSeenPlayer = false;
                 }
 
             }
@@ -160,6 +161,7 @@ public class Bracciante : MonoBehaviour
                 {
                     isMyTurn = false;
                     turnManager.changeTurn();
+                    hasSeenPlayer = false;
                 }
 
             }
