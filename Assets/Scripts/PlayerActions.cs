@@ -34,19 +34,23 @@ public class PlayerActions : MonoBehaviour{
     [HideInInspector]
     public Transform armadioFrontTransform;
 
+    
     private int numerOfPathNode;
     private Vector3[] nodeArray;
     private SpriteRenderer sprite;
+    private LineRenderer lineOfMovement;
    
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
 
         clickableSpriteList = new List<GameObject>();
         grid = AstarPath.active.data.gridGraph;
         seeker = GetComponent<Seeker>();
         aiLerp = GetComponent<AILerp>();
         sprite = GetComponent<SpriteRenderer>();
+        lineOfMovement = GetComponent<LineRenderer>();
         playerActions = playerActionsPerTurn;
 
     }
@@ -58,33 +62,6 @@ public class PlayerActions : MonoBehaviour{
 
         if (isMyTurn)
         {
-            //non cancellare mi serve da finire
-
-           /* RaycastHit colpito;
-            if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out colpito))
-            {
-               
-                Path p = seeker.StartPath(this.transform.position, colpito.transform.position);
-                p.BlockUntilCalculated();
-                List<Vector3> pathNodeList = p.vectorPath;
-                Debug.Log(p.vectorPath.Count);
-
-                nodeArray = new Vector3[15];
-
-                for ( i = 0; i < pathNodeList.Count -1; i++)
-                {
-                    
-                    Debug.DrawLine(pathNodeList[i], pathNodeList[i+1] );
-                }
-
-                }
-                
-                */
-                
-
-               
-            
-            
             if (canCreateGrid)
             {
                 if(!isHidden)
@@ -139,12 +116,21 @@ public class PlayerActions : MonoBehaviour{
                         Path p = seeker.StartPath(this.transform.position, hit.transform.position);
                         p.BlockUntilCalculated();
                         List<Vector3> pathNodeList = p.vectorPath;
+                        lineOfMovement.positionCount = pathNodeList.Count;
+                        //  lineOfMovement.SetPosition(0, this.transform.position);
+                        //  lineOfMovement.SetPosition(1, hit.transform.position);
+
                         
+                       
 
                         for (int i = 0; i < pathNodeList.Count - 1; i++)
                         {
-
-                            Debug.DrawLine(pathNodeList[i], pathNodeList[i + 1]);
+                            lineOfMovement.SetPosition(i, pathNodeList[i]);
+                            lineOfMovement.SetPosition(i + 1, pathNodeList[i+1]);
+                          
+                            //Debug.DrawLine(pathNodeList[i], pathNodeList[i + 1]);
+                            
+                            
                         }
 
                         fakePlayerActions = Mathf.RoundToInt(p.GetTotalLength());
@@ -198,24 +184,6 @@ public class PlayerActions : MonoBehaviour{
                             GetComponent<Collider>().enabled = true;
                         }
                     }
-
-                    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
          /*       if (Input.GetMouseButtonDown(0))
                 {
@@ -354,8 +322,7 @@ public class PlayerActions : MonoBehaviour{
 
     void SubtractMovementActions(Vector3 target)
     {
-     //   Path p = seeker.StartPath(transform.position, target);
-      //  p.BlockUntilCalculated();
+     
        
         if (isCrouched)
         {
