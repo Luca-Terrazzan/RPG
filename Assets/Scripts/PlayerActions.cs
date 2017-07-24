@@ -119,19 +119,46 @@ public class PlayerActions : MonoBehaviour{
                         lineOfMovement.positionCount = pathNodeList.Count;
                         //  lineOfMovement.SetPosition(0, this.transform.position);
                         //  lineOfMovement.SetPosition(1, hit.transform.position);
+
                         
-
-
+                          /*  for (int i = 0; i < clickableSpriteList.Count; i++)
+                            {
+                            if(clickableSpriteList[i]!=null)
+                                clickableSpriteList[i].GetComponent<SpriteRenderer>().color = Color.cyan;
+                            }
+                        */
+                        
 
                         for (int i = 0; i < pathNodeList.Count - 1; i++)
                         {
-                            lineOfMovement.SetPosition(i, pathNodeList[i]);
-                            lineOfMovement.SetPosition(i + 1, pathNodeList[i + 1]);
+                            Collider[] changeColor = Physics.OverlapBox(new Vector3(pathNodeList[i + 1].x, pathNodeList[i + 1].y, 0), new Vector3(this.transform.localScale.x / 2, this.transform.localScale.y / 2, 6f));
+                            lineOfMovement.SetPosition(i, new Vector3(pathNodeList[i].x,pathNodeList[i].y,0));
+                            lineOfMovement.SetPosition(i + 1, new Vector3(pathNodeList[i + 1].x,pathNodeList[i+1].y,0));
 
-                            //Debug.DrawLine(pathNodeList[i], pathNodeList[i + 1]);
+                         /*   GameObject clickCollider = new GameObject();
+                            GameObject hearCollider = new GameObject();
+                            for (int j = 0; j < changeColor.Length;  j++)
+                            {
+                               if (changeColor[j].tag == "HearRange")
+                                {
+                                    hearCollider = changeColor[j].gameObject;
+                                    Debug.Log("e anche un hear");
+                                }
+                                if (changeColor[j].tag == "ClickableSprite")
+                                {
+                                    clickCollider = changeColor[j].gameObject;
+                                    Debug.Log("c'è un clickable sprite");
+                                }
 
+
+                            }
+                            if (clickCollider.tag=="ClickableSprite" && hearCollider.tag == "HearRange")
+                            {
+                                clickCollider.GetComponent<SpriteRenderer>().color = Color.yellow;
+                            } */
 
                         }
+                        
 
                         fakePlayerActions = Mathf.RoundToInt(p.GetTotalLength());
                         
