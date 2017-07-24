@@ -70,18 +70,25 @@ public class PickUpItems : MonoBehaviour {
         if (other.gameObject.tag == "EnemyRear")
         {
             float distToEnemy = Vector3.Distance(player.transform.position,other.transform.position);
-            if(Input.GetMouseButtonUp(0))
-            {
+            
                 RaycastHit hit;
                 if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
                 {
-                    if (hit.collider != null)
+                if (hit.collider != null)
+                {
+
+                    if ((hit.collider.gameObject.tag == "Bracciante" || hit.collider.tag == "CowBoy" || hit.collider.tag == "Puttana"))
                     {
-                        
-                       if ((hit.collider.gameObject.tag == "Bracciante" || hit.collider.tag == "CowBoy" || hit.collider.tag == "Puttana"))
-                       {
-                         player.BackStabEnemy(hit.collider.gameObject); // git gud
-                       }
+                        if (player.playerActions >= 6)
+                        {
+                            player.fakePlayerActions = 6;
+
+                            if (Input.GetMouseButtonUp(0))
+                            {
+                                player.BackStabEnemy(hit.collider.gameObject); // git gud
+
+                            }
+                        }
                     }
                 }
 

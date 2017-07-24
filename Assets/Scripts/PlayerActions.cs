@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 using Pathfinding.Util;
+using UnityEngine.UI;
 
 public class PlayerActions : MonoBehaviour{
 
@@ -28,7 +29,7 @@ public class PlayerActions : MonoBehaviour{
     public bool canBeHeard = false;
     public bool isFreeRoaming = false;
     public bool hasKey = false;
-    private int fakePlayerActions;
+    public int fakePlayerActions;
     public bool canHide = false;
     public bool isHidden = false;
     [HideInInspector]
@@ -39,12 +40,18 @@ public class PlayerActions : MonoBehaviour{
     private Vector3[] nodeArray;
     private SpriteRenderer sprite;
     private LineRenderer lineOfMovement;
+
+    private Button crouchButton;
+    private Button endTurnButton;
+    private Button menuButton;
+    private Image backgroundBar;
+    private Image fakeActionsBar;
+    private Image actionsBar;
    
 
     // Use this for initialization
     void Start ()
     {
-
         clickableSpriteList = new List<GameObject>();
         grid = AstarPath.active.data.gridGraph;
         seeker = GetComponent<Seeker>();
@@ -52,16 +59,28 @@ public class PlayerActions : MonoBehaviour{
         sprite = GetComponent<SpriteRenderer>();
         lineOfMovement = GetComponent<LineRenderer>();
         playerActions = playerActionsPerTurn;
+        crouchButton = GameObject.Find("Crouch").GetComponent<Button>();
+        endTurnButton = GameObject.Find("EndTurn").GetComponent<Button>();
+        menuButton = GameObject.Find("Menu").GetComponent<Button>();
+        crouchButton.onClick.AddListener(CrouchMethod);
+        endTurnButton.onClick.AddListener(EndTurn);
+        menuButton.onClick.AddListener(Menu);
+        backgroundBar = GameObject.Find("BackgroundBar").GetComponent<Image>();
+        fakeActionsBar = GameObject.Find("FakeActionsBar").GetComponent<Image>();
+        actionsBar = GameObject.Find("ActionsBar").GetComponent<Image>();
+
 
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update ()
     {
         
 
         if (isMyTurn)
         {
+            actionsBar.fillAmount = (float)(playerActions - fakePlayerActions) / playerActionsPerTurn;
+            fakeActionsBar.fillAmount = (float)playerActions / playerActionsPerTurn;
             if (canCreateGrid)
             {
                 if(!isHidden)
@@ -85,26 +104,6 @@ public class PlayerActions : MonoBehaviour{
                 canCreateGrid = false;
             }
 
-            if (Input.GetKeyDown(KeyCode.LeftControl)&&aiLerp.canMove==false)
-            {
-                
-                DestroyClickableGrid();
-                if (!isCrouched)
-                {
-                    CreateClickableGrid((int)Mathf.Floor(playerActions / 2));
-                    isCrouched = true;
-                    
-                    sprite.color = Color.magenta;
-                }
-                else if (isCrouched)
-                {
-                    CreateClickableGrid(playerActions);
-                    isCrouched = false;
-                    
-                    sprite.color = Color.red;
-                }
-            }
-
             RaycastHit hit;
             if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit))
             {
@@ -120,7 +119,7 @@ public class PlayerActions : MonoBehaviour{
                         lineOfMovement.positionCount = pathNodeList.Count;
                         //  lineOfMovement.SetPosition(0, this.transform.position);
                         //  lineOfMovement.SetPosition(1, hit.transform.position);
-
+                        
 
 
 
@@ -135,13 +134,13 @@ public class PlayerActions : MonoBehaviour{
                         }
 
                         fakePlayerActions = Mathf.RoundToInt(p.GetTotalLength());
-
-                        if (Input.GetMouseButton(0))
+                        
+                        if (Input.GetMouseButtonDown(0))
                         {
                             aiLerp.canMove = true;
                             SubtractMovementActions(hit.transform.position);
                             DestroyClickableGrid();
-
+                            fakePlayerActions = 0;
                             if (isCrouched)
                             {
                                 canBeHeard = false;
@@ -214,15 +213,7 @@ public class PlayerActions : MonoBehaviour{
                            } */
                 }
 
-                if (Input.GetKeyDown(KeyCode.KeypadEnter) && !aiLerp.canMove)
-                {
-                    isMyTurn = false;
-                    DestroyClickableGrid();
-                    turnManager.changeTurn();
-                    playerActions = playerActionsPerTurn;
-                    canCreateGrid = true;
-                    canBeHeard = false;
-                }
+                
             }
             else 
 
@@ -260,12 +251,55 @@ public class PlayerActions : MonoBehaviour{
                  
                 } */
             }
+
             
         }
         
 		
 	}
 
+    void EndTurn()
+    {
+        if (!aiLerp.canMove)
+        {
+            isMyTurn = false;
+            DestroyClickableGrid();
+            turnManager.changeTurn();
+            playerActions = playerActionsPerTurn;
+            canCreateGrid = true;
+            canBeHeard = false;
+            actionsBar.fillAmount = 1;
+            fakeActionsBar.fillAmount = 1;
+        }
+      
+    }
+
+    void CrouchMethod()
+    {
+        if(!aiLerp.canMove)
+        {
+            DestroyClickableGrid();
+            if (!isCrouched)
+            {
+                CreateClickableGrid((int)Mathf.Floor(playerActions / 2));
+                isCrouched = true;
+
+                sprite.color = Color.magenta;
+            }
+            else if (isCrouched)
+            {
+                CreateClickableGrid(playerActions);
+                isCrouched = false;
+
+                sprite.color = Color.red;
+            }
+        }        
+    }
+
+    void Menu()
+    {
+        Debug.Log("Mmmhhh.. Utile.");
+    }
 
     public void TargetReached()
     {
@@ -341,25 +375,27 @@ public class PlayerActions : MonoBehaviour{
     /// <param name="enemy"> The Casual to kill</param>
     public void BackStabEnemy(GameObject enemy)
     {
-        Vector3 lastEnemyPos = new Vector3 (enemy.transform.position.x, enemy.transform.position.y, 0);
-        if (enemy.tag == "Bracciante")
+        if (playerActions >= 6)
         {
-            enemy.GetComponent<Bracciante>().Die();
-            Debug.Log("muori merda");
-        }
-       else if (enemy.tag == "CowBoy")
-        {
-            enemy.GetComponent<RagazzoMucca>().Die();
-        }
-       else if (enemy.tag == "Puttana")
-        {
-            enemy.GetComponent<RagazzaAmbiziosa>().Die();
-        }
-        if (playerActions > 0)
-        {
+            Vector3 lastEnemyPos = new Vector3(enemy.transform.position.x, enemy.transform.position.y, 0);
+            if (enemy.tag == "Bracciante")
+            {
+                enemy.GetComponent<Bracciante>().Die();
+                Debug.Log("muori merda");
+            }
+            else if (enemy.tag == "CowBoy")
+            {
+                enemy.GetComponent<RagazzoMucca>().Die();
+            }
+            else if (enemy.tag == "Puttana")
+            {
+                enemy.GetComponent<RagazzaAmbiziosa>().Die();
+            }
             GameObject clone = Instantiate(clickableSprite, new Vector3(lastEnemyPos.x, lastEnemyPos.y, 0), Quaternion.identity);
             clickableSpriteList.Add(clone);
+            playerActions -= 6;
         }
+        
 
     }
 
