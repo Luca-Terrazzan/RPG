@@ -106,13 +106,14 @@ public class PlayerActions : MonoBehaviour{
             }
 
             RaycastHit hit;
-            if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit) )
+            if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit))
             {
                 if (hit.collider != null)
                 {
 
                     if (hit.collider.tag == "ClickableSprite")
                     {
+                        lineOfMovement.enabled = true;
                         Path p = seeker.StartPath(this.transform.position, hit.transform.position);
                         p.BlockUntilCalculated();
                         List<Vector3> pathNodeList = p.vectorPath;
@@ -120,17 +121,17 @@ public class PlayerActions : MonoBehaviour{
                         //  lineOfMovement.SetPosition(0, this.transform.position);
                         //  lineOfMovement.SetPosition(1, hit.transform.position);
 
-                        
-                       
+
+
 
                         for (int i = 0; i < pathNodeList.Count - 1; i++)
                         {
                             lineOfMovement.SetPosition(i, pathNodeList[i]);
-                            lineOfMovement.SetPosition(i + 1, pathNodeList[i+1]);
-                          
+                            lineOfMovement.SetPosition(i + 1, pathNodeList[i + 1]);
+
                             //Debug.DrawLine(pathNodeList[i], pathNodeList[i + 1]);
-                            
-                            
+
+
                         }
 
                         fakePlayerActions = Mathf.RoundToInt(p.GetTotalLength());
@@ -152,7 +153,7 @@ public class PlayerActions : MonoBehaviour{
                         }
                     }
 
-                    if(hit.collider.tag =="Armadio" && canHide && !isHidden)
+                    if (hit.collider.tag == "Armadio" && canHide && !isHidden)
                     {
                         if (Input.GetMouseButton(0))
                         {
@@ -185,44 +186,45 @@ public class PlayerActions : MonoBehaviour{
                         }
                     }
 
-         /*       if (Input.GetMouseButtonDown(0))
+                    /*       if (Input.GetMouseButtonDown(0))
+                           {
+
+                               if (hit.collider != null)
+                               {
+
+                                   if (hit.collider.tag == "ClickableSprite")
+                                   {
+                                       SubtractMovementActions(hit.collider.transform.position);
+                                       //aiLerp.target.position = hit.transform.position;
+                                       DestroyClickableGrid();
+                                      // aiLerp.canMove = true;
+                                       if (isCrouched)
+                                       {
+                                           canBeHeard = false;
+                                       }
+                                       else
+                                       {
+                                           canBeHeard = true;
+                                       }
+                                   }
+
+
+                               }
+
+                           } */
+                }
+
+                if (Input.GetKeyDown(KeyCode.KeypadEnter) && !aiLerp.canMove)
                 {
-
-                    if (hit.collider != null)
-                    {
-
-                        if (hit.collider.tag == "ClickableSprite")
-                        {
-                            SubtractMovementActions(hit.collider.transform.position);
-                            //aiLerp.target.position = hit.transform.position;
-                            DestroyClickableGrid();
-                           // aiLerp.canMove = true;
-                            if (isCrouched)
-                            {
-                                canBeHeard = false;
-                            }
-                            else
-                            {
-                                canBeHeard = true;
-                            }
-                        }
-
-                        
-                    }
-
-                } */
+                    isMyTurn = false;
+                    DestroyClickableGrid();
+                    turnManager.changeTurn();
+                    playerActions = playerActionsPerTurn;
+                    canCreateGrid = true;
+                    canBeHeard = false;
+                }
             }
-
-            if (Input.GetKeyDown(KeyCode.KeypadEnter)&&!aiLerp.canMove)
-            {
-                isMyTurn = false;
-                DestroyClickableGrid();
-                turnManager.changeTurn();
-                playerActions = playerActionsPerTurn;
-                canCreateGrid = true;
-                canBeHeard = false;
-            }
-        }
+            else 
 
         if (isFreeRoaming)
 
@@ -285,7 +287,7 @@ public class PlayerActions : MonoBehaviour{
         }
 
         aiLerp.canMove = false;
-
+        lineOfMovement.enabled = false;
     }
 
     void CreateClickableGrid(int numberOfMovements)
