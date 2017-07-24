@@ -69,6 +69,8 @@ public class PlayerActions : MonoBehaviour{
         fakeActionsBar = GameObject.Find("FakeActionsBar").GetComponent<Image>();
         actionsBar = GameObject.Find("ActionsBar").GetComponent<Image>();
 
+        lineOfMovement.sortingLayerName = "SoundRange";
+
 
     }
 
@@ -120,13 +122,13 @@ public class PlayerActions : MonoBehaviour{
                         //  lineOfMovement.SetPosition(0, this.transform.position);
                         //  lineOfMovement.SetPosition(1, hit.transform.position);
 
-                        
-                          /*  for (int i = 0; i < clickableSpriteList.Count; i++)
+                       
+                            for (int i = 0; i < clickableSpriteList.Count; i++)
                             {
                             if(clickableSpriteList[i]!=null)
                                 clickableSpriteList[i].GetComponent<SpriteRenderer>().color = Color.cyan;
                             }
-                        */
+                        
                         
 
                         for (int i = 0; i < pathNodeList.Count - 1; i++)
@@ -135,7 +137,7 @@ public class PlayerActions : MonoBehaviour{
                             lineOfMovement.SetPosition(i, new Vector3(pathNodeList[i].x,pathNodeList[i].y,0));
                             lineOfMovement.SetPosition(i + 1, new Vector3(pathNodeList[i + 1].x,pathNodeList[i+1].y,0));
 
-                         /*   GameObject clickCollider = new GameObject();
+                            GameObject clickCollider = new GameObject();
                             GameObject hearCollider = new GameObject();
                             for (int j = 0; j < changeColor.Length;  j++)
                             {
@@ -155,7 +157,7 @@ public class PlayerActions : MonoBehaviour{
                             if (clickCollider.tag=="ClickableSprite" && hearCollider.tag == "HearRange")
                             {
                                 clickCollider.GetComponent<SpriteRenderer>().color = Color.yellow;
-                            } */
+                            } 
 
                         }
                         
