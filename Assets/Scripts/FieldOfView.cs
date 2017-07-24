@@ -40,7 +40,6 @@ public class FieldOfView : MonoBehaviour {
         playerTransform = GameObject.FindWithTag("Player").transform;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerActions>();
 
-
     }
 
     void LateUpdate()

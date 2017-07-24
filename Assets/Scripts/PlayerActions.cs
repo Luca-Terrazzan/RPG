@@ -144,19 +144,24 @@ public class PlayerActions : MonoBehaviour{
                                if (changeColor[j].tag == "HearRange")
                                 {
                                     hearCollider = changeColor[j].gameObject;
-                                    Debug.Log("e anche un hear");
                                 }
                                 if (changeColor[j].tag == "ClickableSprite")
                                 {
                                     clickCollider = changeColor[j].gameObject;
-                                    Debug.Log("c'è un clickable sprite");
                                 }
 
 
                             }
                             if (clickCollider.tag=="ClickableSprite" && hearCollider.tag == "HearRange")
                             {
-                                clickCollider.GetComponent<SpriteRenderer>().color = Color.yellow;
+                                Vector3 dirFromAtoB = (hearCollider.transform.position - clickCollider.transform.position).normalized;
+                                float dotProd = Vector3.Dot(dirFromAtoB, hearCollider.GetComponentInParent<Transform>().forward);
+                                Debug.Log(dotProd);
+                                if (dotProd > 0.7)
+                                {
+                                    clickCollider.GetComponent<SpriteRenderer>().color = Color.red;
+                                }                            
+                                else clickCollider.GetComponent<SpriteRenderer>().color = Color.yellow;
                             } 
 
                         }
