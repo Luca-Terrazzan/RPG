@@ -211,7 +211,14 @@ public class FieldOfView : MonoBehaviour {
         RaycastHit hit;
         if (Physics.Raycast(transform.position,dir,out hit,viewRadius,obstacleMask) )     //(Physics.Raycast(transform.position, dir, out hit, viewRadius, obstacleMask))
         {
-            return new ViewCastInfo(true, hit.point, hit.distance, globalAngle);
+            if (hit.collider.tag == "LowObstacle")
+            {
+                return new ViewCastInfo(false, transform.position + dir * viewRadius, viewRadius, globalAngle);
+            }
+            else
+            {
+                return new ViewCastInfo(true, hit.point, hit.distance, globalAngle);
+            }
         }
         else
         {
