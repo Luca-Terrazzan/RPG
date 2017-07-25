@@ -73,7 +73,6 @@ public class PlayerActions : MonoBehaviour{
         fakeActionsBar = GameObject.Find("FakeActionsBar").GetComponent<Image>();
         actionsBar = GameObject.Find("ActionsBar").GetComponent<Image>();
         wakandaSprite = GameObject.Find("WakandaSprite").transform;
-
         lineOfMovement.sortingLayerName = "SoundRange";
 
 
@@ -195,12 +194,14 @@ public class PlayerActions : MonoBehaviour{
                         }
                     }
 
-                    if (hit.collider.tag == "Armadio" && canHide && !isHidden)
+                    if (hit.collider.tag == "Armadio" && canHide && !isHidden && armadioFrontTransform.transform.parent.position == hit.transform.position)
                     {
                         if (Input.GetMouseButton(0))
                         {
                             if (playerActions >= 3)
                             {
+                                armadioFrontTransform.parent.gameObject.layer = 0;
+                                AstarPath.active.Scan();
                                 DestroyClickableGrid();
                                 isHidden = true;
                                 Path p = seeker.StartPath(this.transform.position, hit.transform.position);
@@ -225,6 +226,8 @@ public class PlayerActions : MonoBehaviour{
                             playerActions -= 3;
                             canBeHeard = false;
                             GetComponent<Collider>().enabled = true;
+                            armadioFrontTransform.parent.gameObject.layer = 8;
+                            AstarPath.active.Scan();
                         }
                     }
 
