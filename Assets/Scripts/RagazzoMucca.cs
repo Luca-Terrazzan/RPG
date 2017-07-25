@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class RagazzoMucca : MonoBehaviour {
 
-    public TurnManager turnManager;
-    public PlayerActions player; //da mettere se si vuole gestire la morte del player tramite un metodo
+    private TurnManager turnManager;
+    private PlayerActions player; //da mettere se si vuole gestire la morte del player tramite un metodo
     private FieldOfView fieldOfView;
 
     public bool isMyTurn;
@@ -13,12 +13,16 @@ public class RagazzoMucca : MonoBehaviour {
     public bool hasSeenPlayer;
     private bool imDead;
     private float waitTimer = 1f;
+    private float sleepingView;
+    private float originalViewAngle;
     public Transform enemyRear;
 
     private void Start()
     {
-       
+        turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
+        player = GameObject.Find("Player").GetComponent<PlayerActions>();
         fieldOfView = GetComponent<FieldOfView>();
+        originalViewAngle = fieldOfView.viewAngle;
     }
 
     void Update ()
@@ -34,6 +38,14 @@ public class RagazzoMucca : MonoBehaviour {
                 KillThePlayer();
              }
         }
+        if ( isSleeping)
+        {
+            fieldOfView.viewAngle = 0;
+        }
+        else
+        {
+            fieldOfView.viewAngle = originalViewAngle;
+        }
 	}
 
     IEnumerator ChangeTurnDelay(float waitTime)
@@ -47,18 +59,19 @@ public class RagazzoMucca : MonoBehaviour {
         if (imDead)
         {
             StartCoroutine("ChangeTurnDelay", waitTimer);
-            return;
+            
         }
 
-        isMyTurn = true;
+       // isMyTurn = true;
         SleepingManager();
         
 
         if (isSleeping)
         {
             // feeback snore
-            isMyTurn = false;
+           isMyTurn = false;
            StartCoroutine("ChangeTurnDelay", waitTimer);
+            
         }
         else
         {
@@ -72,6 +85,7 @@ public class RagazzoMucca : MonoBehaviour {
             {
                 isMyTurn = false;
                 StartCoroutine("ChangeTurnDelay", waitTimer);
+                
 
             }
         }

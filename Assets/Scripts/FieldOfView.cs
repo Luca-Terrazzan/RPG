@@ -93,7 +93,10 @@ public class FieldOfView : MonoBehaviour {
                     //ciao
                     float distToObstacle = Vector3.Distance(player.transform.position, hit.collider.transform.position);
                     
-
+                    if ( hit.collider.tag != "LowObstacle")
+                    {
+                        return false;
+                    }
                     if (hit.collider.tag == "LowObstacle" && distToObstacle >= 2f)
                     {
                         visibleTargets.Add(target);

@@ -26,10 +26,6 @@ public class TurnManager : MonoBehaviour {
     public void changeTurn()
     {
         
-            if (charactersArray[i].gameObject.tag == "Player")
-            {
-
-            }
 
             if (charactersArray[i].gameObject.tag == "Bracciante")
             {
