@@ -42,6 +42,8 @@ public class Bracciante : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
+        playerTransform = GameObject.Find("Player").transform;
 
         grid = AstarPath.active.data.gridGraph;
         seeker = GetComponent<Seeker>();
@@ -90,6 +92,8 @@ public class Bracciante : MonoBehaviour
             return;
             
         }
+        this.gameObject.layer = 0;
+        AstarPath.active.Scan();
         actionsAmount = maxActionsAmount;
         nodesCounter = 0;
         hasSeenPlayer = false;
@@ -118,6 +122,15 @@ public class Bracciante : MonoBehaviour
         nodesCounter += 1;
     }
 
+    public void EndTurn()
+    {
+        this.gameObject.layer = 8;
+        AstarPath.active.Scan();
+        isMyTurn = false;
+        turnManager.changeTurn();
+        hasSeenPlayer = false;
+    }
+
     public void TargetReached()     //chiamato quando ho raggiunto il nodo
     {
         actionsAmount -= 1;
@@ -136,9 +149,7 @@ public class Bracciante : MonoBehaviour
                 }
                 else       //se non ho azioni finisco il mio turno
                 {
-                    isMyTurn = false;
-                    turnManager.changeTurn();
-                    hasSeenPlayer = false;
+                    EndTurn();
                 }
 
             }
@@ -159,9 +170,7 @@ public class Bracciante : MonoBehaviour
                 }
                 else       //se non ho azioni finisco il mio cazzo di turno
                 {
-                    isMyTurn = false;
-                    turnManager.changeTurn();
-                    hasSeenPlayer = false;
+                    EndTurn();
                 }
 
             }
