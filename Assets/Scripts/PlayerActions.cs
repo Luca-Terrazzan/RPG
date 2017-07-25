@@ -319,7 +319,7 @@ public class PlayerActions : MonoBehaviour{
 
     void CrouchMethod()
     {
-        if(!aiLerp.canMove)
+        if(!aiLerp.canMove && !isHidden)
         {
             DestroyClickableGrid();
             if (!isCrouched)
