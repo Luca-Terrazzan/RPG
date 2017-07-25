@@ -16,6 +16,7 @@ public class PlayerActions : MonoBehaviour{
     public int attackActions;
     public LayerMask enemyMask;
     public LayerMask obstacle;
+    public Transform wakandaSprite;
 
 
     private GridGraph grid;
@@ -52,6 +53,9 @@ public class PlayerActions : MonoBehaviour{
     // Use this for initialization
     void Start ()
     {
+        clickableSprite = GameObject.Find("clickableSprite");
+        cam = GameObject.Find("Camera").GetComponent<Camera>();
+        turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         clickableSpriteList = new List<GameObject>();
         grid = AstarPath.active.data.gridGraph;
         seeker = GetComponent<Seeker>();
@@ -68,6 +72,7 @@ public class PlayerActions : MonoBehaviour{
         backgroundBar = GameObject.Find("BackgroundBar").GetComponent<Image>();
         fakeActionsBar = GameObject.Find("FakeActionsBar").GetComponent<Image>();
         actionsBar = GameObject.Find("ActionsBar").GetComponent<Image>();
+        wakandaSprite = GameObject.Find("WakandaSprite").transform;
 
         lineOfMovement.sortingLayerName = "SoundRange";
 
@@ -155,7 +160,11 @@ public class PlayerActions : MonoBehaviour{
                             if (clickCollider.tag=="ClickableSprite" && hearCollider.tag == "HearRange")
                             {
                                 Vector3 dirFromAtoB = (hearCollider.transform.position - clickCollider.transform.position).normalized;
-                                float dotProd = Vector3.Dot(dirFromAtoB, hearCollider.GetComponentInParent<Transform>().forward);
+
+
+                                GameObject enemy = hearCollider.transform.parent.parent.GetChild(0).gameObject;
+
+                                float dotProd = Vector3.Dot(dirFromAtoB, enemy.transform.forward);
                                 Debug.Log(dotProd);
                                 if (dotProd > 0.7)
                                 {
@@ -437,6 +446,7 @@ public class PlayerActions : MonoBehaviour{
     private void LateUpdate()
     {
         transform.position = new Vector3(transform.position.x,transform.position.y,0);
+        wakandaSprite.position = transform.position + new Vector3(-0.5f, 0.5f, 0);
     }
 
    
