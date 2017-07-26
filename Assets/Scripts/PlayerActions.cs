@@ -16,7 +16,7 @@ public class PlayerActions : MonoBehaviour{
     public int attackActions;
     public LayerMask enemyMask;
     public LayerMask obstacle;
-    public Transform wakandaSprite;
+    public Transform wakandaSpriteTransform;
     
 
 
@@ -49,8 +49,10 @@ public class PlayerActions : MonoBehaviour{
     private Image backgroundBar;
     private Image fakeActionsBar;
     private Image actionsBar;
-   
-   
+
+    private Animator anim;
+
+    private SpriteRenderer wakandaSprite;
 
     // Use this for initialization
     void Start ()
@@ -75,16 +77,40 @@ public class PlayerActions : MonoBehaviour{
         backgroundBar = GameObject.Find("BackgroundBar").GetComponent<Image>();
         fakeActionsBar = GameObject.Find("FakeActionsBar").GetComponent<Image>();
         actionsBar = GameObject.Find("ActionsBar").GetComponent<Image>();
-        wakandaSprite = GameObject.Find("WakandaSprite").transform;
+        wakandaSpriteTransform = GameObject.Find("WakandaSprite").transform;
         lineOfMovement.sortingLayerName = "SoundRange";
+        anim = wakandaSpriteTransform.GetComponent<Animator>();
+        wakandaSprite = wakandaSpriteTransform.GetComponent<SpriteRenderer>();
+    }
 
-
+    float AngleToPositive(float angle)
+    {
+        if (angle > 359)
+        {
+            return angle - 360;
+        }
+        else if (angle < 0)
+        {
+            return 360 - angle;
+        }
+        else return angle;
     }
 
     // Update is called once per frame
     void Update ()
     {
-        
+        if (AngleToPositive(transform.rotation.eulerAngles.z) > 45 && AngleToPositive(transform.rotation.eulerAngles.z) < 225)
+        {
+            wakandaSprite.flipX = true;
+        }
+        else
+        {
+            wakandaSprite.flipX = false;
+        }
+
+        anim.SetBool("isCrouched", isCrouched);
+        anim.SetBool("isMoving", aiLerp.canMove);
+        anim.SetFloat("Angle", AngleToPositive(transform.rotation.eulerAngles.z));
 
         if (isMyTurn)
         {
@@ -453,7 +479,7 @@ public class PlayerActions : MonoBehaviour{
     private void LateUpdate()
     {
         transform.position = new Vector3(transform.position.x,transform.position.y,0);
-        wakandaSprite.position = transform.position + new Vector3(-0.5f, 0.5f, 0);
+        wakandaSpriteTransform.position = transform.position + new Vector3(-0.5f, 0.5f, 0);
     }
 
    
