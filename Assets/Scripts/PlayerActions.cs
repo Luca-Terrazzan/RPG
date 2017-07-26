@@ -310,7 +310,7 @@ public class PlayerActions : MonoBehaviour{
 
     void EndTurn()
     {
-        if (!aiLerp.canMove)
+        if (!aiLerp.canMove && isMyTurn)
         {
             isMyTurn = false;
             DestroyClickableGrid();
@@ -326,7 +326,7 @@ public class PlayerActions : MonoBehaviour{
 
     void CrouchMethod()
     {
-        if(!aiLerp.canMove && !isHidden)
+        if(!aiLerp.canMove && !isHidden && isMyTurn)
         {
             DestroyClickableGrid();
             if (!isCrouched)
