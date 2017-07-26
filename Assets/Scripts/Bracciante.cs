@@ -55,9 +55,11 @@ public class Bracciante : MonoBehaviour
 
     private void Update()
     {
+        
        // Debug.Log(transform.up.ToString());
         if (isMyTurn)
         {
+           // this.gameObject.layer = 8;
             if (fov.FindVisibleTarget())
             {
                 hasSeenPlayer = true;
@@ -75,13 +77,19 @@ public class Bracciante : MonoBehaviour
                 hasHeardPlayer = true;
                 lastPositionHeard = new Vector3(playerTransform.position.x, playerTransform.position.y, 0);
             }
+            else
+            {
+                this.gameObject.layer = 8;
+            }
         }
     }
 
     IEnumerator ChangeTurnDelay(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
+       
         turnManager.changeTurn();
+        
     }
 
     public void StartTurn()                   //chiamato all'inizio del mio turno
@@ -92,7 +100,7 @@ public class Bracciante : MonoBehaviour
             return;
             
         }
-        this.gameObject.layer = 0;
+        this.gameObject.layer = 12;
         AstarPath.active.Scan();
         actionsAmount = maxActionsAmount;
         nodesCounter = 0;

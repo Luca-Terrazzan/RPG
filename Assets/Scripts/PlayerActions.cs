@@ -17,6 +17,7 @@ public class PlayerActions : MonoBehaviour{
     public LayerMask enemyMask;
     public LayerMask obstacle;
     public Transform wakandaSprite;
+    
 
 
     private GridGraph grid;
@@ -49,10 +50,12 @@ public class PlayerActions : MonoBehaviour{
     private Image fakeActionsBar;
     private Image actionsBar;
    
+   
 
     // Use this for initialization
     void Start ()
     {
+       
         clickableSprite = GameObject.Find("clickableSprite");
         cam = GameObject.Find("Camera").GetComponent<Camera>();
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
@@ -85,6 +88,7 @@ public class PlayerActions : MonoBehaviour{
 
         if (isMyTurn)
         {
+            AstarPath.active.Scan();
             actionsBar.fillAmount = (float)(playerActions - fakePlayerActions) / playerActionsPerTurn;
             fakeActionsBar.fillAmount = (float)playerActions / playerActionsPerTurn;
             if (canCreateGrid)
