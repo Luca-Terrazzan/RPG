@@ -91,7 +91,7 @@ public class PickUpItems : MonoBehaviour {
                 if (hit.collider != null)
                 {
 
-                    if ((hit.collider.gameObject.tag == "Bracciante" || hit.collider.tag == "CowBoy" || hit.collider.tag == "Puttana"))
+                    if ((hit.collider.gameObject.tag == "Bracciante" || hit.collider.tag == "CowBoy" || hit.collider.tag == "Prostituta"))
                     {
                         if (player.playerActions >= 6)
                         {

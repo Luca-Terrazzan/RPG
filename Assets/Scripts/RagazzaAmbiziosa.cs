@@ -112,12 +112,12 @@ public class RagazzaAmbiziosa : MonoBehaviour {
             return;
 
         }
+        isMyTurn = true;
         this.gameObject.layer = 12;
         AstarPath.active.Scan();
         actionsAmount = maxActionsAmount;
         nodesCounter = 0;
         hasSeenPlayer = false;
-        isMyTurn = true;
 
         Vector3 target = new Vector3();
  
@@ -142,7 +142,6 @@ public class RagazzaAmbiziosa : MonoBehaviour {
         AstarPath.active.Scan();
         isMyTurn = false;
         turnManager.changeTurn();
-        hasSeenPlayer = false;
     }
 
     public void TargetReached()     //chiamato quando ho raggiunto il nodo
