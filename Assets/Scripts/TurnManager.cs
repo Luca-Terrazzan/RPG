@@ -33,7 +33,7 @@ public class TurnManager : MonoBehaviour {
             }
             else if (charactersArray[i].gameObject.tag == "Prostituta")
             {
-                charactersArray[i].GetComponent<RagazzaAmbiziosa>().isMyTurn = true;
+                charactersArray[i].GetComponent<RagazzaAmbiziosa>().StartTurn();
             }
             else if (charactersArray[i].gameObject.tag == "CowBoy")
             {

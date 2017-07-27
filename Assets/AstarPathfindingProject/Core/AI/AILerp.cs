@@ -28,6 +28,7 @@ public class AILerp : VersionedMonoBehaviour {
 
     private Bracciante bracciante;
     private PlayerActions player;
+    private RagazzaAmbiziosa ragazza;
 
     
 	/** Determines how often it will search for new paths.
@@ -138,6 +139,7 @@ public class AILerp : VersionedMonoBehaviour {
         Init();
         bracciante = GetComponent<Bracciante>();
         player = GetComponent<PlayerActions>();
+        ragazza = GetComponent<RagazzaAmbiziosa>();
 	}
 
 	/** Called when the component is enabled */
@@ -250,6 +252,10 @@ public class AILerp : VersionedMonoBehaviour {
         if(player!=null)
         {
             player.TargetReached();
+        }
+        if (ragazza != null)
+        {
+            ragazza.TargetReached();
         }
 	}
 

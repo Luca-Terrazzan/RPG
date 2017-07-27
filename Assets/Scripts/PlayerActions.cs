@@ -171,8 +171,8 @@ public class PlayerActions : MonoBehaviour{
                             lineOfMovement.SetPosition(i, new Vector3(pathNodeList[i].x,pathNodeList[i].y,0));
                             lineOfMovement.SetPosition(i + 1, new Vector3(pathNodeList[i + 1].x,pathNodeList[i+1].y,0));
 
-                            GameObject clickCollider = new GameObject();
-                            GameObject hearCollider = new GameObject();
+                            GameObject clickCollider = gameObject;
+                            GameObject hearCollider = gameObject;
                             for (int j = 0; j < changeColor.Length;  j++)
                             {
                                if (changeColor[j].tag == "HearRange")
