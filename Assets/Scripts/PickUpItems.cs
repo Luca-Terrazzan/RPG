@@ -24,7 +24,7 @@ public class PickUpItems : MonoBehaviour {
             Destroy(collision.gameObject);
             Debug.Log("Hai preso la chiave.Amaze.");
         }
-        else if (collision.gameObject.tag == "ExitDoor")
+        if (collision.gameObject.tag == "ExitDoor")
          {
             if (player.hasKey)
             {
@@ -37,7 +37,7 @@ public class PickUpItems : MonoBehaviour {
             }
          }
 
-       else if (collision.gameObject.tag == "OggettoRaccoglibileAcaso")
+        if (collision.gameObject.tag == "OggettoRaccoglibileAcaso")
         {
             Debug.Log("Bravo hai preso un oggetto inutile.Amaze.");
             // store object somewhere 
@@ -53,6 +53,11 @@ public class PickUpItems : MonoBehaviour {
         {
             player.canHide = true;
             player.armadioFrontTransform = collision.transform;
+        }
+        if (collision.gameObject.CompareTag("EnterDoor"))
+        {
+            Debug.Log("Passa alla scena successiva");
+           
         }
     }
 

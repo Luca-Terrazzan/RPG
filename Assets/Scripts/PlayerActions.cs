@@ -97,8 +97,11 @@ public class PlayerActions : MonoBehaviour{
     }
 
     // Update is called once per frame
-    void Update ()
+    void Update()
     {
+        
+        
+
         if (AngleToPositive(transform.rotation.eulerAngles.z) > 45 && AngleToPositive(transform.rotation.eulerAngles.z) < 225)
         {
             wakandaSprite.flipX = true;
@@ -119,7 +122,7 @@ public class PlayerActions : MonoBehaviour{
             fakeActionsBar.fillAmount = (float)playerActions / playerActionsPerTurn;
             if (canCreateGrid)
             {
-                if(!isHidden)
+                if (!isHidden)
                 {
                     if (!isCrouched)
                     {
@@ -130,7 +133,7 @@ public class PlayerActions : MonoBehaviour{
                         CreateClickableGrid((int)Mathf.Floor(playerActions / 2));
                     }
                 }
-                else if(isHidden)
+                else if (isHidden)
                 {
                     GameObject clone = Instantiate(clickableSprite, armadioFrontTransform.position, Quaternion.identity);
                     clone.tag = "HideSprite";
@@ -153,29 +156,28 @@ public class PlayerActions : MonoBehaviour{
                         p.BlockUntilCalculated();
                         List<Vector3> pathNodeList = p.vectorPath;
                         lineOfMovement.positionCount = pathNodeList.Count;
-                        //  lineOfMovement.SetPosition(0, this.transform.position);
-                        //  lineOfMovement.SetPosition(1, hit.transform.position);
-
                        
-                            for (int i = 0; i < clickableSpriteList.Count; i++)
-                            {
-                            if(clickableSpriteList[i]!=null)
+
+
+                        for (int i = 0; i < clickableSpriteList.Count; i++)
+                        {
+                            if (clickableSpriteList[i] != null)
                                 clickableSpriteList[i].GetComponent<SpriteRenderer>().color = Color.cyan;
-                            }
-                        
-                        
+                        }
+
+
 
                         for (int i = 0; i < pathNodeList.Count - 1; i++)
                         {
                             Collider[] changeColor = Physics.OverlapBox(new Vector3(pathNodeList[i + 1].x, pathNodeList[i + 1].y, 0), new Vector3(this.transform.localScale.x / 2, this.transform.localScale.y / 2, 6f));
-                            lineOfMovement.SetPosition(i, new Vector3(pathNodeList[i].x,pathNodeList[i].y,0));
-                            lineOfMovement.SetPosition(i + 1, new Vector3(pathNodeList[i + 1].x,pathNodeList[i+1].y,0));
+                            lineOfMovement.SetPosition(i, new Vector3(pathNodeList[i].x, pathNodeList[i].y, 0));
+                            lineOfMovement.SetPosition(i + 1, new Vector3(pathNodeList[i + 1].x, pathNodeList[i + 1].y, 0));
 
                             GameObject clickCollider = gameObject;
                             GameObject hearCollider = gameObject;
-                            for (int j = 0; j < changeColor.Length;  j++)
+                            for (int j = 0; j < changeColor.Length; j++)
                             {
-                               if (changeColor[j].tag == "HearRange")
+                                if (changeColor[j].tag == "HearRange")
                                 {
                                     hearCollider = changeColor[j].gameObject;
                                 }
@@ -186,7 +188,7 @@ public class PlayerActions : MonoBehaviour{
 
 
                             }
-                            if (clickCollider.tag=="ClickableSprite" && hearCollider.tag == "HearRange")
+                            if (clickCollider.tag == "ClickableSprite" && hearCollider.tag == "HearRange")
                             {
                                 Vector3 dirFromAtoB = (hearCollider.transform.position - clickCollider.transform.position).normalized;
 
@@ -198,15 +200,15 @@ public class PlayerActions : MonoBehaviour{
                                 if (dotProd > 0.7)
                                 {
                                     clickCollider.GetComponent<SpriteRenderer>().color = Color.red;
-                                }                            
+                                }
                                 else clickCollider.GetComponent<SpriteRenderer>().color = Color.yellow;
-                            } 
+                            }
 
                         }
-                        
+
 
                         fakePlayerActions = Mathf.RoundToInt(p.GetTotalLength());
-                        
+
                         if (Input.GetMouseButtonDown(0))
                         {
                             aiLerp.canMove = true;
@@ -261,55 +263,29 @@ public class PlayerActions : MonoBehaviour{
                         }
                     }
 
-                    /*       if (Input.GetMouseButtonDown(0))
-                           {
 
-                               if (hit.collider != null)
-                               {
-
-                                   if (hit.collider.tag == "ClickableSprite")
-                                   {
-                                       SubtractMovementActions(hit.collider.transform.position);
-                                       //aiLerp.target.position = hit.transform.position;
-                                       DestroyClickableGrid();
-                                      // aiLerp.canMove = true;
-                                       if (isCrouched)
-                                       {
-                                           canBeHeard = false;
-                                       }
-                                       else
-                                       {
-                                           canBeHeard = true;
-                                       }
-                                   }
-
-
-                               }
-
-                           } */
                 }
 
-                
+
             }
-            else 
 
-        if (isFreeRoaming)
-
+        }
+        if (isFreeRoaming) // variabile da attivare quando ci si trova in un'area esterna alle zone pericolose
         {
-            DestroyClickableGrid();
-           
-           /* if (Input.GetMouseButtonDown(0))
+            lineOfMovement.enabled = false;  
+            DestroyClickableGrid(); // distruzione delle griglie per liberare il giocatore dal vincolo dei punti azione 
+
+            if (Input.GetMouseButtonDown(0))
             {
-              //  Debug.Log("Ciao");
 
                 RaycastHit hit;
 
-                if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit))
+                if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit))        
                 {
                     Debug.Log(hit.collider.gameObject.tag);
-                    if ( hit.collider.tag != "Obstacle")
+                    if (hit.collider.tag != "Obstacle")
                     {
-                        Debug.Log("yes");
+                       
                         aiLerp.canMove = true;
 
                         GraphNode node = AstarPath.active.GetNearest(hit.point).node;
@@ -318,23 +294,21 @@ public class PlayerActions : MonoBehaviour{
                         {
                             Path p = seeker.StartPath(transform.position, (Vector3)node.position);
                             p.BlockUntilCalculated();
-                            Debug.Log("hit point" + hit.point);
-                            Debug.Log("node " + (Vector3)node.position);
+                            Debug.Log("hit point" + hit.point);                                                    
+                            Debug.Log("node " + (Vector3)node.position);                                   
                         }
 
-                        
+
                     }
-                 
-                } */
+
+                }
             }
 
-            
-        }
-        
-		
-	}
 
-    void EndTurn()
+        }
+    }
+
+        void EndTurn()
     {
         if (!aiLerp.canMove && isMyTurn)
         {
@@ -418,7 +392,7 @@ public class PlayerActions : MonoBehaviour{
                     }
                 }
 
-                //Debug.Log("" + (Vector3)node.position); <<<---- utile 
+               
 
             }
         }); 
