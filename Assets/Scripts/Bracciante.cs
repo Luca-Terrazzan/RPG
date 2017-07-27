@@ -172,7 +172,7 @@ public class Bracciante : MonoBehaviour
                     }
                     else
                     {
-                        /////////////////////////////se i nodi del path sono finiti mi trovo nella casella adiacente al player quindi lo killo quel bastardo e gli dico git gud casual
+                        ////se i nodi del path sono finiti mi trovo nella casella adiacente al player quindi lo killo quel bastardo e gli dico git gud casual
                         KillPlayer();
                     }
                 }
@@ -194,7 +194,7 @@ public class Bracciante : MonoBehaviour
                 }
                 else                //se sono arrivato al penultimo nodo del path
                 {
-                    //Sto negro fa un controllo di tot gradi in giro per cercare il player
+                    //Fa un 360 no scope in giro per cercare il player
                     aiLerp.enableRotation = false;
                     transform.up = new Vector3(vectorNodesArray[nodesCounter].x, vectorNodesArray[nodesCounter].y,0) - transform.position;
                     nextTurnAngle[0].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 45);
@@ -239,7 +239,7 @@ public class Bracciante : MonoBehaviour
                     GoToNode(vectorNodesArray[nodesCounter]);                  //vado al primo nodo del path
                     nodesCounter++;
                 }
-                else        //se non ho più azioni disponibili FINISCO IL MIO DIO CANE DI TURNO MADONNA LADRA
+                else        //se non ho più azioni disponibili FINISCO IL MIO DIO CANE DI TURNO
                 {
                     isMyTurn = false;
                     turnManager.changeTurn();
