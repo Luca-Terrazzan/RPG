@@ -71,7 +71,7 @@ public class RagazzaAmbiziosa : MonoBehaviour {
             else if (fov.AmIHearingPlayer())
             {
                 hasHeardPlayer = true;
-                lastPositionHeard = (Vector3)grid.GetNearest(new Vector3(playerTransform.position.x, playerTransform.position.y, 0)).node.position;
+                lastPositionHeard = new Vector3(playerTransform.position.x, playerTransform.position.y, 0);
             }
             else
             {
@@ -108,7 +108,10 @@ public class RagazzaAmbiziosa : MonoBehaviour {
         if (hasHeardPlayer)                    //se ho sentito il player ma quel nigga se l'è svignata
         {
             hasHeardPlayer = false;
-            ThrowBomb(lastPositionHeard);
+            Path p = seeker.StartPath(transform.position,lastPositionHeard);
+            p.BlockUntilCalculated();
+            lastPositionHeard = p.vectorPath[p.vectorPath.Count - 1];
+            ThrowBomb((Vector3)grid.GetNearest(lastPositionHeard).node.position);
         }
         
         target = waypoints[waypointsCounter].position;

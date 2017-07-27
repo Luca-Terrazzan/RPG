@@ -1,19 +1,13 @@
 fileFormatVersion: 2
-guid: 7226bd5be2bb2d049b29c230188ef513
-timeCreated: 1501143433
+guid: 6b04b7b5b40b8c04da1eb6e720ec43c0
+timeCreated: 1501157525
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Wakanda_Crouch_Front_Idle_0
-    21300002: Wakanda_Crouch_Front_Idle_1
-    21300004: Wakanda_Crouch_Front_Idle_2
-    21300006: Wakanda_Crouch_Front_Idle_3
-    21300008: Wakanda_Crouch_Front_Idle_4
-    21300010: Wakanda_Crouch_Front_Idle_5
-    21300012: Wakanda_Crouch_Front_Idle_6
-    21300014: Wakanda_Crouch_Front_Idle_7
-    21300016: Wakanda_Crouch_Front_Idle_8
-    21300018: Wakanda_Crouch_Front_Idle_9
+    21300000: Wakanda_Crouch_Back_Idle_06_0
+    21300002: Wakanda_Crouch_Back_Idle_06_1
+    21300004: Wakanda_Crouch_Back_Idle_06_2
+    21300006: Wakanda_Crouch_Back_Idle_06_3
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -96,130 +90,52 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Wakanda_Crouch_Front_Idle_0
+      name: Wakanda_Crouch_Back_Idle_06_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 690
-        height: 479
+        width: 664
+        height: 452
       alignment: 9
       pivot: {x: 0.5, y: 0.65}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wakanda_Crouch_Front_Idle_1
+      name: Wakanda_Crouch_Back_Idle_06_1
       rect:
         serializedVersion: 2
-        x: 690
+        x: 664
         y: 0
-        width: 690
-        height: 479
+        width: 664
+        height: 452
       alignment: 9
       pivot: {x: 0.5, y: 0.65}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wakanda_Crouch_Front_Idle_2
+      name: Wakanda_Crouch_Back_Idle_06_2
       rect:
         serializedVersion: 2
-        x: 1380
+        x: 1328
         y: 0
-        width: 690
-        height: 479
+        width: 664
+        height: 452
       alignment: 9
       pivot: {x: 0.5, y: 0.65}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wakanda_Crouch_Front_Idle_3
+      name: Wakanda_Crouch_Back_Idle_06_3
       rect:
         serializedVersion: 2
-        x: 2070
+        x: 1992
         y: 0
-        width: 690
-        height: 479
-      alignment: 9
-      pivot: {x: 0.5, y: 0.65}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Wakanda_Crouch_Front_Idle_4
-      rect:
-        serializedVersion: 2
-        x: 2760
-        y: 0
-        width: 690
-        height: 479
-      alignment: 9
-      pivot: {x: 0.5, y: 0.65}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Wakanda_Crouch_Front_Idle_5
-      rect:
-        serializedVersion: 2
-        x: 3450
-        y: 0
-        width: 690
-        height: 479
-      alignment: 9
-      pivot: {x: 0.5, y: 0.65}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Wakanda_Crouch_Front_Idle_6
-      rect:
-        serializedVersion: 2
-        x: 4140
-        y: 0
-        width: 690
-        height: 479
-      alignment: 9
-      pivot: {x: 0.5, y: 0.65}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Wakanda_Crouch_Front_Idle_7
-      rect:
-        serializedVersion: 2
-        x: 4830
-        y: 0
-        width: 690
-        height: 479
-      alignment: 9
-      pivot: {x: 0.5, y: 0.65}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Wakanda_Crouch_Front_Idle_8
-      rect:
-        serializedVersion: 2
-        x: 5520
-        y: 0
-        width: 690
-        height: 479
-      alignment: 9
-      pivot: {x: 0.5, y: 0.65}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Wakanda_Crouch_Front_Idle_9
-      rect:
-        serializedVersion: 2
-        x: 6210
-        y: 0
-        width: 690
-        height: 479
+        width: 664
+        height: 452
       alignment: 9
       pivot: {x: 0.5, y: 0.65}
       border: {x: 0, y: 0, z: 0, w: 0}
