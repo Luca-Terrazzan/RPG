@@ -358,6 +358,11 @@ public class PlayerActions : MonoBehaviour{
         Debug.Log("Mmmhhh.. Utile.");
     }
 
+    public void Die()
+    {
+        Debug.Log("Hai perso");
+    }
+
     public void TargetReached()
     {
         if (isCrouched)

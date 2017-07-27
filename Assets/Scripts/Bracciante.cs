@@ -29,7 +29,6 @@ public class Bracciante : MonoBehaviour
     private bool hasToSetPlayerPath = true;
     private Vector3 lastPositionHeard;
     public bool imDead;
-    public GameObject seiMorto;
 
     private int numberOfPathNodes;
     Quaternion[] nextTurnAngle = new Quaternion[3];
@@ -296,8 +295,7 @@ public class Bracciante : MonoBehaviour
 
     public void KillPlayer()
     {
-        Debug.Log("Sei morto porcoddio");
-        Instantiate(seiMorto, transform.position, Quaternion.identity);
+        playerTransform.GetComponent<PlayerActions>().Die();
     }
 
 

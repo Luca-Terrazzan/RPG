@@ -59,6 +59,15 @@ public class PickUpItems : MonoBehaviour {
             Debug.Log("Passa alla scena successiva");
            
         }
+
+        if (collision.tag == "InnerExplosion")
+        {
+            player.Die();
+        }
+        if (collision.tag == "OuterExplosion")
+        {
+            player.playerActions -= 5;
+        }
     }
 
     public void OnTriggerExit(Collider other)

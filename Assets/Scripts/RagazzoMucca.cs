@@ -17,6 +17,8 @@ public class RagazzoMucca : MonoBehaviour {
     private float originalViewAngle;
     public Transform enemyRear;
 
+    private bool canKillPlayer = true;
+
     private void Start()
     {
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
@@ -93,9 +95,14 @@ public class RagazzoMucca : MonoBehaviour {
 
     public void KillThePlayer()
     {
-        // animazione sparo 
-        // bool player morto
-        Debug.Log("Pew pew pew. Git Gud sei morto casual");
+        if (canKillPlayer)
+        {
+            // animazione sparo 
+            // bool player morto
+            player.Die();
+            Debug.Log("Pew pew pew. Git Gud sei morto casual");
+            canKillPlayer = false;
+        }       
     }
 
     private void SleepingManager()

@@ -27,13 +27,17 @@ public class RagazzaAmbiziosa : MonoBehaviour {
     private bool hasToSetPlayerPath = true;
     private Vector3 lastPositionHeard;
     public bool imDead;
-    public GameObject seiMorto;
 
     private int numberOfPathNodes;
     Quaternion[] nextTurnAngle = new Quaternion[3];
 
     public Transform playerTransform;
     public Transform enemyRear;
+
+    public GameObject bomb;
+    public GameObject explosion;
+
+    private bool canThrowBomb = true;
 
 
     // Use this for initialization
@@ -59,14 +63,26 @@ public class RagazzaAmbiziosa : MonoBehaviour {
             // this.gameObject.layer = 8;
             if (fov.FindVisibleTarget())
             {
-                ThrowBomb(playerTransform.position);
+                if(canThrowBomb)
+                {
+                    ThrowBomb(playerTransform.position);
+                    canThrowBomb = false;
+                    aiLerp.canMove = false;
+                    playerTransform.GetComponent<AILerp>().canMove = false;
+                }
             }
         }
         else
         {
             if (fov.FindVisibleTarget())
             {
-                ThrowBomb(playerTransform.position);
+                if (canThrowBomb)
+                {
+                    ThrowBomb(playerTransform.position);
+                    canThrowBomb = false;
+                    aiLerp.canMove = false;
+                    playerTransform.GetComponent<AILerp>().canMove = false;
+                }
             }
             else if (fov.AmIHearingPlayer())
             {
@@ -173,6 +189,24 @@ public class RagazzaAmbiziosa : MonoBehaviour {
     public void ThrowBomb(Vector3 position)
     {
         Debug.Log("Lancio una bomba in posizione: " + position.ToString());
+        GameObject b = Instantiate(bomb, transform.position, Quaternion.identity);
+        StartCoroutine(BombLerp(b,position));
+    }
+
+    IEnumerator BombLerp(GameObject b,Vector3 position)
+    {
+        float timer = 0;
+        float timeToLerp = 1;
+        while (timer < timeToLerp)
+        {
+            timer += Time.deltaTime;
+            b.transform.position = Vector3.Lerp(b.transform.position, position,timer/timeToLerp);
+            yield return null;
+        }
+        GameObject expl = Instantiate(explosion, b.transform.position,Quaternion.identity);
+        Destroy(b);
+        Destroy(expl, 1);
+        yield return null;
     }
 
 
