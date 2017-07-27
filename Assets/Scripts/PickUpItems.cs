@@ -6,8 +6,7 @@ public class PickUpItems : MonoBehaviour {
 
     private PlayerActions player;
 
-    public static int positionArrayIndex;
-    public Vector3[] posizioniPorte;
+
 	// Use this for initialization
 	void Start ()
     {
