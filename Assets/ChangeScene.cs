@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class ChangeScene : MonoBehaviour
 {
-    public enum levels { Fattoria, Becchino, Prigione, Bordello, Corridoio, Saloon, Cimitero, duplè};
+    public enum levels { Fattoria, Becchino, Prigione, Bordello, Corridoio, Saloon, Cimitero, duplè,ChangeScene };
     public levels GoToScene;
 
 

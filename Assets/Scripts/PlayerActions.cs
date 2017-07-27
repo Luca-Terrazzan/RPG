@@ -4,6 +4,7 @@ using UnityEngine;
 using Pathfinding;
 using Pathfinding.Util;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerActions : MonoBehaviour{
 
@@ -51,9 +52,23 @@ public class PlayerActions : MonoBehaviour{
     private Image actionsBar;
 
     private Animator anim;
+    private Transform newPos;
 
     private SpriteRenderer wakandaSprite;
 
+    private void Awake()
+    {
+
+        
+      
+            newPos = GameObject.Find("pos").GetComponent<Transform>();
+            this.transform.position = newPos.position;
+     
+       
+       
+        
+        
+    }
     // Use this for initialization
     void Start ()
     {
@@ -81,6 +96,7 @@ public class PlayerActions : MonoBehaviour{
         lineOfMovement.sortingLayerName = "SoundRange";
         anim = wakandaSpriteTransform.GetComponent<Animator>();
         wakandaSprite = wakandaSpriteTransform.GetComponent<SpriteRenderer>();
+        
     }
 
     float AngleToPositive(float angle)

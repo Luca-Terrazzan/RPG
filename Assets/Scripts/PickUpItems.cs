@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PickUpItems : MonoBehaviour {
 
@@ -26,9 +27,12 @@ public class PickUpItems : MonoBehaviour {
         }
         if (collision.gameObject.tag == "ExitDoor")
          {
+           
             if (player.hasKey)
             {
                 Debug.Log("Puoi uscire.Wow.");
+                SceneManager.LoadScene("GhostTown");
+
                 // go to main scene and set hasKey to false
             }
             else
