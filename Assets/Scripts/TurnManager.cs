@@ -25,8 +25,8 @@ public class TurnManager : MonoBehaviour {
     /// </summary>
     public void changeTurn()
     {
-        
-
+        if (charactersArray[i] != null)
+        {
             if (charactersArray[i].gameObject.tag == "Bracciante")
             {
                 charactersArray[i].GetComponent<Bracciante>().StartTurn();
@@ -52,6 +52,19 @@ public class TurnManager : MonoBehaviour {
             {
                 i = 0;
             }
+        }
+        else
+        {
+            if (i < charactersArray.Length - 1)
+            {
+                i++;
+            }
+            else
+            {
+                i = 0;
+            }
+            changeTurn();
+        } 
         
     }
 }
