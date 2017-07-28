@@ -65,6 +65,7 @@ public class PlayerActions : MonoBehaviour{
         if (isFreeRoaming)
         {
             newPos = GameObject.Find("FreeRoamingManager").GetComponent<FreeRoamingPos>();
+            newPos.ChangeFreeroamingPos();
         }
         clickableSprite = GameObject.Find("clickableSprite");
         cam = GameObject.Find("Camera").GetComponent<Camera>();
@@ -90,11 +91,8 @@ public class PlayerActions : MonoBehaviour{
         anim = wakandaSpriteTransform.GetComponent<Animator>();
         wakandaSprite = wakandaSpriteTransform.GetComponent<SpriteRenderer>();
 
-        if (isFreeRoaming)
-        {
-            newPos.ChangeFreeroamingPos();
-        }
-        anim.SetFloat("Angle", AngleToPositive(transform.rotation.eulerAngles.z));
+
+
     }
 
     float AngleToPositive(float angle)
@@ -113,8 +111,7 @@ public class PlayerActions : MonoBehaviour{
     // Update is called once per frame
     void Update()
     {
-        
-        
+        Debug.Log(SceneManager.GetActiveScene().name);
 
         if (AngleToPositive(transform.rotation.eulerAngles.z) > 45 && AngleToPositive(transform.rotation.eulerAngles.z) < 225)
         {
@@ -375,6 +372,7 @@ public class PlayerActions : MonoBehaviour{
     public void Die()
     {
         Debug.Log("Hai perso");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void TargetReached()
