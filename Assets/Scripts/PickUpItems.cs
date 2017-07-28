@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PickUpItems : MonoBehaviour {
 
@@ -26,9 +27,12 @@ public class PickUpItems : MonoBehaviour {
         }
         if (collision.gameObject.tag == "ExitDoor")
          {
+           
             if (player.hasKey)
             {
                 Debug.Log("Puoi uscire.Wow.");
+                SceneManager.LoadScene("GhostTown");
+
                 // go to main scene and set hasKey to false
             }
             else
@@ -59,6 +63,15 @@ public class PickUpItems : MonoBehaviour {
             Debug.Log("Passa alla scena successiva");
            
         }
+
+        if (collision.tag == "InnerExplosion")
+        {
+            player.Die();
+        }
+        if (collision.tag == "OuterExplosion")
+        {
+            player.playerActions -= 5;
+        }
     }
 
     public void OnTriggerExit(Collider other)
@@ -82,7 +95,7 @@ public class PickUpItems : MonoBehaviour {
                 if (hit.collider != null)
                 {
 
-                    if ((hit.collider.gameObject.tag == "Bracciante" || hit.collider.tag == "CowBoy" || hit.collider.tag == "Puttana"))
+                    if ((hit.collider.gameObject.tag == "Bracciante" || hit.collider.tag == "CowBoy" || hit.collider.tag == "Prostituta"))
                     {
                         if (player.playerActions >= 6)
                         {

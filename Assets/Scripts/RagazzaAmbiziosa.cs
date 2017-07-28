@@ -27,13 +27,17 @@ public class RagazzaAmbiziosa : MonoBehaviour {
     private bool hasToSetPlayerPath = true;
     private Vector3 lastPositionHeard;
     public bool imDead;
-    public GameObject seiMorto;
 
     private int numberOfPathNodes;
     Quaternion[] nextTurnAngle = new Quaternion[3];
 
     public Transform playerTransform;
     public Transform enemyRear;
+
+    public GameObject bomb;
+    public GameObject explosion;
+
+    private bool canThrowBomb = true;
 
 
     // Use this for initialization
@@ -59,19 +63,31 @@ public class RagazzaAmbiziosa : MonoBehaviour {
             // this.gameObject.layer = 8;
             if (fov.FindVisibleTarget())
             {
-                ThrowBomb(playerTransform.position);
+                if(canThrowBomb)
+                {
+                    ThrowBomb(playerTransform.position);
+                    canThrowBomb = false;
+                    aiLerp.canMove = false;
+                    playerTransform.GetComponent<AILerp>().canMove = false;
+                }
             }
         }
         else
         {
             if (fov.FindVisibleTarget())
             {
-                ThrowBomb(playerTransform.position);
+                if (canThrowBomb)
+                {
+                    ThrowBomb(playerTransform.position);
+                    canThrowBomb = false;
+                    aiLerp.canMove = false;
+                    playerTransform.GetComponent<AILerp>().canMove = false;
+                }
             }
             else if (fov.AmIHearingPlayer())
             {
                 hasHeardPlayer = true;
-                lastPositionHeard = (Vector3)grid.GetNearest(new Vector3(playerTransform.position.x, playerTransform.position.y, 0)).node.position;
+                lastPositionHeard = new Vector3(playerTransform.position.x, playerTransform.position.y, 0);
             }
             else
             {
@@ -96,19 +112,22 @@ public class RagazzaAmbiziosa : MonoBehaviour {
             return;
 
         }
+        isMyTurn = true;
         this.gameObject.layer = 12;
         AstarPath.active.Scan();
         actionsAmount = maxActionsAmount;
         nodesCounter = 0;
         hasSeenPlayer = false;
-        isMyTurn = true;
 
         Vector3 target = new Vector3();
  
         if (hasHeardPlayer)                    //se ho sentito il player ma quel nigga se l'è svignata
         {
             hasHeardPlayer = false;
-            ThrowBomb(lastPositionHeard);
+            Path p = seeker.StartPath(transform.position,lastPositionHeard);
+            p.BlockUntilCalculated();
+            lastPositionHeard = p.vectorPath[p.vectorPath.Count - 1];
+            ThrowBomb((Vector3)grid.GetNearest(lastPositionHeard).node.position);
         }
         
         target = waypoints[waypointsCounter].position;
@@ -123,7 +142,6 @@ public class RagazzaAmbiziosa : MonoBehaviour {
         AstarPath.active.Scan();
         isMyTurn = false;
         turnManager.changeTurn();
-        hasSeenPlayer = false;
     }
 
     public void TargetReached()     //chiamato quando ho raggiunto il nodo
@@ -170,6 +188,24 @@ public class RagazzaAmbiziosa : MonoBehaviour {
     public void ThrowBomb(Vector3 position)
     {
         Debug.Log("Lancio una bomba in posizione: " + position.ToString());
+        GameObject b = Instantiate(bomb, transform.position, Quaternion.identity);
+        StartCoroutine(BombLerp(b,position));
+    }
+
+    IEnumerator BombLerp(GameObject b,Vector3 position)
+    {
+        float timer = 0;
+        float timeToLerp = 1;
+        while (timer < timeToLerp)
+        {
+            timer += Time.deltaTime;
+            b.transform.position = Vector3.Lerp(b.transform.position, position,timer/timeToLerp);
+            yield return null;
+        }
+        GameObject expl = Instantiate(explosion, b.transform.position,Quaternion.identity);
+        Destroy(b);
+        Destroy(expl, 1);
+        yield return null;
     }
 
 
