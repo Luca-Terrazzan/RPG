@@ -47,9 +47,11 @@ public class PlayerActions : MonoBehaviour{
     private Button crouchButton;
     private Button endTurnButton;
     private Button menuButton;
+    private Image menuImage;
     private Image backgroundBar;
     private Image fakeActionsBar;
     private Image actionsBar;
+    public GameObject menuInterface;
 
     private Animator anim;
 
@@ -90,6 +92,10 @@ public class PlayerActions : MonoBehaviour{
         lineOfMovement.sortingLayerName = "SoundRange";
         anim = wakandaSpriteTransform.GetComponent<Animator>();
         wakandaSprite = wakandaSpriteTransform.GetComponent<SpriteRenderer>();
+        
+       
+        
+        
 
 
 
@@ -111,7 +117,7 @@ public class PlayerActions : MonoBehaviour{
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(SceneManager.GetActiveScene().name);
+        
 
         if (AngleToPositive(transform.rotation.eulerAngles.z) > 45 && AngleToPositive(transform.rotation.eulerAngles.z) < 225)
         {
@@ -295,7 +301,7 @@ public class PlayerActions : MonoBehaviour{
                 if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit))        
                 {
                     Debug.Log(hit.collider.gameObject.tag);
-                    if (hit.collider.tag != "Obstacle")
+                    if (hit.collider.tag != "Obstacle" && hit.collider.tag != "Menu")
                     {
                        
                         aiLerp.canMove = true;
@@ -367,6 +373,11 @@ public class PlayerActions : MonoBehaviour{
     void Menu()
     {
         Debug.Log("Mmmhhh.. Utile.");
+
+        menuInterface.SetActive(true);
+       
+        
+
     }
 
     public void Die()
