@@ -52,27 +52,18 @@ public class PlayerActions : MonoBehaviour{
     private Image actionsBar;
 
     private Animator anim;
-    private Transform newPos;
+
+    private FreeRoamingPos newPos;
+
 
     private SpriteRenderer wakandaSprite;
 
-    private void Awake()
-    {
-
-        
-      
-            newPos = GameObject.Find("pos").GetComponent<Transform>();
-            this.transform.position = newPos.position;
-     
-       
-       
-        
-        
-    }
+   
     // Use this for initialization
     void Start ()
     {
-       
+
+        newPos = GameObject.Find("FreeRoamingManager").GetComponent<FreeRoamingPos>();
         clickableSprite = GameObject.Find("clickableSprite");
         cam = GameObject.Find("Camera").GetComponent<Camera>();
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
@@ -96,7 +87,12 @@ public class PlayerActions : MonoBehaviour{
         lineOfMovement.sortingLayerName = "SoundRange";
         anim = wakandaSpriteTransform.GetComponent<Animator>();
         wakandaSprite = wakandaSpriteTransform.GetComponent<SpriteRenderer>();
-        
+
+        if (isFreeRoaming)
+        {
+            newPos.ChangeFreeroamingPos();
+        }
+
     }
 
     float AngleToPositive(float angle)
