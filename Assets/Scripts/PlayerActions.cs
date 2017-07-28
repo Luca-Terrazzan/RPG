@@ -62,8 +62,10 @@ public class PlayerActions : MonoBehaviour{
     // Use this for initialization
     void Start ()
     {
-
-        newPos = GameObject.Find("FreeRoamingManager").GetComponent<FreeRoamingPos>();
+        if (isFreeRoaming)
+        {
+            newPos = GameObject.Find("FreeRoamingManager").GetComponent<FreeRoamingPos>();
+        }
         clickableSprite = GameObject.Find("clickableSprite");
         cam = GameObject.Find("Camera").GetComponent<Camera>();
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
@@ -92,7 +94,7 @@ public class PlayerActions : MonoBehaviour{
         {
             newPos.ChangeFreeroamingPos();
         }
-
+        anim.SetFloat("Angle", AngleToPositive(transform.rotation.eulerAngles.z));
     }
 
     float AngleToPositive(float angle)

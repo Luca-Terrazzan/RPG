@@ -6,10 +6,10 @@ public class FreeRoamingPos : MonoBehaviour {
 
     private PlayerActions playerPos;
     public GameObject[] newPos;
-    [SerializeField] private int i = 0;
+    static int i = 0;
 
 	// Use this for initialization
-	void Start ()
+	void Awake ()
     {
         playerPos = GameObject.Find("Player").GetComponent<PlayerActions>();
 	}
