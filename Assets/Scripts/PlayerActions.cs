@@ -5,6 +5,7 @@ using Pathfinding;
 using Pathfinding.Util;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class PlayerActions : MonoBehaviour{
 
@@ -44,14 +45,14 @@ public class PlayerActions : MonoBehaviour{
     private SpriteRenderer sprite;
     private LineRenderer lineOfMovement;
 
-    private Button crouchButton;
-    private Button endTurnButton;
-    private Button menuButton;
-    private Image menuImage;
-    private Image backgroundBar;
-    private Image fakeActionsBar;
-    private Image actionsBar;
-    public GameObject menuInterface;
+    // private Button crouchButton;
+    // private Button endTurnButton;
+    // private Button menuButton;
+    // private Button exit;
+    // private Button backToGame;
+    private Button crouchButton, endTurnButton, menuButton, goToExitInterface, backToGame, exitTheGame, backToGameTwo ;
+
+    private Image exitInterface, menuInterface, actionsBar, fakeActionsBar, backgroundBar, menuImage;
 
     private Animator anim;
 
@@ -64,14 +65,42 @@ public class PlayerActions : MonoBehaviour{
     // Use this for initialization
     void Start ()
     {
+        #region FindObjects
+
         if (isFreeRoaming)
         {
             newPos = GameObject.Find("FreeRoamingManager").GetComponent<FreeRoamingPos>();
             newPos.ChangeFreeroamingPos();
         }
+        menuInterface = GameObject.Find("MenuInterface").GetComponent<Image>();
+        backgroundBar = GameObject.Find("BackgroundBar").GetComponent<Image>();
+        fakeActionsBar = GameObject.Find("FakeActionsBar").GetComponent<Image>();
+        crouchButton = GameObject.Find("Crouch").GetComponent<Button>();
+        endTurnButton = GameObject.Find("EndTurn").GetComponent<Button>();
+        menuButton = GameObject.Find("Menu").GetComponent<Button>();
+        backToGame = GameObject.Find("Riprendi").GetComponent<Button>();
+        goToExitInterface = GameObject.Find("Esci").GetComponent<Button>();
+        wakandaSpriteTransform = GameObject.Find("WakandaSprite").transform;
+        actionsBar = GameObject.Find("ActionsBar").GetComponent<Image>();
         clickableSprite = GameObject.Find("clickableSprite");
         cam = GameObject.Find("Camera").GetComponent<Camera>();
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
+        exitInterface = GameObject.Find("ExitInterface").GetComponent<Image>();
+        exitTheGame = GameObject.Find("ConfermaUscita").GetComponent<Button>();
+        backToGameTwo = GameObject.Find("TornaAlGioco").GetComponent<Button>();
+        #endregion
+
+        #region Click Buttons 
+
+        crouchButton.onClick.AddListener(CrouchMethod);
+        endTurnButton.onClick.AddListener(EndTurn);
+        menuButton.onClick.AddListener(Menu);
+        backToGame.onClick.AddListener(CloseMenu); 
+        goToExitInterface.onClick.AddListener(ExitGame);
+        backToGameTwo.onClick.AddListener(CloseMenu);
+
+        #endregion
+
         clickableSpriteList = new List<GameObject>();
         grid = AstarPath.active.data.gridGraph;
         seeker = GetComponent<Seeker>();
@@ -79,25 +108,11 @@ public class PlayerActions : MonoBehaviour{
         sprite = GetComponent<SpriteRenderer>();
         lineOfMovement = GetComponent<LineRenderer>();
         playerActions = playerActionsPerTurn;
-        crouchButton = GameObject.Find("Crouch").GetComponent<Button>();
-        endTurnButton = GameObject.Find("EndTurn").GetComponent<Button>();
-        menuButton = GameObject.Find("Menu").GetComponent<Button>();
-        crouchButton.onClick.AddListener(CrouchMethod);
-        endTurnButton.onClick.AddListener(EndTurn);
-        menuButton.onClick.AddListener(Menu);
-        backgroundBar = GameObject.Find("BackgroundBar").GetComponent<Image>();
-        fakeActionsBar = GameObject.Find("FakeActionsBar").GetComponent<Image>();
-        actionsBar = GameObject.Find("ActionsBar").GetComponent<Image>();
-        wakandaSpriteTransform = GameObject.Find("WakandaSprite").transform;
         lineOfMovement.sortingLayerName = "SoundRange";
         anim = wakandaSpriteTransform.GetComponent<Animator>();
         wakandaSprite = wakandaSpriteTransform.GetComponent<SpriteRenderer>();
-        
-       
-        
-        
-
-
+        menuInterface.gameObject.SetActive(false);
+        exitInterface.gameObject.SetActive(false);
 
     }
 
@@ -132,6 +147,7 @@ public class PlayerActions : MonoBehaviour{
         anim.SetBool("isMoving", aiLerp.canMove);
         anim.SetFloat("Angle", AngleToPositive(transform.rotation.eulerAngles.z));
 
+        #region Is My Turn
         if (isMyTurn)
         {
             AstarPath.active.Scan();
@@ -288,6 +304,10 @@ public class PlayerActions : MonoBehaviour{
             }
 
         }
+        #endregion
+
+        #region Free Roaming
+
         if (isFreeRoaming) // variabile da attivare quando ci si trova in un'area esterna alle zone pericolose
         {
             lineOfMovement.enabled = false;  
@@ -295,35 +315,39 @@ public class PlayerActions : MonoBehaviour{
 
             if (Input.GetMouseButtonDown(0))
             {
-
-                RaycastHit hit;
-
-                if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit))        
+                if (!EventSystem.current.IsPointerOverGameObject())
                 {
-                    Debug.Log(hit.collider.gameObject.tag);
-                    if (hit.collider.tag != "Obstacle" && hit.collider.tag != "Menu")
+                    RaycastHit hit;
+
+                    if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit))
                     {
-                       
-                        aiLerp.canMove = true;
-
-                        GraphNode node = AstarPath.active.GetNearest(hit.point).node;
-
-                        if (node.Walkable)
+                        Debug.Log(hit.collider.gameObject.tag);
+                        if (hit.collider.tag != "Obstacle")
                         {
-                            Path p = seeker.StartPath(transform.position, (Vector3)node.position);
-                            p.BlockUntilCalculated();
-                            Debug.Log("hit point" + hit.point);                                                    
-                            Debug.Log("node " + (Vector3)node.position);                                   
+
+                            aiLerp.canMove = true;
+
+                            GraphNode node = AstarPath.active.GetNearest(hit.point).node;
+
+                            if (node.Walkable)
+                            {
+                                Path p = seeker.StartPath(transform.position, (Vector3)node.position);
+                                p.BlockUntilCalculated();
+                                Debug.Log("hit point" + hit.point);
+                                Debug.Log("node " + (Vector3)node.position);
+                            }
+
+
                         }
 
-
                     }
-
                 }
             }
 
 
         }
+        #endregion
+ 
     }
 
     IEnumerator ChangeCanBeHeardWithDelay()
@@ -331,6 +355,8 @@ public class PlayerActions : MonoBehaviour{
         yield return new WaitForSeconds(0.1f);
         canBeHeard = false;
     }
+
+       #region Methods
 
     void EndTurn()
     {
@@ -374,10 +400,25 @@ public class PlayerActions : MonoBehaviour{
     {
         Debug.Log("Mmmhhh.. Utile.");
 
-        menuInterface.SetActive(true);
        
-        
+        menuInterface.gameObject.SetActive(true);
+        Time.timeScale = 0;
 
+    }
+
+    void CloseMenu()
+    {
+        Time.timeScale = 1;
+        menuInterface.gameObject.SetActive(false);
+        exitInterface.gameObject.SetActive(false);
+
+    }
+
+    void ExitGame ()
+    {
+        menuInterface.gameObject.SetActive(false);
+        Time.timeScale = 0;
+        exitInterface.gameObject.SetActive(true);
     }
 
     public void Die()
@@ -491,7 +532,7 @@ public class PlayerActions : MonoBehaviour{
         
 
     }
-
+    #endregion
 
     private void LateUpdate()
     {
