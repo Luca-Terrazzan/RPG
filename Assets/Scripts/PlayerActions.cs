@@ -36,6 +36,7 @@ public class PlayerActions : MonoBehaviour{
     public int fakePlayerActions;
     public bool canHide = false;
     public bool isHidden = false;
+    private bool isMenuOpen = false;
     [HideInInspector]
     public Transform armadioFrontTransform;
 
@@ -148,7 +149,7 @@ public class PlayerActions : MonoBehaviour{
         anim.SetFloat("Angle", AngleToPositive(transform.rotation.eulerAngles.z));
 
         #region Is My Turn
-        if (isMyTurn)
+        if (isMyTurn && !isMenuOpen)
         {
             AstarPath.active.Scan();
             actionsBar.fillAmount = (float)(playerActions - fakePlayerActions) / playerActionsPerTurn;
@@ -308,15 +309,15 @@ public class PlayerActions : MonoBehaviour{
 
         #region Free Roaming
 
-        if (isFreeRoaming) // variabile da attivare quando ci si trova in un'area esterna alle zone pericolose
+        if (isFreeRoaming && !isMenuOpen) // variabile da attivare quando ci si trova in un'area esterna alle zone pericolose
         {
             lineOfMovement.enabled = false;  
             DestroyClickableGrid(); // distruzione delle griglie per liberare il giocatore dal vincolo dei punti azione 
 
             if (Input.GetMouseButtonDown(0))
             {
-                if (!EventSystem.current.IsPointerOverGameObject())
-                {
+               // if (!EventSystem.current.IsPointerOverGameObject())
+              //  {
                     RaycastHit hit;
 
                     if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit))
@@ -340,7 +341,7 @@ public class PlayerActions : MonoBehaviour{
 
                         }
 
-                    }
+                  //  }
                 }
             }
 
@@ -399,7 +400,7 @@ public class PlayerActions : MonoBehaviour{
     void Menu()
     {
         Debug.Log("Mmmhhh.. Utile.");
-
+        isMenuOpen = true;
        
         menuInterface.gameObject.SetActive(true);
         Time.timeScale = 0;
@@ -411,6 +412,7 @@ public class PlayerActions : MonoBehaviour{
         Time.timeScale = 1;
         menuInterface.gameObject.SetActive(false);
         exitInterface.gameObject.SetActive(false);
+        isMenuOpen = false;
 
     }
 
