@@ -17,7 +17,7 @@ public class Bracciante : MonoBehaviour
     public int maxActionsAmount;
     public bool isMyTurn;
     public Transform[] waypoints;
-    public Transform sprite;
+    public Transform braccianteSpriteTransform;
     public Transform soundSprite;
     private Transform direction;
 
@@ -36,6 +36,8 @@ public class Bracciante : MonoBehaviour
     public Transform playerTransform;
     public Transform enemyRear;
     public Transform enemyFront;
+    public Animator anim;
+    public SpriteRenderer braccianteSprite;
 
 
     // Use this for initialization
@@ -50,15 +52,41 @@ public class Bracciante : MonoBehaviour
         direction = GetComponentInChildren<Transform>();
         fov = GetComponent<FieldOfView>();
         actionsAmount = maxActionsAmount;
+
+
+    }
+
+    float AngleToPositive(float angle)
+    {
+        if (angle > 359)
+        {
+            return angle - 360;
+        }
+        else if (angle < 0)
+        {
+            return 360 - angle;
+        }
+        else return angle;
     }
 
     private void Update()
     {
-        
-       // Debug.Log(transform.up.ToString());
+        if (AngleToPositive(transform.rotation.eulerAngles.z) > 45 && AngleToPositive(transform.rotation.eulerAngles.z) < 225)
+        {
+            braccianteSprite.flipX = true;
+        }
+        else
+        {
+            braccianteSprite.flipX = false;
+        }
+
+        anim.SetBool("isWalking", aiLerp.canMove);
+        anim.SetFloat("angle", AngleToPositive(transform.rotation.eulerAngles.z));
+
+        // Debug.Log(transform.up.ToString());
         if (isMyTurn)
         {
-           // this.gameObject.layer = 8;
+            // this.gameObject.layer = 8;
             if (fov.FindVisibleTarget())
             {
                 hasSeenPlayer = true;
@@ -86,9 +114,9 @@ public class Bracciante : MonoBehaviour
     IEnumerator ChangeTurnDelay(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-       
+
         turnManager.changeTurn();
-        
+
     }
 
     public void StartTurn()                   //chiamato all'inizio del mio turno
@@ -97,7 +125,7 @@ public class Bracciante : MonoBehaviour
         {
             StartCoroutine("ChangeTurnDelay", 1);
             return;
-            
+
         }
         this.gameObject.layer = 12;
         AstarPath.active.Scan();
@@ -105,6 +133,8 @@ public class Bracciante : MonoBehaviour
         nodesCounter = 0;
         hasSeenPlayer = false;
         isMyTurn = true;
+        aiLerp.canMove = true;
+
         if (fov.FindVisibleTarget())
         {
             hasSeenPlayer = true;
@@ -136,6 +166,7 @@ public class Bracciante : MonoBehaviour
         isMyTurn = false;
         turnManager.changeTurn();
         hasSeenPlayer = false;
+        aiLerp.canMove = false;
     }
 
     public void TargetReached()     //chiamato quando ho raggiunto il nodo
@@ -195,7 +226,7 @@ public class Bracciante : MonoBehaviour
                 {
                     //Fa un 360 no scope in giro per cercare il player
                     aiLerp.enableRotation = false;
-                    transform.up = new Vector3(vectorNodesArray[nodesCounter].x, vectorNodesArray[nodesCounter].y,0) - transform.position;
+                    transform.up = new Vector3(vectorNodesArray[nodesCounter].x, vectorNodesArray[nodesCounter].y, 0) - transform.position;
                     nextTurnAngle[0].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 45);
                     nextTurnAngle[1].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, -45);
                     nextTurnAngle[2].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 0);
@@ -205,8 +236,7 @@ public class Bracciante : MonoBehaviour
             }
             else       //se non ho azioni finisco il mio cazzo di turno
             {
-                isMyTurn = false;
-                turnManager.changeTurn();
+                EndTurn();
             }
         }
         else         //se non ho ne visto ne sentito il player
@@ -222,8 +252,7 @@ public class Bracciante : MonoBehaviour
                 }
                 else                   //se non ho più azioni disponibili finisco il mio porco dio di turno
                 {
-                    isMyTurn = false;
-                    turnManager.changeTurn();
+                    EndTurn();
                 }
             }
             else
@@ -240,34 +269,27 @@ public class Bracciante : MonoBehaviour
                 }
                 else        //se non ho più azioni disponibili FINISCO IL MIO DIO CANE DI TURNO
                 {
-                    isMyTurn = false;
-                    turnManager.changeTurn();
+                    EndTurn();
                 }
             }
         }
     }
 
-    IEnumerator LookAtTargetLocation()
-    {
-        yield return new WaitForSeconds(0.5f);
-        aiLerp.enableRotation = true;
-        turnManager.changeTurn();
-
-    }
+   
     IEnumerator LookAround()
     {
         float timer = 0;
         float turnRate = 2;
         int whichAngle = 0;
         Quaternion startingRotation = new Quaternion();
-        startingRotation.eulerAngles = new Vector3(0,0,transform.rotation.eulerAngles.z);
-        while (whichAngle<3)
+        startingRotation.eulerAngles = new Vector3(0, 0, transform.rotation.eulerAngles.z);
+        while (whichAngle < 3)
         {
             if (fov.FindVisibleTarget())
             {
                 break;
             }
-            transform.rotation = Quaternion.Lerp(startingRotation, nextTurnAngle[whichAngle], timer/turnRate);
+            transform.rotation = Quaternion.Lerp(startingRotation, nextTurnAngle[whichAngle], timer / turnRate);
             timer += Time.deltaTime;
             if (timer > turnRate)
             {
@@ -295,6 +317,16 @@ public class Bracciante : MonoBehaviour
 
     public void KillPlayer()
     {
+        aiLerp.canMove = false;
+        aiLerp.enableRotation = false;
+        transform.up =  playerTransform.position - transform.position;
+        StartCoroutine("KillPlayerWithDelay");  
+    }
+
+    IEnumerator KillPlayerWithDelay()
+    {
+        anim.SetTrigger("Attack");
+        yield return new WaitForSeconds(3);
         playerTransform.GetComponent<PlayerActions>().Die();
     }
 
@@ -346,7 +378,7 @@ public class Bracciante : MonoBehaviour
 
     void LateUpdate()
     {
-        sprite.position = transform.position;
+        braccianteSpriteTransform.position = transform.position;
         soundSprite.position = new Vector3(transform.position.x,transform.position.y,0);
         enemyRear.position = transform.position - transform.up;
         enemyFront.position = transform.position + transform.up;
