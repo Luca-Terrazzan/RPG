@@ -315,8 +315,8 @@ public class PlayerActions : MonoBehaviour{
 
             if (Input.GetMouseButtonDown(0))
             {
-               // if (!EventSystem.current.IsPointerOverGameObject())
-              //  {
+                if (!EventSystem.current.IsPointerOverGameObject())
+                {
                     RaycastHit hit;
 
                     if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit))
@@ -340,7 +340,7 @@ public class PlayerActions : MonoBehaviour{
 
                         }
 
-                  //  }
+                    }
                 }
             }
 
