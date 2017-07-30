@@ -230,7 +230,6 @@ public class PlayerActions : MonoBehaviour{
                                 GameObject enemy = hearCollider.transform.parent.parent.GetChild(0).gameObject;
 
                                 float dotProd = Vector3.Dot(dirFromAtoB, enemy.transform.forward);
-                                Debug.Log(dotProd);
                                 if (dotProd > 0.7)
                                 {
                                     clickCollider.GetComponent<SpriteRenderer>().color = Color.red;

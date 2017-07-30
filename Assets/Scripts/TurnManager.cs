@@ -44,6 +44,10 @@ public class TurnManager : MonoBehaviour {
                 charactersArray[i].GetComponent<PlayerActions>().isMyTurn = true;
                 Debug.Log("sonodentro");
             }
+            else if (charactersArray[i].gameObject.tag == "Boss")
+            {
+                charactersArray[i].GetComponent<BossIA>().StartTurn();
+            }
             if (i < charactersArray.Length - 1)
             {
                 i++;
