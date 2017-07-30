@@ -226,6 +226,7 @@ public class Bracciante : MonoBehaviour
                 {
                     //Fa un 360 no scope in giro per cercare il player
                     aiLerp.enableRotation = false;
+                    aiLerp.canMove = false;
                     transform.up = new Vector3(vectorNodesArray[nodesCounter].x, vectorNodesArray[nodesCounter].y, 0) - transform.position;
                     nextTurnAngle[0].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, 45);
                     nextTurnAngle[1].eulerAngles = transform.rotation.eulerAngles + new Vector3(0, 0, -45);
@@ -312,6 +313,7 @@ public class Bracciante : MonoBehaviour
             nodesCounter++;
         }
         aiLerp.enableRotation = true;
+        aiLerp.canMove = true;
         yield return null;
     }
 
