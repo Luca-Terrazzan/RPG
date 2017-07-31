@@ -28,7 +28,7 @@ public class PlayerActions : MonoBehaviour{
     private List<GameObject> clickableSpriteList;
 
     public bool isMyTurn = false;
-    public bool canCreateGrid = true;
+    private bool canCreateGrid = true;
     public bool isCrouched = false;
     public bool canBeHeard = false;
     public bool isFreeRoaming = false;
@@ -103,6 +103,8 @@ public class PlayerActions : MonoBehaviour{
 
         crouchButton.onClick.AddListener(CrouchMethod);
         endTurnButton.onClick.AddListener(EndTurn);
+        if (!isMenuOpen)
+        { }
         menuButton.onClick.AddListener(Menu);
          backToGame.onClick.AddListener(CloseMenu); 
         goToExitInterface.onClick.AddListener(ExitGame);
@@ -407,7 +409,7 @@ public class PlayerActions : MonoBehaviour{
 
     void Menu()
     {
-        Debug.Log("Mmmhhh.. Utile.");
+        
         isMenuOpen = true;
        
         menuInterface.gameObject.SetActive(true);
