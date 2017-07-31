@@ -340,7 +340,7 @@ public class Bracciante : MonoBehaviour
         List<Vector3> pathNodesList = p.vectorPath;
         numberOfPathNodes = pathNodesList.Count - 1;
 
-        vectorNodesArray = new Vector3[20];
+        vectorNodesArray = new Vector3[40];
 
         for (int j = 0; j < pathNodesList.Count - 1; j++)
         {
