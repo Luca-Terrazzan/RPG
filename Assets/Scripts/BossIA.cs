@@ -7,10 +7,13 @@ public class BossIA : MonoBehaviour {
     private FieldOfView fov;
     private bool hasHeardPlayer;
     private TurnManager turnManager;
+    public Transform player;
+    Vector3 targetDir;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
+        player = GameObject.Find("Player").transform;
         fov = GetComponent<FieldOfView>();
 	}
 	
@@ -24,13 +27,28 @@ public class BossIA : MonoBehaviour {
         {
             Debug.Log("NON TI VEDO");
         }
+
+        if (fov.AmIHearingPlayer())
+        {
+            hasHeardPlayer = true;
+        }
+        else
+        {
+            hasHeardPlayer = false;
+        }
 	}
 
     public void StartTurn()
     {
         if (hasHeardPlayer)
         {
-
+            targetDir = player.position - transform.position;
+            transform.up = player.position - transform.position;
+            Quaternion rot = new Quaternion();
+            rot.eulerAngles = new Vector3(0,0,RoundAngleToNinety(transform.eulerAngles.z));
+            transform.rotation = rot;
+            
+            StartCoroutine(ChangeTurnWithDelay(1));
         }
         else
         {
@@ -45,6 +63,14 @@ public class BossIA : MonoBehaviour {
     {
         yield return new WaitForSeconds(delay);
         turnManager.changeTurn();
+    }
+
+    float RoundAngleToNinety(float angleToRound)
+    {
+        float result = Mathf.Round(angleToRound / 90);
+        Debug.Log(angleToRound+"  " + result);
+        return result *= 90;
+        
     }
 
 }
