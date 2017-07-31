@@ -6,14 +6,28 @@ using UnityEngine.SceneManagement;
 public class PickUpItems : MonoBehaviour {
 
     private PlayerActions player;
+    private Collider myCol;
+    public LayerMask lowBoxMask;
 
 
 	// Use this for initialization
 	void Start ()
     {
         player = GetComponent<PlayerActions>();
+        myCol = GetComponent<Collider>();
 
+    }
 
+    private void Update()
+    {
+        if (Physics.BoxCast(transform.position,myCol.bounds.extents/2,Vector3.forward,Quaternion.identity,5,lowBoxMask))
+        {
+            player.lowInvisible = true;
+        }
+        else
+        {
+            player.lowInvisible = false;
+        }
     }
     // Metodo a caso per la collisione con gli oggetti, amazing.
     private void OnTriggerEnter (Collider collision)
@@ -81,10 +95,7 @@ public class PickUpItems : MonoBehaviour {
         {
             player.canHide = false;
         }
-        if (other.tag == "LowBox")
-        {
-            player.lowInvisible = false;
-        }
+       
     }
 
     public void OnTriggerStay(Collider other)
@@ -118,13 +129,7 @@ public class PickUpItems : MonoBehaviour {
             }           
         }
 
-        if (other.tag == "LowBox")
-        {
-            player.lowInvisible = true;
-        }
-
-
-
+       
 
 
 
