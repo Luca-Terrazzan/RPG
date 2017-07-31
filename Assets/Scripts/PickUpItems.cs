@@ -63,9 +63,25 @@ public class PickUpItems : MonoBehaviour {
 
        if(collision.gameObject.tag == "EnemyFront")
         {
-            player.GetComponent<AILerp>().canMove = false;
-            collision.GetComponentInParent<AILerp>().canMove = false;
-            collision.GetComponentInParent<Bracciante>().KillPlayer();
+            if (collision.transform.parent.gameObject.tag == "Bracciante")
+            {
+                player.GetComponent<AILerp>().canMove = false;
+                collision.GetComponentInParent<AILerp>().canMove = false;
+                collision.GetComponentInParent<Bracciante>().KillPlayer();
+            }
+            else if (collision.transform.parent.gameObject.tag == "CowBoy")
+            {
+                player.GetComponent<AILerp>().canMove = false;
+                collision.GetComponentInParent<AILerp>().canMove = false;
+                collision.GetComponentInParent<RagazzoMucca>().KillThePlayer();
+            }
+            else if (collision.gameObject.transform.parent.tag == "Boss")
+            {
+                player.GetComponent<AILerp>().canMove = false;
+                collision.GetComponentInParent<AILerp>().canMove = false;
+                collision.GetComponentInParent<BossIA>().KillPlayer();
+            }
+            
         }
         if (collision.gameObject.tag == "ArmadioFront")
         {

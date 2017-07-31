@@ -22,6 +22,7 @@ public class BossIA : MonoBehaviour {
 		if(fov.FindVisibleTarget())
         {
             Debug.Log("TI VEDO");
+            KillPlayer();
         }
         else
         {
@@ -47,7 +48,6 @@ public class BossIA : MonoBehaviour {
             Quaternion rot = new Quaternion();
             rot.eulerAngles = new Vector3(0,0,RoundAngleToNinety(transform.eulerAngles.z));
             transform.rotation = rot;
-            
             StartCoroutine(ChangeTurnWithDelay(1));
         }
         else
@@ -57,6 +57,11 @@ public class BossIA : MonoBehaviour {
             transform.rotation*= rot;
             StartCoroutine(ChangeTurnWithDelay(1));
         }
+    }
+
+    public void KillPlayer()
+    {
+        
     }
 
     IEnumerator ChangeTurnWithDelay(float delay)
