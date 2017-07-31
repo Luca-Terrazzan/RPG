@@ -37,6 +37,8 @@ public class PlayerActions : MonoBehaviour{
     public bool canHide = false;
     public bool isHidden = false;
     private bool isMenuOpen = false;
+    //[HideInInspector]
+    public bool lowInvisible;
     [HideInInspector]
     public Transform armadioFrontTransform;
 
@@ -45,6 +47,7 @@ public class PlayerActions : MonoBehaviour{
     private Vector3[] nodeArray;
     private SpriteRenderer sprite;
     private LineRenderer lineOfMovement;
+   
 
     // private Button crouchButton;
     // private Button endTurnButton;

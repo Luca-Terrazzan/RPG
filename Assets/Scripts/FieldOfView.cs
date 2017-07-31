@@ -91,7 +91,23 @@ public class FieldOfView : MonoBehaviour {
                 else
                 {
                     //ciao
-                    float distToObstacle = Vector3.Distance(player.transform.position, hit.collider.transform.position);
+                    if (hit.collider.tag == "LowObstacle")
+                    {
+                        if (player.lowInvisible && player.isCrouched)
+                        {
+                            return false;
+                            Debug.Log("non ti vedo piu porcodio");
+                        }
+                        else
+                        {
+                            Debug.Log("non sei abbassato/vicino a low obstacle");
+                            return true;
+                        }
+                    }
+                    else return true;
+
+
+                    /*float distToObstacle = Vector3.Distance(player.transform.position, hit.collider.transform.position);
                     
                     if ( hit.collider.tag != "LowObstacle")
                     {
@@ -111,7 +127,7 @@ public class FieldOfView : MonoBehaviour {
                     {
                        
                         return true;
-                    }
+                    }*/
                 }
                  
 

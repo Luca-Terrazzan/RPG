@@ -72,6 +72,10 @@ public class PickUpItems : MonoBehaviour {
         {
             player.playerActions -= 5;
         }
+        if (collision.tag == "LowBox")
+        {
+            player.lowInvisible = true;
+        }
     }
 
     public void OnTriggerExit(Collider other)
@@ -79,6 +83,10 @@ public class PickUpItems : MonoBehaviour {
         if (other.gameObject.tag == "ArmadioFront")
         {
             player.canHide = false;
+        }
+        if (other.tag == "LowBox")
+        {
+            player.lowInvisible = false;
         }
     }
 
@@ -112,6 +120,8 @@ public class PickUpItems : MonoBehaviour {
 
             }           
         }
+
+        
 
         
 
