@@ -28,7 +28,7 @@ public class PlayerActions : MonoBehaviour{
     private List<GameObject> clickableSpriteList;
 
     public bool isMyTurn = false;
-    private bool canCreateGrid = true;
+    public bool canCreateGrid = true;
     public bool isCrouched = false;
     public bool canBeHeard = false;
     public bool isFreeRoaming = false;
