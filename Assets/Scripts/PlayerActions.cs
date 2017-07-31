@@ -54,9 +54,9 @@ public class PlayerActions : MonoBehaviour{
     // private Button menuButton;
     // private Button exit;
     // private Button backToGame;
-    private Button crouchButton, endTurnButton, menuButton, goToExitInterface, backToGame, exitTheGame, backToGameTwo ;
+    private Button crouchButton, endTurnButton, menuButton, goToExitInterface, backToGame, exitTheGame, backToGameTwo, resetScene ;
 
-    private Image exitInterface, menuInterface, actionsBar, fakeActionsBar, backgroundBar, menuImage;
+    private Image exitInterface, menuInterface, actionsBar, fakeActionsBar, backgroundBar, menuImage, deathInterface;
 
     private Animator anim;
 
@@ -95,6 +95,8 @@ public class PlayerActions : MonoBehaviour{
         exitInterface = GameObject.Find("ExitInterface").GetComponent<Image>();
         exitTheGame = GameObject.Find("ConfermaUscita").GetComponent<Button>();
         backToGameTwo = GameObject.Find("TornaAlGioco").GetComponent<Button>();
+        deathInterface = GameObject.Find("DeathCartel").GetComponent<Image>();
+        resetScene = GameObject.Find("GoBackToGame").GetComponent<Button>();
         #endregion
 
         #region Click Buttons 
@@ -102,9 +104,11 @@ public class PlayerActions : MonoBehaviour{
         crouchButton.onClick.AddListener(CrouchMethod);
         endTurnButton.onClick.AddListener(EndTurn);
         menuButton.onClick.AddListener(Menu);
-        backToGame.onClick.AddListener(CloseMenu); 
+         backToGame.onClick.AddListener(CloseMenu); 
         goToExitInterface.onClick.AddListener(ExitGame);
         backToGameTwo.onClick.AddListener(CloseMenu);
+        resetScene.onClick.AddListener(LoadCurrentScene);
+
 
         #endregion
 
@@ -118,11 +122,10 @@ public class PlayerActions : MonoBehaviour{
         lineOfMovement.sortingLayerName = "SoundRange";
         anim = wakandaSpriteTransform.GetComponent<Animator>();
         wakandaSprite = wakandaSpriteTransform.GetComponent<SpriteRenderer>();
-        menuInterface.gameObject.SetActive(false);
-        exitInterface.gameObject.SetActive(false);
 
+        SetInterface();
     }
-
+  
     float AngleToPositive(float angle)
     {
         if (angle > 359)
@@ -430,8 +433,20 @@ public class PlayerActions : MonoBehaviour{
 
     public void Die()
     {
-        Debug.Log("Hai perso");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        deathInterface.gameObject.SetActive(true);
+
+    }
+
+    void LoadCurrentScene()
+    {
+     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void SetInterface ()
+    {
+        menuInterface.gameObject.SetActive(false);
+        exitInterface.gameObject.SetActive(false);
+        deathInterface.gameObject.SetActive(false);
     }
 
     public void TargetReached()
