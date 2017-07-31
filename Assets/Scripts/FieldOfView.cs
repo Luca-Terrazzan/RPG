@@ -94,11 +94,10 @@ public class FieldOfView : MonoBehaviour {
                     //ciao
                     if (Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, lowObstacleMask))
                     {
-                        Debug.Log("sssss");
                         if (player.lowInvisible && player.isCrouched)
                         {
-                            return false;
                             Debug.Log("non ti vedo piu porcodio");
+                            return false;
                         }
                         else
                         {
