@@ -76,6 +76,10 @@ public class PlayerActions : MonoBehaviour{
             newPos = GameObject.Find("FreeRoamingManager").GetComponent<FreeRoamingPos>();
             newPos.ChangeFreeroamingPos();
         }
+        else
+        {
+            turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
+        }
         menuInterface = GameObject.Find("MenuInterface").GetComponent<Image>();
         backgroundBar = GameObject.Find("BackgroundBar").GetComponent<Image>();
         fakeActionsBar = GameObject.Find("FakeActionsBar").GetComponent<Image>();
@@ -88,7 +92,6 @@ public class PlayerActions : MonoBehaviour{
         actionsBar = GameObject.Find("ActionsBar").GetComponent<Image>();
         clickableSprite = GameObject.Find("clickableSprite");
         cam = GameObject.Find("Camera").GetComponent<Camera>();
-        turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         exitInterface = GameObject.Find("ExitInterface").GetComponent<Image>();
         exitTheGame = GameObject.Find("ConfermaUscita").GetComponent<Button>();
         backToGameTwo = GameObject.Find("TornaAlGioco").GetComponent<Button>();

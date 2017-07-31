@@ -10,6 +10,7 @@ public class FieldOfView : MonoBehaviour {
 
     public LayerMask playerMask;
     public LayerMask obstacleMask;
+    public LayerMask lowObstacleMask;
 
     public List<Transform> visibleTargets = new List<Transform>();
     Transform target;
@@ -83,7 +84,7 @@ public class FieldOfView : MonoBehaviour {
 
                 
 
-                if (!Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, obstacleMask))
+                if (!Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, obstacleMask)&&!Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, lowObstacleMask))
                 {
                     visibleTargets.Add(target);
                     return true;
@@ -91,8 +92,9 @@ public class FieldOfView : MonoBehaviour {
                 else
                 {
                     //ciao
-                    if (hit.collider.tag == "LowObstacle")
+                    if (Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, lowObstacleMask))
                     {
+                        Debug.Log("sssss");
                         if (player.lowInvisible && player.isCrouched)
                         {
                             return false;
