@@ -105,7 +105,7 @@ public class FieldOfView : MonoBehaviour {
                             return true;
                         }
                     }
-                    else return true;
+                    else return false;
 
 
                     /*float distToObstacle = Vector3.Distance(player.transform.position, hit.collider.transform.position);

@@ -61,7 +61,7 @@ public class RagazzoMucca : MonoBehaviour {
         if (imDead)
         {
             StartCoroutine("ChangeTurnDelay", waitTimer);
-            
+            return;
         }
 
        // isMyTurn = true;
