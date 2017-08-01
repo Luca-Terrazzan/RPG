@@ -81,7 +81,7 @@ public class Bracciante : MonoBehaviour
         }
 
         anim.SetBool("isWalking", aiLerp.canMove);
-        anim.SetFloat("angle", AngleToPositive(transform.rotation.eulerAngles.z));
+        anim.SetFloat("angle", transform.rotation.eulerAngles.z);
 
         // Debug.Log(transform.up.ToString());
         if (isMyTurn)

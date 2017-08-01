@@ -107,7 +107,7 @@ public class BossIA : MonoBehaviour {
         else
         {
             Quaternion rot = new Quaternion();
-            rot.eulerAngles = new Vector3(0, 0, 90);
+            rot.eulerAngles = new Vector3(0, 0, -90);
             transform.rotation *= rot;
             StartCoroutine(ChangeTurnWithDelay(2));
         }
