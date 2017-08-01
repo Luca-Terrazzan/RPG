@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Intro : MonoBehaviour {
 
-    //public bool stop = true;
+    
 
     private Image wakandaLogo, backgorundLogo;
     private Button startGame, toDesktop;
@@ -18,6 +19,8 @@ public class Intro : MonoBehaviour {
         backgorundLogo = transform.GetChild(0).GetComponent<Image>();
         startGame = transform.GetChild(2).GetComponentInChildren<Button>();
         toDesktop = transform.GetChild(3).GetComponentInChildren<Button>();
+        startGame.onClick.AddListener(GoToIntroVideo);
+        toDesktop.onClick.AddListener(ExitGame);
 
     }
 	
@@ -41,5 +44,15 @@ public class Intro : MonoBehaviour {
             
         }
         
+    }
+
+    void GoToIntroVideo()
+    {
+        SceneManager.LoadScene("VideoIntro");
+    }
+
+    void ExitGame()
+    {
+        Application.Quit();
     }
 }
