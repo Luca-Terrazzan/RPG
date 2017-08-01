@@ -15,7 +15,7 @@ public class RagazzaAmbiziosa : MonoBehaviour {
     public int maxActionsAmount;
     public bool isMyTurn;
     public Transform[] waypoints;
-    public Transform sprite;
+    public Transform spriteTransform;
     public Transform soundSprite;
     private Transform direction;
 
@@ -39,6 +39,8 @@ public class RagazzaAmbiziosa : MonoBehaviour {
 
     private bool canThrowBomb = true;
 
+    public Animator anim;
+    public SpriteRenderer sprite;
 
     // Use this for initialization
     void Start()
@@ -54,8 +56,33 @@ public class RagazzaAmbiziosa : MonoBehaviour {
         actionsAmount = maxActionsAmount;
     }
 
+    float AngleToPositive(float angle)
+    {
+        if (angle > 359)
+        {
+            return angle - 360;
+        }
+        else if (angle < 0)
+        {
+            return 360 - angle;
+        }
+        else return angle;
+    }
+
+
     private void Update()
     {
+        if (AngleToPositive(transform.rotation.eulerAngles.z) > 45 && AngleToPositive(transform.rotation.eulerAngles.z) < 225)
+        {
+            sprite.flipX = true;
+        }
+        else
+        {
+            sprite.flipX = false;
+        }
+
+        anim.SetBool("isMoving", aiLerp.canMove);
+        anim.SetFloat("angle", transform.rotation.eulerAngles.z);
 
         // Debug.Log(transform.up.ToString());
         if (isMyTurn)
@@ -129,6 +156,10 @@ public class RagazzaAmbiziosa : MonoBehaviour {
             lastPositionHeard = p.vectorPath[p.vectorPath.Count - 1];
             ThrowBomb((Vector3)grid.GetNearest(lastPositionHeard).node.position);
         }
+        else
+        {
+            aiLerp.canMove = true;
+        }
         
         target = waypoints[waypointsCounter].position;
         GetPathNodes(target);                            //prendo tutti i nodi del path verso il target scelto
@@ -141,6 +172,7 @@ public class RagazzaAmbiziosa : MonoBehaviour {
         this.gameObject.layer = 8;
         AstarPath.active.Scan();
         isMyTurn = false;
+        aiLerp.canMove = false;
         turnManager.changeTurn();
     }
 
@@ -159,8 +191,7 @@ public class RagazzaAmbiziosa : MonoBehaviour {
             }
             else                   //se non ho più azioni disponibili finisco il mio porco dio di turno
             {
-                isMyTurn = false;
-                turnManager.changeTurn();
+                EndTurn();
             }
         }
         else
@@ -177,23 +208,27 @@ public class RagazzaAmbiziosa : MonoBehaviour {
             }
             else        //se non ho più azioni disponibili FINISCO IL MIO DIO CANE DI TURNO
             {
-                isMyTurn = false;
-                turnManager.changeTurn();
+                EndTurn();
             }
         }
         
     }
 
+
     
     public void ThrowBomb(Vector3 position)
     {
         Debug.Log("Lancio una bomba in posizione: " + position.ToString());
-        GameObject b = Instantiate(bomb, transform.position, Quaternion.identity);
-        StartCoroutine(BombLerp(b,position));
+        StartCoroutine(BombLerp(position));
     }
 
-    IEnumerator BombLerp(GameObject b,Vector3 position)
+    IEnumerator BombLerp(Vector3 position)
     {
+        anim.SetTrigger("attack");
+        aiLerp.canMove = false;
+        yield return new WaitForSeconds(1);
+
+        GameObject b = Instantiate(bomb, transform.position, Quaternion.identity);
         float timer = 0;
         float timeToLerp = 1;
         while (timer < timeToLerp)
@@ -205,6 +240,7 @@ public class RagazzaAmbiziosa : MonoBehaviour {
         GameObject expl = Instantiate(explosion, b.transform.position,Quaternion.identity);
         Destroy(b);
         Destroy(expl, 1);
+        aiLerp.canMove = true;
         yield return null;
     }
 
@@ -257,7 +293,7 @@ public class RagazzaAmbiziosa : MonoBehaviour {
 
     void LateUpdate()
     {
-        sprite.position = transform.position;
+        spriteTransform.position = transform.position;
         soundSprite.position = new Vector3(transform.position.x, transform.position.y, 0);
         enemyRear.position = transform.position - transform.up;
     }
