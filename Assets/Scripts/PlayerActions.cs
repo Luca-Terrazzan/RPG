@@ -53,7 +53,9 @@ public class PlayerActions : MonoBehaviour{
    
     private Button crouchButton, endTurnButton, menuButton, goToExitInterface, backToGame, goToMainMenu, backToGameTwo, resetScene, tutorial, goToMenuFromDeath;
 
-    private Image exitInterface, menuInterface, actionsBar, fakeActionsBar, backgroundBar, menuImage, deathInterface;
+    private Image exitInterface, menuInterface, actionsBar, fakeActionsBar, backgroundBar, menuImage, deathInterface, stand, crouch;
+
+    private Text fakeInterfacePoint, totActionPointLeft;
 
     private Animator anim;
 
@@ -98,6 +100,10 @@ public class PlayerActions : MonoBehaviour{
         tutorial = GameObject.Find("Tutorial").GetComponent<Button>();
         tutorialManager = GameObject.Find("TutorialNavigation");
         goToMenuFromDeath = GameObject.Find("ExitGame").GetComponent<Button>();
+        fakeInterfacePoint = GameObject.Find("FakePointAction").GetComponent<Text>();
+        totActionPointLeft = GameObject.Find("MaxAction").GetComponent<Text>();
+        stand = GameObject.Find("Stand").GetComponent<Image>();
+        crouch = GameObject.Find("Crouched").GetComponent<Image>();
         #endregion
 
         #region Click Buttons 
@@ -166,6 +172,8 @@ public class PlayerActions : MonoBehaviour{
         #region Is My Turn
         if (isMyTurn && !isMenuOpen)
         {
+            totActionPointLeft.text = playerActions.ToString();
+            fakeInterfacePoint.text = (fakePlayerActions*-1).ToString();
             AstarPath.active.Scan();
             actionsBar.fillAmount = (float)(playerActions - fakePlayerActions) / playerActionsPerTurn;
             fakeActionsBar.fillAmount = (float)playerActions / playerActionsPerTurn;
@@ -176,6 +184,7 @@ public class PlayerActions : MonoBehaviour{
                     if (!isCrouched)
                     {
                         CreateClickableGrid(playerActions);
+
                     }
                     else if (isCrouched)
                     {
@@ -406,6 +415,7 @@ public class PlayerActions : MonoBehaviour{
             DestroyClickableGrid();
             if (!isCrouched)
             {
+                crouchButton.GetComponent<Image>().sprite = stand.sprite;
                 CreateClickableGrid((int)Mathf.Floor(playerActions / 2));
                 isCrouched = true;
 
@@ -413,6 +423,7 @@ public class PlayerActions : MonoBehaviour{
             }
             else if (isCrouched)
             {
+                crouchButton.GetComponent<Image>().sprite = crouch.sprite;
                 CreateClickableGrid(playerActions);
                 isCrouched = false;
 
