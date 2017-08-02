@@ -51,7 +51,7 @@ public class PlayerActions : MonoBehaviour{
    
 
    
-    private Button crouchButton, endTurnButton, menuButton, goToExitInterface, backToGame, goToMainMenu, backToGameTwo, resetScene, tutorial;
+    private Button crouchButton, endTurnButton, menuButton, goToExitInterface, backToGame, goToMainMenu, backToGameTwo, resetScene, tutorial, goToMenuFromDeath;
 
     private Image exitInterface, menuInterface, actionsBar, fakeActionsBar, backgroundBar, menuImage, deathInterface;
 
@@ -97,6 +97,7 @@ public class PlayerActions : MonoBehaviour{
         tutorialInterface = GameObject.Find("TutorialObjects");
         tutorial = GameObject.Find("Tutorial").GetComponent<Button>();
         tutorialManager = GameObject.Find("TutorialNavigation");
+        goToMenuFromDeath = GameObject.Find("ExitGame").GetComponent<Button>();
         #endregion
 
         #region Click Buttons 
@@ -112,6 +113,7 @@ public class PlayerActions : MonoBehaviour{
         resetScene.onClick.AddListener(LoadCurrentScene);
         tutorial.onClick.AddListener(Tutorial);
         goToMainMenu.onClick.AddListener(GoToMainMenu);
+        goToMenuFromDeath.onClick.AddListener(GoToMainMenu);
 
 
         #endregion
@@ -296,7 +298,7 @@ public class PlayerActions : MonoBehaviour{
                                 canBeHeard = false;
                                 GetComponent<Collider>().enabled = false;
                                 wakandaSprite.enabled = false;
-                                armadioFrontTransform.parent.GetChild(1).GetComponent<Animator>().SetBool("isOpen", false);
+                                armadioFrontTransform.parent.GetChild(1).GetComponent<Animator>().SetBool("isEmpty", false);
                             }
                         }
                     }
@@ -315,7 +317,7 @@ public class PlayerActions : MonoBehaviour{
                             GetComponent<Collider>().enabled = true;
                             armadioFrontTransform.parent.gameObject.layer = 8;
                             AstarPath.active.Scan();
-                            armadioFrontTransform.parent.GetChild(1).GetComponentInParent<Animator>().SetBool("isOpen", true);
+                            armadioFrontTransform.parent.GetChild(1).GetComponentInParent<Animator>().SetBool("isEmpty", true);
                             wakandaSprite.enabled = true;
                         }
                     }
