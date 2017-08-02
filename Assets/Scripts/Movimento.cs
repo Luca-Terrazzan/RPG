@@ -8,6 +8,7 @@ public class Movimento : MonoBehaviour
 	public GameObject Player;
 	private Vector3 nuovo;
 	private float minimum = 3f, maximum =8f;
+    
 
 	void LateUpdate ()
 	{
@@ -20,5 +21,7 @@ public class Movimento : MonoBehaviour
 		{
 			Camera.main.orthographicSize = Mathf.Clamp (Camera.main.orthographicSize-Input.GetAxis("Mouse ScrollWheel"), minimum, maximum);
 		}
+
+
 	}
 }
