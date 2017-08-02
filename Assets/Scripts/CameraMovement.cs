@@ -9,18 +9,23 @@ public class CameraMovement : MonoBehaviour
 	private Vector3 offset;
 	private float minimum = 3f, maximum =8f;
 
-	void Start ()
+    public float horizontalClamp;
+    public float verticalClamp;
+    public float moveSpeed;
+
+
+    void Start ()
 	{
-		offset = new Vector3 (5f, -5f, -5f);
+		offset = new Vector3 (0, 0, -5);
 	}
 
 	void LateUpdate ()
 	{
-		transform.position = Player.transform.position + offset;
 
 		if (Input.GetAxis("Mouse ScrollWheel") != 0f) // forward
 		{
 			Camera.main.orthographicSize = Mathf.Clamp (Camera.main.orthographicSize-Input.GetAxis("Mouse ScrollWheel"), minimum, maximum);
 		}
+
 	}
 }
