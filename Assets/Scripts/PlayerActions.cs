@@ -438,6 +438,9 @@ public class PlayerActions : MonoBehaviour{
         isMenuOpen = true;
        
         menuInterface.gameObject.SetActive(true);
+        exitInterface.gameObject.SetActive(false);
+        tutorialInterface.SetActive(false);
+        tutorialManager.SetActive(false);
         Time.timeScale = 0;
 
     }
