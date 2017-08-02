@@ -295,6 +295,8 @@ public class PlayerActions : MonoBehaviour{
                                 playerActions -= 3;
                                 canBeHeard = false;
                                 GetComponent<Collider>().enabled = false;
+                                wakandaSprite.enabled = false;
+                                armadioFrontTransform.parent.GetChild(1).GetComponent<Animator>().SetBool("isOpen", false);
                             }
                         }
                     }
@@ -313,6 +315,8 @@ public class PlayerActions : MonoBehaviour{
                             GetComponent<Collider>().enabled = true;
                             armadioFrontTransform.parent.gameObject.layer = 8;
                             AstarPath.active.Scan();
+                            armadioFrontTransform.parent.GetChild(1).GetComponentInParent<Animator>().SetBool("isOpen", true);
+                            wakandaSprite.enabled = true;
                         }
                     }
 
