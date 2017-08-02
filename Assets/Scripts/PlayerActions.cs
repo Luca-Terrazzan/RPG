@@ -207,7 +207,7 @@ public class PlayerActions : MonoBehaviour{
                         for (int i = 0; i < clickableSpriteList.Count; i++)
                         {
                             if (clickableSpriteList[i] != null)
-                                clickableSpriteList[i].GetComponent<SpriteRenderer>().color = Color.cyan;
+                                clickableSpriteList[i].GetComponent<SpriteRenderer>().color = Color.white;
                         }
 
 
