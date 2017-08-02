@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMovement : MonoBehaviour
+public class Movimento : MonoBehaviour
 {
 
 	public GameObject Player;
-	private Vector3 offset;
+	public Vector3 nuovo;
 	private float minimum = 3f, maximum =8f;
-
-	void Start ()
-	{
-		offset = new Vector3 (5f, -5f, -5f);
-	}
 
 	void LateUpdate ()
 	{
-		transform.position = Player.transform.position + offset;
+		nuovo = (Camera.main.ScreenToWorldPoint (Input.mousePosition) + Player.transform.position) / 2;
+
+		//Camera.main.transform.position = nuovo;
+		Camera.main.transform.position = Vector3.Lerp (Camera.main.transform.position, nuovo, 0.9f *Time.deltaTime) ;
 
 		if (Input.GetAxis("Mouse ScrollWheel") != 0f) // forward
 		{
