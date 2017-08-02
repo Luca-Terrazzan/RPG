@@ -6,7 +6,7 @@ public class Movimento : MonoBehaviour
 {
 
 	public GameObject Player;
-	public Vector3 nuovo;
+	private Vector3 nuovo;
 	private float minimum = 3f, maximum =8f;
 
 	void LateUpdate ()
