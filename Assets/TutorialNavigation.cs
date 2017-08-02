@@ -6,9 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class TutorialNavigation : MonoBehaviour {
 
-    public Button next, back, exit;
+    private Button next, back, exit;
     public Image[] tutorialImages;
-    [SerializeField] private int i = 0; 
+    private PlayerActions player;
+    private bool isPlayerExisting;
+
+    private int i = 0; 
 	// Use this for initialization
 	void Start ()
     {
@@ -16,6 +19,12 @@ public class TutorialNavigation : MonoBehaviour {
         next = transform.GetChild(1).GetComponent<Button>();
         back = transform.GetChild(0).GetComponent<Button>();
         exit = transform.GetChild(2).GetComponent<Button>();
+        if (GameObject.Find("Player") != null)
+        {
+            player = GameObject.Find("Player").GetComponent<PlayerActions>();
+            Debug.Log("ciao");
+            isPlayerExisting = true;
+        }
         next.onClick.AddListener(NextImage);
         back.onClick.AddListener(PreviousImage);
         exit.onClick.AddListener(Exit);
@@ -55,6 +64,17 @@ public class TutorialNavigation : MonoBehaviour {
     }
     void Exit()
     {
-        SceneManager.LoadScene("GhostTown");
+        if (!isPlayerExisting)
+        {
+            SceneManager.LoadScene("GhostTown");
+        }
+        else
+        {
+            gameObject.SetActive(false);
+            GameObject.Find("TutorialObjects").SetActive(false);
+            player.CloseMenu();
+        }
+       
+       
     }
 }

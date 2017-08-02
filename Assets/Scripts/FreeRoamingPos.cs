@@ -6,7 +6,7 @@ public class FreeRoamingPos : MonoBehaviour {
 
     private PlayerActions playerPos;
     public GameObject[] newPos;
-    static int i = 0;
+    public static int i = 0;
 
 	// Use this for initialization
 	void Awake ()

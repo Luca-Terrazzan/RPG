@@ -21,6 +21,7 @@ public class Intro : MonoBehaviour {
         toDesktop = transform.GetChild(3).GetComponentInChildren<Button>();
         startGame.onClick.AddListener(GoToIntroVideo);
         toDesktop.onClick.AddListener(ExitGame);
+        FreeRoamingPos.i = 0;
 
     }
 	

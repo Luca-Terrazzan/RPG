@@ -19,9 +19,10 @@ public class PlayerActions : MonoBehaviour{
     public LayerMask enemyMask;
     public LayerMask obstacle;
     public Transform wakandaSpriteTransform;
-    
 
 
+
+    private GameObject tutorialInterface, tutorialManager;
     private GridGraph grid;
     private Seeker seeker;
     private AILerp aiLerp;
@@ -49,12 +50,8 @@ public class PlayerActions : MonoBehaviour{
     private LineRenderer lineOfMovement;
    
 
-    // private Button crouchButton;
-    // private Button endTurnButton;
-    // private Button menuButton;
-    // private Button exit;
-    // private Button backToGame;
-    private Button crouchButton, endTurnButton, menuButton, goToExitInterface, backToGame, exitTheGame, backToGameTwo, resetScene ;
+   
+    private Button crouchButton, endTurnButton, menuButton, goToExitInterface, backToGame, goToMainMenu, backToGameTwo, resetScene, tutorial;
 
     private Image exitInterface, menuInterface, actionsBar, fakeActionsBar, backgroundBar, menuImage, deathInterface;
 
@@ -93,10 +90,13 @@ public class PlayerActions : MonoBehaviour{
         clickableSprite = GameObject.Find("clickableSprite");
         cam = GameObject.Find("Camera").GetComponent<Camera>();
         exitInterface = GameObject.Find("ExitInterface").GetComponent<Image>();
-        exitTheGame = GameObject.Find("ConfermaUscita").GetComponent<Button>();
+        goToMainMenu = GameObject.Find("ConfermaUscita").GetComponent<Button>();
         backToGameTwo = GameObject.Find("TornaAlGioco").GetComponent<Button>();
         deathInterface = GameObject.Find("DeathCartel").GetComponent<Image>();
         resetScene = GameObject.Find("GoBackToGame").GetComponent<Button>();
+        tutorialInterface = GameObject.Find("TutorialObjects");
+        tutorial = GameObject.Find("Tutorial").GetComponent<Button>();
+        tutorialManager = GameObject.Find("TutorialNavigation");
         #endregion
 
         #region Click Buttons 
@@ -106,10 +106,12 @@ public class PlayerActions : MonoBehaviour{
         if (!isMenuOpen)
         { }
         menuButton.onClick.AddListener(Menu);
-         backToGame.onClick.AddListener(CloseMenu); 
+        backToGame.onClick.AddListener(CloseMenu); 
         goToExitInterface.onClick.AddListener(ExitGame);
         backToGameTwo.onClick.AddListener(CloseMenu);
         resetScene.onClick.AddListener(LoadCurrentScene);
+        tutorial.onClick.AddListener(Tutorial);
+        goToMainMenu.onClick.AddListener(GoToMainMenu);
 
 
         #endregion
@@ -250,8 +252,14 @@ public class PlayerActions : MonoBehaviour{
 
                         }
 
-
-                        fakePlayerActions = Mathf.RoundToInt(p.GetTotalLength());
+                        if (isCrouched)
+                        {
+                            fakePlayerActions = Mathf.RoundToInt(p.GetTotalLength()) * 2;
+                        }
+                        else
+                        {
+                            fakePlayerActions = Mathf.RoundToInt(p.GetTotalLength());
+                        }
 
                         if (Input.GetMouseButtonDown(0))
                         {
@@ -416,8 +424,14 @@ public class PlayerActions : MonoBehaviour{
         Time.timeScale = 0;
 
     }
+    void GoToMainMenu()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("MenuIniziale");
+    }
 
-    void CloseMenu()
+
+    public void CloseMenu()
     {
         Time.timeScale = 1;
         menuInterface.gameObject.SetActive(false);
@@ -444,11 +458,21 @@ public class PlayerActions : MonoBehaviour{
      SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    void Tutorial()
+    {
+        isMenuOpen = true;
+        menuInterface.gameObject.SetActive(false);
+        tutorialInterface.SetActive(true);
+        tutorialManager.SetActive(true);
+
+    }
+
     void SetInterface ()
     {
         menuInterface.gameObject.SetActive(false);
         exitInterface.gameObject.SetActive(false);
         deathInterface.gameObject.SetActive(false);
+        tutorialInterface.SetActive(false);
     }
 
     public void TargetReached()
@@ -556,6 +580,8 @@ public class PlayerActions : MonoBehaviour{
         
 
     }
+
+   
     #endregion
 
     private void LateUpdate()
