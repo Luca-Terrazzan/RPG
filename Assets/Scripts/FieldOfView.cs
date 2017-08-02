@@ -92,7 +92,7 @@ public class FieldOfView : MonoBehaviour {
                 else
                 {
                     //ciao
-                    if (Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, lowObstacleMask))
+                    if (Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, lowObstacleMask)&&!Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, obstacleMask))
                     {
                         if (player.lowInvisible && player.isCrouched)
                         {
