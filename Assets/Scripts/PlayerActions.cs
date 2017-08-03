@@ -570,7 +570,7 @@ public class PlayerActions : MonoBehaviour{
        
         if (isCrouched)
         {
-            playerActions -= fakePlayerActions * 2;
+            playerActions -= fakePlayerActions ;
         }
         else
         {
