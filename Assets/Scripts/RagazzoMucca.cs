@@ -16,6 +16,9 @@ public class RagazzoMucca : MonoBehaviour {
     private float sleepingView;
     private float originalViewAngle;
     public Transform enemyRear;
+    public Transform spriteTransform;
+    public Animator anim;
+    private SpriteRenderer sprite;
 
     private bool canKillPlayer = true;
 
@@ -25,12 +28,34 @@ public class RagazzoMucca : MonoBehaviour {
         player = GameObject.Find("Player").GetComponent<PlayerActions>();
         fieldOfView = GetComponent<FieldOfView>();
         originalViewAngle = fieldOfView.viewAngle;
+        sprite = anim.GetComponent<SpriteRenderer>();
+    }
+
+    float AngleToPositive(float angle)
+    {
+        if (angle > 359)
+        {
+            return angle - 360;
+        }
+        else if (angle < 0)
+        {
+            return 360 - angle;
+        }
+        else return angle;
     }
 
     void Update ()
     {
-      
-
+        if (AngleToPositive(transform.rotation.eulerAngles.z) > 45 && AngleToPositive(transform.rotation.eulerAngles.z) < 225)
+        {
+            sprite.flipX = true;
+        }
+        else
+        {
+            sprite.flipX = false;
+        }
+        anim.SetBool("isSleeping", isSleeping);
+        anim.SetFloat("angle", transform.rotation.eulerAngles.z);
         hasSeenPlayer = fieldOfView.FindVisibleTarget();
 
 	    if (player.isMyTurn && !imDead)
@@ -130,5 +155,6 @@ public class RagazzoMucca : MonoBehaviour {
     private void LateUpdate()
     {
         enemyRear.position = transform.position - transform.up;
+        spriteTransform.position = transform.position;
     }
 }

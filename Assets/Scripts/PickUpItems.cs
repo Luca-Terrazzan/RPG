@@ -20,6 +20,7 @@ public class PickUpItems : MonoBehaviour {
 
     private void Update()
     {
+        
         if (Physics.BoxCast(transform.position,myCol.bounds.extents/2,Vector3.forward,Quaternion.identity,5,lowBoxMask))
         {
             player.lowInvisible = true;
@@ -44,10 +45,16 @@ public class PickUpItems : MonoBehaviour {
            
             if (player.hasKey)
             {
-                Debug.Log("Puoi uscire.Wow.");
-                SceneManager.LoadScene("GhostTown");
+                if (SceneManager.GetActiveScene().name == "Bordello") 
+                {
+                    SceneManager.LoadScene("Saloon");
+                }
+                else
+                {
+                    SceneManager.LoadScene("GhostTown");
+                }
 
-                // go to main scene and set hasKey to false
+               
             }
             else
             {
