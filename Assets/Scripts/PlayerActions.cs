@@ -469,8 +469,14 @@ public class PlayerActions : MonoBehaviour{
 
     public void Die()
     {
-        deathInterface.gameObject.SetActive(true);
+        anim.SetTrigger("Die");
+        StartCoroutine(OpenDeathInterfaceWithDelay());
+    }
 
+    IEnumerator OpenDeathInterfaceWithDelay()
+    {
+        yield return new WaitForSeconds(2);
+        deathInterface.gameObject.SetActive(true);
     }
 
     void LoadCurrentScene()
