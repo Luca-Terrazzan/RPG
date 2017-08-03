@@ -17,20 +17,31 @@ public class BossIA : MonoBehaviour {
     public float distToBombPoints;
     [SerializeField]
     private int finalAttackCounter = 3;
+    bool canKill = true;
+    public Material fovMaterial;
+
 
     // Use this for initialization
     void Start () {
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         player = GameObject.Find("Player").transform;
         fov = GetComponent<FieldOfView>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if(fov.FindVisibleTarget())
+        fovMaterial.SetColor("_EmissionColor", Color.white);
+    }
+
+    // Update is called once per frame
+    void Update () {
+
+
+
+        if (fov.FindVisibleTarget())
         {
-            Debug.Log("TI VEDO");
-            KillPlayer();
+            if(canKill)
+            {
+                Debug.Log("TI VEDO");
+                KillPlayer();
+            }
+           
         }
         else
         {
@@ -83,6 +94,10 @@ public class BossIA : MonoBehaviour {
         if (thirdState)
         {
             finalAttackCounter--;
+            if(finalAttackCounter==1)
+            {
+                StartCoroutine(FinalAttackPreview());
+            }
             if (finalAttackCounter <= 0)
             {
                 StartCoroutine(FinalAttack());
@@ -91,6 +106,8 @@ public class BossIA : MonoBehaviour {
         }
 
         ChangeAngleIfHeardPlayer();
+        StartCoroutine(ChangeTurnWithDelay(5));
+
     }
 
     void ChangeAngleIfHeardPlayer()
@@ -102,21 +119,47 @@ public class BossIA : MonoBehaviour {
             Quaternion rot = new Quaternion();
             rot.eulerAngles = new Vector3(0, 0, RoundAngleToNinety(transform.eulerAngles.z));
             transform.rotation = rot;
-            StartCoroutine(ChangeTurnWithDelay(2));
         }
         else
         {
             Quaternion rot = new Quaternion();
             rot.eulerAngles = new Vector3(0, 0, -90);
             transform.rotation *= rot;
-            StartCoroutine(ChangeTurnWithDelay(2));
         }
+    }
+
+    IEnumerator FinalAttackPreview()
+    {
+        fov.viewAngle = 360;
+        fov.viewRadius = 0;
+        float timer = 0;
+        float lerpSeconds = 3;
+        canKill = false;
+        fovMaterial.SetColor("_EmissionColor", Color.red);
+        while (timer<lerpSeconds)
+        {
+            timer += Time.deltaTime;
+            fov.viewRadius = Mathf.Lerp(0, 20, timer / lerpSeconds);
+            yield return null;
+        }
+        int flashCounter = 0;
+        while(flashCounter < 3)
+        {
+            fov.viewAngle = 0;
+            yield return new WaitForSeconds(0.5f);
+            fov.viewAngle = 360;
+            flashCounter++;
+            yield return new WaitForSeconds(0.5f);
+        }
+        fov.viewAngle = 90.1f;
+        fovMaterial.SetColor("_EmissionColor", Color.white);
+        canKill = true;
     }
 
     IEnumerator FinalAttack()
     {
         fov.viewAngle = 360;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
         fov.viewAngle = 90.1f;
     }
 
