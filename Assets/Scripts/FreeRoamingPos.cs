@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FreeRoamingPos : MonoBehaviour {
 
@@ -17,6 +18,7 @@ public class FreeRoamingPos : MonoBehaviour {
 
     public void ChangeFreeroamingPos ()
     {
+        
         playerPos.transform.position = newPos[i].transform.position;
         i++;
         
