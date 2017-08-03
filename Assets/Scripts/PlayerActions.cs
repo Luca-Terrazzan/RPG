@@ -144,7 +144,7 @@ public class PlayerActions : MonoBehaviour{
         {
             return angle - 360;
         }
-        else if (angle < 0)
+        else if (angle < -1)
         {
             return 360 - angle;
         }
