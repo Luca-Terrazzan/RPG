@@ -292,6 +292,7 @@ public class PlayerActions : MonoBehaviour{
 
                     if (hit.collider.tag == "Armadio" && canHide && !isHidden && armadioFrontTransform.transform.parent.position == hit.transform.position)
                     {
+                        fakePlayerActions = 3;
                         if (Input.GetMouseButton(0))
                         {
                             if (playerActions >= 3)
@@ -308,6 +309,7 @@ public class PlayerActions : MonoBehaviour{
                                 GetComponent<Collider>().enabled = false;
                                 wakandaSprite.enabled = false;
                                 armadioFrontTransform.parent.GetChild(1).GetComponent<Animator>().SetBool("isEmpty", false);
+                                fakePlayerActions = 0;
                             }
                         }
                     }
@@ -321,7 +323,6 @@ public class PlayerActions : MonoBehaviour{
                             Path p = seeker.StartPath(this.transform.position, hit.transform.position);
                             p.BlockUntilCalculated();
                             aiLerp.canMove = true;
-                            playerActions -= 3;
                             canBeHeard = false;
                             GetComponent<Collider>().enabled = true;
                             armadioFrontTransform.parent.gameObject.layer = 8;
@@ -595,7 +596,7 @@ public class PlayerActions : MonoBehaviour{
             {
                 enemy.GetComponent<RagazzoMucca>().Die();
             }
-            else if (enemy.tag == "Puttana")
+            else if (enemy.tag == "Prostituta")
             {
                 enemy.GetComponent<RagazzaAmbiziosa>().Die();
             }
