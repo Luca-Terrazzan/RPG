@@ -86,6 +86,7 @@ public class Bracciante : MonoBehaviour
         // Debug.Log(transform.up.ToString());
         if (isMyTurn)
         {
+            enemyRear.GetComponent<SpriteRenderer>().gameObject.SetActive(false);
             // this.gameObject.layer = 8;
             if (fov.FindVisibleTarget())
             {
@@ -94,6 +95,7 @@ public class Bracciante : MonoBehaviour
         }
         else
         {
+            enemyRear.GetComponent<SpriteRenderer>().gameObject.SetActive(true);
             if (fov.FindVisibleTarget())
             {
                 hasHeardPlayer = true;
