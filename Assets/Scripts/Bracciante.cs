@@ -328,7 +328,7 @@ public class Bracciante : MonoBehaviour
     IEnumerator KillPlayerWithDelay()
     {
         anim.SetTrigger("Attack");
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
         playerTransform.GetComponent<PlayerActions>().Die();
     }
 

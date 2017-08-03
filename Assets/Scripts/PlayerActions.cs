@@ -144,7 +144,7 @@ public class PlayerActions : MonoBehaviour{
         {
             return angle - 360;
         }
-        else if (angle < 0)
+        else if (angle < -1)
         {
             return 360 - angle;
         }
@@ -469,8 +469,14 @@ public class PlayerActions : MonoBehaviour{
 
     public void Die()
     {
-        deathInterface.gameObject.SetActive(true);
+        anim.SetTrigger("Die");
+        StartCoroutine(OpenDeathInterfaceWithDelay());
+    }
 
+    IEnumerator OpenDeathInterfaceWithDelay()
+    {
+        yield return new WaitForSeconds(2);
+        deathInterface.gameObject.SetActive(true);
     }
 
     void LoadCurrentScene()
@@ -564,7 +570,7 @@ public class PlayerActions : MonoBehaviour{
        
         if (isCrouched)
         {
-            playerActions -= fakePlayerActions * 2;
+            playerActions -= fakePlayerActions ;
         }
         else
         {
