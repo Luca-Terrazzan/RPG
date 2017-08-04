@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PickUpItems : MonoBehaviour {
 
     private PlayerActions player;
     private Collider myCol;
     public LayerMask lowBoxMask;
+    private Text fuocoFatuo;
 
 
 	// Use this for initialization
@@ -15,12 +17,13 @@ public class PickUpItems : MonoBehaviour {
     {
         player = GetComponent<PlayerActions>();
         myCol = GetComponent<Collider>();
+        fuocoFatuo = GameObject.Find("FuochiFatui").GetComponent<Text>();
 
     }
 
     private void Update()
     {
-        
+        fuocoFatuo.text = (player.fuocoFatuo + FreeRoamingPos.staticFuochiFatui).ToString();
         if (Physics.BoxCast(transform.position,myCol.bounds.extents/2,Vector3.forward,Quaternion.identity,5,lowBoxMask))
         {
             player.lowInvisible = true;
@@ -36,8 +39,12 @@ public class PickUpItems : MonoBehaviour {
        
        if (collision.gameObject.tag == "Key")
         {
+            collision.gameObject.GetComponent<AudioSource>().Play();
+            player.fuocoFatuo++;
             player.hasKey = true;
-            Destroy(collision.gameObject);
+            // Destroy(collision.gameObject);
+            collision.gameObject.GetComponent<BoxCollider>().enabled = false;
+            collision.gameObject.GetComponent<SpriteRenderer>().enabled = false;
             Debug.Log("Hai preso la chiave.Amaze.");
         }
         if (collision.gameObject.tag == "ExitDoor")
