@@ -5,7 +5,7 @@ using UnityEngine;
 public class FieldOfView : MonoBehaviour {
 
     public float viewRadius;
-    [Range(0,360)]
+    [Range(0, 360)]
     public float viewAngle;
 
     public LayerMask playerMask;
@@ -15,7 +15,7 @@ public class FieldOfView : MonoBehaviour {
     public List<Transform> visibleTargets = new List<Transform>();
     Transform target;
 
-   // private Bracciante bracciante;
+    // private Bracciante bracciante;
     // private RagazzoMucca cowBoy;
     public Vector3 lastPlayerSeenPoint;
     public Transform playerTransform;
@@ -29,12 +29,16 @@ public class FieldOfView : MonoBehaviour {
 
     private PlayerActions player;
 
- 
+    private AudioSource allarm;
+    
+    private bool allarmTrigger;
+
+
+
     void Start()
     {
-       
-      //  bracciante = GetComponent<Bracciante>();
-       // cowBoy = GetComponent<RagazzoMucca>();
+        allarm = GetComponent<AudioSource>();
+        
         viewMesh = new Mesh();
         viewMesh.name = "View Mesh";
         viewMeshFilter.mesh = viewMesh;
@@ -46,9 +50,18 @@ public class FieldOfView : MonoBehaviour {
     void LateUpdate()
     {
         DrawFieldOfView();
-       
+
     }
 
+    private void Update()
+    {
+        if (((AmIHearingPlayer() || FindVisibleTarget()) && allarmTrigger))
+        {
+            allarm.Play();
+            allarmTrigger = false;
+        }
+    }
+   
    
     public bool AmIHearingPlayer()
     {
@@ -58,11 +71,22 @@ public class FieldOfView : MonoBehaviour {
         {
             if (targetsInViewRadius[0].GetComponent<PlayerActions>().canBeHeard)
             {
+
                 return true;
             }
-            else return false;
+            else
+            {
+
+                return false;
+            }
+
+
         }
-        else return false;
+        else
+        {
+            allarmTrigger = true;
+            return false;
+        }
     }
 
     public bool FindVisibleTarget()
@@ -79,24 +103,26 @@ public class FieldOfView : MonoBehaviour {
             if (Vector3.Angle(transform.up, dirToTarget) < viewAngle / 2)
             {
                 float distToTarget = Vector3.Distance(transform.position, target.position);
-                
+
                 RaycastHit hit;
 
-                
 
-                if (!Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, obstacleMask)&&!Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, lowObstacleMask))
+
+                if (!Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, obstacleMask) && !Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, lowObstacleMask))
                 {
                     visibleTargets.Add(target);
+
                     return true;
                 }
                 else
                 {
                     //ciao
-                    if (Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, lowObstacleMask)&&!Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, obstacleMask))
+                    if (Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, lowObstacleMask) && !Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, obstacleMask))
                     {
                         if (player.lowInvisible && player.isCrouched)
                         {
                             Debug.Log("non ti vedo piu porcodio");
+
                             return false;
                         }
                         else
@@ -105,7 +131,11 @@ public class FieldOfView : MonoBehaviour {
                             return true;
                         }
                     }
-                    else return false;
+                    else
+                    {
+
+                        return false;
+                    }
 
 
                     /*float distToObstacle = Vector3.Distance(player.transform.position, hit.collider.transform.position);
@@ -130,12 +160,16 @@ public class FieldOfView : MonoBehaviour {
                         return true;
                     }*/
                 }
-                 
+
 
             }
             else return false;
         }
-        else return false;
+        else
+        {
+            allarmTrigger = true;
+            return false;
+        }
         
     }
 

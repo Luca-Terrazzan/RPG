@@ -12,6 +12,7 @@ public class Bracciante : MonoBehaviour
     private AILerp aiLerp;
     public TurnManager turnManager;
     private FieldOfView fov;
+    private bool triggerSound;
 
     public int actionsAmount;
     public int maxActionsAmount;
@@ -19,6 +20,8 @@ public class Bracciante : MonoBehaviour
     public Transform[] waypoints;
     public Transform braccianteSpriteTransform;
     public Transform soundSprite;
+
+
     private Transform direction;
 
     private Vector3[] vectorNodesArray;
@@ -39,19 +42,23 @@ public class Bracciante : MonoBehaviour
     public Animator anim;
     public SpriteRenderer braccianteSprite;
 
+    public AudioClip[] braccianteSoundsList;
+    private AudioSource braccianteSound;
+
 
     // Use this for initialization
     void Start()
     {
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         playerTransform = GameObject.Find("Player").transform;
-
+        braccianteSound = GetComponent<AudioSource>();
         grid = AstarPath.active.data.gridGraph;
         seeker = GetComponent<Seeker>();
         aiLerp = GetComponent<AILerp>();
         direction = GetComponentInChildren<Transform>();
         fov = GetComponent<FieldOfView>();
         actionsAmount = maxActionsAmount;
+
 
 
     }
@@ -71,6 +78,7 @@ public class Bracciante : MonoBehaviour
 
     private void Update()
     {
+        
         if (AngleToPositive(transform.rotation.eulerAngles.z) > 45 && AngleToPositive(transform.rotation.eulerAngles.z) < 225)
         {
             braccianteSprite.flipX = true;
@@ -95,6 +103,18 @@ public class Bracciante : MonoBehaviour
         }
         else
         {
+           /* if (fov.AmIHearingPlayer() && triggerSound)
+            {
+                braccianteSound.clip = braccianteSoundsList[1];
+                braccianteSound.PlayOneShot(braccianteSoundsList[1]);
+                triggerSound = false;
+
+            }
+            if (!fov.AmIHearingPlayer())
+            {
+                triggerSound = true;
+            } */
+
             enemyRear.GetComponent<SpriteRenderer>().gameObject.SetActive(true);
             if (fov.FindVisibleTarget())
             {
@@ -120,6 +140,8 @@ public class Bracciante : MonoBehaviour
         turnManager.changeTurn();
 
     }
+
+    
 
     public void StartTurn()                   //chiamato all'inizio del mio turno
     {
@@ -159,6 +181,8 @@ public class Bracciante : MonoBehaviour
         GetPathNodes(target);                            //prendo tutti i nodi del path verso il target scelto
         GoToNode(vectorNodesArray[nodesCounter]);              //vado al primo nodo del path
         nodesCounter += 1;
+
+      
     }
 
     public void EndTurn()
@@ -205,6 +229,7 @@ public class Bracciante : MonoBehaviour
                     else
                     {
                         ////se i nodi del path sono finiti mi trovo nella casella adiacente al player quindi lo killo quel bastardo e gli dico git gud casual
+                        
                         KillPlayer();
                     }
                 }
@@ -323,6 +348,7 @@ public class Bracciante : MonoBehaviour
     {
         aiLerp.canMove = false;
         aiLerp.enableRotation = false;
+        braccianteSound.clip = braccianteSoundsList[0];
         transform.up =  playerTransform.position - transform.position;
         StartCoroutine("KillPlayerWithDelay");  
     }
@@ -330,6 +356,8 @@ public class Bracciante : MonoBehaviour
     IEnumerator KillPlayerWithDelay()
     {
         anim.SetTrigger("Attack");
+        
+        braccianteSound.Play();
         yield return new WaitForSeconds(1);
         playerTransform.GetComponent<PlayerActions>().Die();
     }

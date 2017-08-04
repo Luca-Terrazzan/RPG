@@ -8,6 +8,7 @@ public class PickUpItems : MonoBehaviour {
 
     private PlayerActions player;
     private Collider myCol;
+    private AudioSource attackSound;
     public LayerMask lowBoxMask;
     private Text fuocoFatuo;
 
@@ -18,6 +19,7 @@ public class PickUpItems : MonoBehaviour {
         player = GetComponent<PlayerActions>();
         myCol = GetComponent<Collider>();
         fuocoFatuo = GameObject.Find("FuochiFatui").GetComponent<Text>();
+        attackSound = GetComponent<AudioSource>();
 
     }
 
@@ -147,7 +149,8 @@ public class PickUpItems : MonoBehaviour {
 
                             if (Input.GetMouseButtonUp(0))
                             {
-                                player.BackStabEnemy(hit.collider.gameObject); // git gud
+                                player.BackStabEnemy(hit.collider.gameObject);
+                                attackSound.Play();
 
                             }
                         }
