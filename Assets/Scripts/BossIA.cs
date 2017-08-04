@@ -19,6 +19,8 @@ public class BossIA : MonoBehaviour {
     private int finalAttackCounter = 3;
     bool canKill = true;
     public Material fovMaterial;
+    public SpriteRenderer sprite;
+    public Animator anim;
 
 
     // Use this for initialization
@@ -29,10 +31,37 @@ public class BossIA : MonoBehaviour {
         fovMaterial.SetColor("_EmissionColor", Color.white);
     }
 
+    float AngleToPositive(float angle)
+    {
+        if (angle > 359)
+        {
+            return angle - 360;
+        }
+        else if (angle < 0)
+        {
+            return 360 - angle;
+        }
+        else return angle;
+    }
+
     // Update is called once per frame
     void Update () {
 
+        if (AngleToPositive(transform.rotation.eulerAngles.z) > 260 && AngleToPositive(transform.rotation.eulerAngles.z) < 280)
+        {
+            sprite.flipX = true;
+        }
+        else if (transform.rotation.eulerAngles.z > 80 && transform.rotation.eulerAngles.z < 100)
+        {
+            sprite.flipX = true;
+        }
+        else
+        {
+            sprite.flipX = false;
+        }
+        
 
+        anim.SetFloat("Angle", transform.rotation.eulerAngles.z);
 
         if (fov.FindVisibleTarget())
         {
@@ -106,7 +135,7 @@ public class BossIA : MonoBehaviour {
         }
 
         ChangeAngleIfHeardPlayer();
-        StartCoroutine(ChangeTurnWithDelay(5));
+        StartCoroutine(ChangeTurnWithDelay(2));
 
     }
 

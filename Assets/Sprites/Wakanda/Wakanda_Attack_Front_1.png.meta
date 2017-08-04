@@ -1,25 +1,23 @@
 fileFormatVersion: 2
-guid: 12803a89f619a064ebd1d3c5a54264b9
-timeCreated: 1501661903
+guid: 8f4d198232e952648bb4845edac15b6f
+timeCreated: 1501861979
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Wakanda_Attack_Front_0
-    21300002: Wakanda_Attack_Front_1
-    21300004: Wakanda_Attack_Front_2
-    21300006: Wakanda_Attack_Front_3
-    21300008: Wakanda_Attack_Front_4
-    21300010: Wakanda_Attack_Front_5
-    21300012: Wakanda_Attack_Front_6
-    21300014: Wakanda_Attack_Front_7
-    21300016: Wakanda_Attack_Front_8
-    21300018: Wakanda_Attack_Front_9
-    21300020: Wakanda_Attack_Front_10
-    21300022: Wakanda_Attack_Front_11
-    21300024: Wakanda_Attack_Front_12
-    21300026: Wakanda_Attack_Front_13
-    21300028: Wakanda_Attack_Front_14
-    21300030: Wakanda_Attack_Front_15
+    21300000: Wakanda_Attack_Front_1_0
+    21300002: Wakanda_Attack_Front_1_1
+    21300004: Wakanda_Attack_Front_1_2
+    21300006: Wakanda_Attack_Front_1_3
+    21300008: Wakanda_Attack_Front_1_4
+    21300010: Wakanda_Attack_Front_1_5
+    21300012: Wakanda_Attack_Front_1_6
+    21300014: Wakanda_Attack_Front_1_7
+    21300016: Wakanda_Attack_Front_1_8
+    21300018: Wakanda_Attack_Front_1_9
+    21300020: Wakanda_Attack_Front_1_10
+    21300022: Wakanda_Attack_Front_1_11
+    21300024: Wakanda_Attack_Front_1_12
+    21300026: Wakanda_Attack_Front_1_13
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -82,27 +80,11 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: Android
-    maxTextureSize: 2048
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-  - buildTarget: WebGL
-    maxTextureSize: 2048
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Wakanda_Attack_Front_0
+      name: Wakanda_Attack_Front_1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -110,12 +92,12 @@ TextureImporter:
         width: 956
         height: 723
       alignment: 9
-      pivot: {x: 0.4, y: 0.65}
+      pivot: {x: 0.38, y: 0.66}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wakanda_Attack_Front_1
+      name: Wakanda_Attack_Front_1_1
       rect:
         serializedVersion: 2
         x: 956
@@ -123,12 +105,12 @@ TextureImporter:
         width: 956
         height: 723
       alignment: 9
-      pivot: {x: 0.4, y: 0.65}
+      pivot: {x: 0.38, y: 0.66}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wakanda_Attack_Front_2
+      name: Wakanda_Attack_Front_1_2
       rect:
         serializedVersion: 2
         x: 1912
@@ -136,12 +118,12 @@ TextureImporter:
         width: 956
         height: 723
       alignment: 9
-      pivot: {x: 0.4, y: 0.65}
+      pivot: {x: 0.38, y: 0.66}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wakanda_Attack_Front_3
+      name: Wakanda_Attack_Front_1_3
       rect:
         serializedVersion: 2
         x: 2868
@@ -149,12 +131,12 @@ TextureImporter:
         width: 956
         height: 723
       alignment: 9
-      pivot: {x: 0.4, y: 0.65}
+      pivot: {x: 0.38, y: 0.66}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wakanda_Attack_Front_4
+      name: Wakanda_Attack_Front_1_4
       rect:
         serializedVersion: 2
         x: 3824
@@ -162,12 +144,12 @@ TextureImporter:
         width: 956
         height: 723
       alignment: 9
-      pivot: {x: 0.4, y: 0.65}
+      pivot: {x: 0.38, y: 0.66}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wakanda_Attack_Front_5
+      name: Wakanda_Attack_Front_1_5
       rect:
         serializedVersion: 2
         x: 4780
@@ -175,12 +157,12 @@ TextureImporter:
         width: 956
         height: 723
       alignment: 9
-      pivot: {x: 0.4, y: 0.65}
+      pivot: {x: 0.38, y: 0.66}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wakanda_Attack_Front_6
+      name: Wakanda_Attack_Front_1_6
       rect:
         serializedVersion: 2
         x: 5736
@@ -188,12 +170,12 @@ TextureImporter:
         width: 956
         height: 723
       alignment: 9
-      pivot: {x: 0.4, y: 0.65}
+      pivot: {x: 0.38, y: 0.66}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wakanda_Attack_Front_7
+      name: Wakanda_Attack_Front_1_7
       rect:
         serializedVersion: 2
         x: 6692
@@ -201,12 +183,12 @@ TextureImporter:
         width: 956
         height: 723
       alignment: 9
-      pivot: {x: 0.4, y: 0.65}
+      pivot: {x: 0.38, y: 0.66}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wakanda_Attack_Front_8
+      name: Wakanda_Attack_Front_1_8
       rect:
         serializedVersion: 2
         x: 7648
@@ -214,12 +196,12 @@ TextureImporter:
         width: 956
         height: 723
       alignment: 9
-      pivot: {x: 0.4, y: 0.65}
+      pivot: {x: 0.38, y: 0.66}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wakanda_Attack_Front_9
+      name: Wakanda_Attack_Front_1_9
       rect:
         serializedVersion: 2
         x: 8604
@@ -227,12 +209,12 @@ TextureImporter:
         width: 956
         height: 723
       alignment: 9
-      pivot: {x: 0.4, y: 0.65}
+      pivot: {x: 0.38, y: 0.66}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wakanda_Attack_Front_10
+      name: Wakanda_Attack_Front_1_10
       rect:
         serializedVersion: 2
         x: 9560
@@ -240,12 +222,12 @@ TextureImporter:
         width: 956
         height: 723
       alignment: 9
-      pivot: {x: 0.4, y: 0.65}
+      pivot: {x: 0.38, y: 0.66}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wakanda_Attack_Front_11
+      name: Wakanda_Attack_Front_1_11
       rect:
         serializedVersion: 2
         x: 10516
@@ -253,12 +235,12 @@ TextureImporter:
         width: 956
         height: 723
       alignment: 9
-      pivot: {x: 0.4, y: 0.65}
+      pivot: {x: 0.38, y: 0.66}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wakanda_Attack_Front_12
+      name: Wakanda_Attack_Front_1_12
       rect:
         serializedVersion: 2
         x: 11472
@@ -266,12 +248,12 @@ TextureImporter:
         width: 956
         height: 723
       alignment: 9
-      pivot: {x: 0.4, y: 0.65}
+      pivot: {x: 0.38, y: 0.66}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wakanda_Attack_Front_13
+      name: Wakanda_Attack_Front_1_13
       rect:
         serializedVersion: 2
         x: 12428
@@ -279,33 +261,7 @@ TextureImporter:
         width: 956
         height: 723
       alignment: 9
-      pivot: {x: 0.4, y: 0.65}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Wakanda_Attack_Front_14
-      rect:
-        serializedVersion: 2
-        x: 13384
-        y: 0
-        width: 956
-        height: 723
-      alignment: 9
-      pivot: {x: 0.4, y: 0.65}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Wakanda_Attack_Front_15
-      rect:
-        serializedVersion: 2
-        x: 14340
-        y: 0
-        width: 956
-        height: 723
-      alignment: 9
-      pivot: {x: 0.4, y: 0.65}
+      pivot: {x: 0.38, y: 0.66}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0

@@ -1,0 +1,314 @@
+fileFormatVersion: 2
+guid: 723b3a82aca524a4d960d0dea5516d5e
+timeCreated: 1501861896
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Wakanda_Attack_Back_0
+    21300002: Wakanda_Attack_Back_1
+    21300004: Wakanda_Attack_Back_2
+    21300006: Wakanda_Attack_Back_3
+    21300008: Wakanda_Attack_Back_4
+    21300010: Wakanda_Attack_Back_5
+    21300012: Wakanda_Attack_Back_6
+    21300014: Wakanda_Attack_Back_7
+    21300016: Wakanda_Attack_Back_8
+    21300018: Wakanda_Attack_Back_9
+    21300020: Wakanda_Attack_Back_10
+    21300022: Wakanda_Attack_Back_11
+    21300024: Wakanda_Attack_Back_12
+    21300026: Wakanda_Attack_Back_13
+    21300028: Wakanda_Attack_Back_14
+    21300030: Wakanda_Attack_Back_15
+    21300032: Wakanda_Attack_Back_16
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Wakanda_Attack_Back_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 550
+        height: 480
+      alignment: 9
+      pivot: {x: 0.3, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wakanda_Attack_Back_1
+      rect:
+        serializedVersion: 2
+        x: 550
+        y: 0
+        width: 550
+        height: 480
+      alignment: 9
+      pivot: {x: 0.3, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wakanda_Attack_Back_2
+      rect:
+        serializedVersion: 2
+        x: 1100
+        y: 0
+        width: 550
+        height: 480
+      alignment: 9
+      pivot: {x: 0.3, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wakanda_Attack_Back_3
+      rect:
+        serializedVersion: 2
+        x: 1650
+        y: 0
+        width: 550
+        height: 480
+      alignment: 9
+      pivot: {x: 0.3, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wakanda_Attack_Back_4
+      rect:
+        serializedVersion: 2
+        x: 2200
+        y: 0
+        width: 550
+        height: 480
+      alignment: 9
+      pivot: {x: 0.3, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wakanda_Attack_Back_5
+      rect:
+        serializedVersion: 2
+        x: 2750
+        y: 0
+        width: 550
+        height: 480
+      alignment: 9
+      pivot: {x: 0.3, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wakanda_Attack_Back_6
+      rect:
+        serializedVersion: 2
+        x: 3300
+        y: 0
+        width: 550
+        height: 480
+      alignment: 9
+      pivot: {x: 0.3, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wakanda_Attack_Back_7
+      rect:
+        serializedVersion: 2
+        x: 3850
+        y: 0
+        width: 550
+        height: 480
+      alignment: 9
+      pivot: {x: 0.3, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wakanda_Attack_Back_8
+      rect:
+        serializedVersion: 2
+        x: 4400
+        y: 0
+        width: 550
+        height: 480
+      alignment: 9
+      pivot: {x: 0.3, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wakanda_Attack_Back_9
+      rect:
+        serializedVersion: 2
+        x: 4950
+        y: 0
+        width: 550
+        height: 480
+      alignment: 9
+      pivot: {x: 0.3, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wakanda_Attack_Back_10
+      rect:
+        serializedVersion: 2
+        x: 5500
+        y: 0
+        width: 550
+        height: 480
+      alignment: 9
+      pivot: {x: 0.3, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wakanda_Attack_Back_11
+      rect:
+        serializedVersion: 2
+        x: 6050
+        y: 0
+        width: 550
+        height: 480
+      alignment: 9
+      pivot: {x: 0.3, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wakanda_Attack_Back_12
+      rect:
+        serializedVersion: 2
+        x: 6600
+        y: 0
+        width: 550
+        height: 480
+      alignment: 9
+      pivot: {x: 0.3, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wakanda_Attack_Back_13
+      rect:
+        serializedVersion: 2
+        x: 7150
+        y: 0
+        width: 550
+        height: 480
+      alignment: 9
+      pivot: {x: 0.3, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wakanda_Attack_Back_14
+      rect:
+        serializedVersion: 2
+        x: 7700
+        y: 0
+        width: 550
+        height: 480
+      alignment: 9
+      pivot: {x: 0.3, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wakanda_Attack_Back_15
+      rect:
+        serializedVersion: 2
+        x: 8250
+        y: 0
+        width: 550
+        height: 480
+      alignment: 9
+      pivot: {x: 0.3, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Wakanda_Attack_Back_16
+      rect:
+        serializedVersion: 2
+        x: 8800
+        y: 0
+        width: 550
+        height: 480
+      alignment: 9
+      pivot: {x: 0.3, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
