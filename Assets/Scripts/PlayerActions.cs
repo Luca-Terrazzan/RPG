@@ -622,31 +622,35 @@ public class PlayerActions : MonoBehaviour{
     /// <param name="enemy"> The Casual to kill</param>
     public void BackStabEnemy(GameObject enemy)
     {
+        transform.up = (Vector3)grid.GetNearest(enemy.transform.position).node.position - transform.position;
+        anim.SetTrigger("Attack");
+        StartCoroutine(BackStabWithDelay(enemy));
+    }
+      
+    IEnumerator BackStabWithDelay(GameObject e)
+    {
+        yield return new WaitForSeconds(1);
         if (playerActions >= 6)
         {
-            Vector3 lastEnemyPos = new Vector3(enemy.transform.position.x, enemy.transform.position.y, 0);
-            if (enemy.tag == "Bracciante")
+            Vector3 lastEnemyPos = new Vector3(e.transform.position.x, e.transform.position.y, 0);
+            if (e.tag == "Bracciante")
             {
-                enemy.GetComponent<Bracciante>().Die();
+                e.GetComponent<Bracciante>().Die();
                 Debug.Log("muori merda");
             }
-            else if (enemy.tag == "CowBoy")
+            else if (e.tag == "CowBoy")
             {
-                enemy.GetComponent<RagazzoMucca>().Die();
+                e.GetComponent<RagazzoMucca>().Die();
             }
-            else if (enemy.tag == "Prostituta")
+            else if (e.tag == "Prostituta")
             {
-                enemy.GetComponent<RagazzaAmbiziosa>().Die();
+                e.GetComponent<RagazzaAmbiziosa>().Die();
             }
             GameObject clone = Instantiate(clickableSprite, new Vector3(lastEnemyPos.x, lastEnemyPos.y, 0), Quaternion.identity);
             clickableSpriteList.Add(clone);
             playerActions -= 6;
         }
-        
-
     }
-      
-    
 
    
     #endregion
