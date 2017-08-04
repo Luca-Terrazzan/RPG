@@ -266,6 +266,40 @@ public class PlayerActions : MonoBehaviour{
                             lineOfMovement.SetPosition(i + 1, new Vector3(pathNodeList[i + 1].x, pathNodeList[i + 1].y, 0));
 
                             GameObject clickCollider = gameObject;
+                            List<GameObject> hearCollider = new List<GameObject>();
+                            for (int j = 0; j < changeColor.Length; j++)
+                            {
+                                if (changeColor[j].tag == "HearRange")
+                                {
+                                    hearCollider.Add( changeColor[j].gameObject);
+                                }
+                                if (changeColor[j].tag == "ClickableSprite")
+                                {
+                                    clickCollider = changeColor[j].gameObject;
+                                }
+
+
+                            }
+                            if (clickCollider.tag == "ClickableSprite" && hearCollider.Count>0)
+                            {
+                                bool isSeen = false;
+                                for(int k=0; k<hearCollider.Count;k++)
+                                {
+                                    GameObject enemy = hearCollider[k].transform.parent.parent.GetChild(0).gameObject;
+                                    if (enemy.GetComponent<FieldOfView>().CheckIfPositionSeen(new Vector3(pathNodeList[i + 1].x, pathNodeList[i + 1].y, 0)))
+                                    {
+                                        clickCollider.GetComponent<SpriteRenderer>().color = Color.red;
+                                        isSeen = true;
+                                    }
+                                    else if(!isSeen)
+                                    {
+                                        clickCollider.GetComponent<SpriteRenderer>().color = Color.yellow;
+                                    }
+                                }
+                               
+                            }
+
+                            /*GameObject clickCollider = gameObject;
                             GameObject hearCollider = gameObject;
                             for (int j = 0; j < changeColor.Length; j++)
                             {
@@ -283,7 +317,7 @@ public class PlayerActions : MonoBehaviour{
                             if (clickCollider.tag == "ClickableSprite" && hearCollider.tag == "HearRange")
                             {
                                 GameObject enemy = hearCollider.transform.parent.parent.GetChild(0).gameObject;
-                                if (enemy.GetComponent<FieldOfView>().CheckIfPositionSeen(new Vector3(pathNodeList[i+1].x, pathNodeList[i+1].y, 0)))
+                                if (enemy.GetComponent<FieldOfView>().CheckIfPositionSeen(new Vector3(pathNodeList[i + 1].x, pathNodeList[i + 1].y, 0)))
                                 {
                                     clickCollider.GetComponent<SpriteRenderer>().color = Color.red;
 
@@ -292,7 +326,7 @@ public class PlayerActions : MonoBehaviour{
                                 {
                                     clickCollider.GetComponent<SpriteRenderer>().color = Color.yellow;
                                 }
-                            }
+                            }*/
 
                         }
 
