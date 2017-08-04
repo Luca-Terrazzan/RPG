@@ -8,6 +8,7 @@ public class FreeRoamingPos : MonoBehaviour {
     private PlayerActions playerPos;
     public GameObject[] newPos;
     public static int i = 0;
+    public static int staticFuochiFatui = 0;
 
 	// Use this for initialization
 	void Awake ()
@@ -21,6 +22,10 @@ public class FreeRoamingPos : MonoBehaviour {
         
         playerPos.transform.position = newPos[i].transform.position;
         i++;
+        if (i > 1)
+        {
+            staticFuochiFatui++;
+        }
         
     }
 }
