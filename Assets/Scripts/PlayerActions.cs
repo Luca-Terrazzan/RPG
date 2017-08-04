@@ -206,16 +206,18 @@ public class PlayerActions : MonoBehaviour{
             {
                 if (hit.collider != null)
                 {
+                    Debug.Log(hit.collider.tag);
 
-                    if (hit.collider.tag == "ClickableSprite")
+                    if (hit.collider.CompareTag("ClickableSprite") || hit.collider.CompareTag("EnemyRear"))
                     {
                         lineOfMovement.enabled = true;
                         Path p = seeker.StartPath(this.transform.position, hit.transform.position);
                         p.BlockUntilCalculated();
                         List<Vector3> pathNodeList = p.vectorPath;
                         lineOfMovement.positionCount = pathNodeList.Count;
+                        BackStabPosition();
                        
-
+                        
 
                         for (int i = 0; i < clickableSpriteList.Count; i++)
                         {
@@ -606,6 +608,14 @@ public class PlayerActions : MonoBehaviour{
         }
         
 
+    }
+
+    void BackStabPosition()
+    {
+        if (playerActions - fakePlayerActions >= 6)
+        {
+           
+        }
     }
 
    
