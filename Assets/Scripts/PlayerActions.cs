@@ -39,6 +39,7 @@ public class PlayerActions : MonoBehaviour{
     public bool canHide = false;
     public bool isHidden = false;
     private bool isMenuOpen = false;
+    public int fuocoFatuo = 0;
     //[HideInInspector]
     public bool lowInvisible;
     [HideInInspector]
@@ -70,7 +71,10 @@ public class PlayerActions : MonoBehaviour{
     void Start ()
     {
         #region FindObjects
-
+        if(SceneManager.GetActiveScene().name == "Saloon")
+        {
+            FreeRoamingPos.staticFuochiFatui++;
+        }
         if (isFreeRoaming)
         {
             newPos = GameObject.Find("FreeRoamingManager").GetComponent<FreeRoamingPos>();
@@ -107,6 +111,7 @@ public class PlayerActions : MonoBehaviour{
         crouch = GameObject.Find("Crouched").GetComponent<Image>();
         kill = GameObject.Find("Killable");
         unKillable = GameObject.Find("Unkillable");
+        
         #endregion
 
         #region Click Buttons 
