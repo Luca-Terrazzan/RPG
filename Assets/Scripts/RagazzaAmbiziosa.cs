@@ -10,6 +10,7 @@ public class RagazzaAmbiziosa : MonoBehaviour {
     private AILerp aiLerp;
     public TurnManager turnManager;
     private FieldOfView fov;
+    private bool attackTrigger = true;
 
     public int actionsAmount;
     public int maxActionsAmount;
@@ -42,12 +43,15 @@ public class RagazzaAmbiziosa : MonoBehaviour {
     public Animator anim;
     public SpriteRenderer sprite;
 
+    private AudioSource prostititutaSoundPlayer;
+    public AudioClip prostitutaAttackSound;
+
     // Use this for initialization
     void Start()
     {
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         playerTransform = GameObject.Find("Player").transform;
-
+        prostititutaSoundPlayer = GetComponent<AudioSource>();
         grid = AstarPath.active.data.gridGraph;
         seeker = GetComponent<Seeker>();
         aiLerp = GetComponent<AILerp>();
@@ -72,6 +76,7 @@ public class RagazzaAmbiziosa : MonoBehaviour {
 
     private void Update()
     {
+        
         if (AngleToPositive(transform.rotation.eulerAngles.z) > 45 && AngleToPositive(transform.rotation.eulerAngles.z) < 225)
         {
             sprite.flipX = true;
@@ -224,6 +229,12 @@ public class RagazzaAmbiziosa : MonoBehaviour {
 
     IEnumerator BombLerp(Vector3 position)
     {
+        if (attackTrigger)
+        {
+            prostititutaSoundPlayer.clip = prostitutaAttackSound;
+            prostititutaSoundPlayer.Play();
+            attackTrigger = false;
+        }
         anim.SetTrigger("attack");
         aiLerp.canMove = false;
         yield return new WaitForSeconds(1);

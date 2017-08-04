@@ -505,6 +505,7 @@ public class PlayerActions : MonoBehaviour{
 
     public void Die()
     {
+        aiLerp.canMove = false;
         anim.SetTrigger("Die");
         StartCoroutine(OpenDeathInterfaceWithDelay());
     }
