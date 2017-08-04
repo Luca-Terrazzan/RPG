@@ -19,6 +19,7 @@ public class PlayerActions : MonoBehaviour{
     public LayerMask enemyMask;
     public LayerMask obstacle;
     public Transform wakandaSpriteTransform;
+    private GameObject kill, unKillable;
 
 
 
@@ -104,6 +105,8 @@ public class PlayerActions : MonoBehaviour{
         totActionPointLeft = GameObject.Find("MaxAction").GetComponent<Text>();
         stand = GameObject.Find("Stand").GetComponent<Image>();
         crouch = GameObject.Find("Crouched").GetComponent<Image>();
+        kill = GameObject.Find("Killable");
+        unKillable = GameObject.Find("Unkillable");
         #endregion
 
         #region Click Buttons 
@@ -215,9 +218,33 @@ public class PlayerActions : MonoBehaviour{
                         p.BlockUntilCalculated();
                         List<Vector3> pathNodeList = p.vectorPath;
                         lineOfMovement.positionCount = pathNodeList.Count;
-                        BackStabPosition();
-                       
+
+                        if (hit.collider.CompareTag("EnemyRear"))
+                        {
+                            if (!aiLerp.canMove)
+                            {
+                                if (playerActions - fakePlayerActions >= 6)
+                                {
+                                    kill.SetActive(true);
+                                    unKillable.SetActive(false);
+                                    kill.transform.position = Input.mousePosition;
+                                }
+                                else
+                                {
+                                    kill.SetActive(false);
+                                    unKillable.SetActive(true);
+                                    unKillable.transform.position = Input.mousePosition;
+                                }
+                            }
+
+                        } 
+                        else
+                        {
+                            kill.SetActive(false);
+                            unKillable.SetActive(false);
+                        }
                         
+
 
                         for (int i = 0; i < clickableSpriteList.Count; i++)
                         {
@@ -276,6 +303,8 @@ public class PlayerActions : MonoBehaviour{
 
                         if (Input.GetMouseButtonDown(0))
                         {
+                            kill.SetActive(false);
+                            unKillable.SetActive(false);
                             aiLerp.canMove = true;
                             SubtractMovementActions(hit.transform.position);
                             DestroyClickableGrid();
@@ -502,6 +531,8 @@ public class PlayerActions : MonoBehaviour{
         exitInterface.gameObject.SetActive(false);
         deathInterface.gameObject.SetActive(false);
         tutorialInterface.SetActive(false);
+        kill.SetActive(false);
+        unKillable.SetActive(false);
     }
 
     public void TargetReached()
@@ -609,14 +640,8 @@ public class PlayerActions : MonoBehaviour{
         
 
     }
-
-    void BackStabPosition()
-    {
-        if (playerActions - fakePlayerActions >= 6)
-        {
-           
-        }
-    }
+      
+    
 
    
     #endregion
