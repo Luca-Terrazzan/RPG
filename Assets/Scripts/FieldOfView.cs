@@ -28,17 +28,20 @@ public class FieldOfView : MonoBehaviour {
     Mesh viewMesh;
 
     private PlayerActions player;
+    private Animator animPlayer;
 
     private AudioSource allarm;
     
-    private bool allarmTrigger;
+    public AudioClip allarmSound;
+
+    private bool allarmTrigger = true;
 
 
 
     void Start()
     {
         allarm = GetComponent<AudioSource>();
-        
+        animPlayer = GameObject.Find("WakandaSprite").GetComponent<Animator>();
         viewMesh = new Mesh();
         viewMesh.name = "View Mesh";
         viewMeshFilter.mesh = viewMesh;
@@ -55,10 +58,16 @@ public class FieldOfView : MonoBehaviour {
 
     private void Update()
     {
-        if (((AmIHearingPlayer() || FindVisibleTarget()) && allarmTrigger))
+        
+        
+        if (((AmIHearingPlayer() || FindVisibleTarget()) && allarmTrigger ))
         {
-            allarm.Play();
-            allarmTrigger = false;
+            if (!animPlayer.GetBool("isMoving"))
+            {
+                allarm.clip = allarmSound;
+                allarm.Play();
+                allarmTrigger = false;
+            }
         }
     }
    
@@ -71,12 +80,12 @@ public class FieldOfView : MonoBehaviour {
         {
             if (targetsInViewRadius[0].GetComponent<PlayerActions>().canBeHeard)
             {
-
+                
                 return true;
             }
             else
             {
-
+                
                 return false;
             }
 
