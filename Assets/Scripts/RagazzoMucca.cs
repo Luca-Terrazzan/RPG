@@ -19,6 +19,9 @@ public class RagazzoMucca : MonoBehaviour {
     public Transform spriteTransform;
     public Animator anim;
     private SpriteRenderer sprite;
+    private AudioSource ragazzoMuccaSoundPlayer;
+    public AudioClip ragazzoMuccaAttackSound;
+    private bool soundTrigger = true;
 
     private bool canKillPlayer = true;
 
@@ -28,7 +31,8 @@ public class RagazzoMucca : MonoBehaviour {
         player = GameObject.Find("Player").GetComponent<PlayerActions>();
         fieldOfView = GetComponent<FieldOfView>();
         originalViewAngle = fieldOfView.viewAngle;
-        sprite = anim.GetComponent<SpriteRenderer>();
+        ragazzoMuccaSoundPlayer = GetComponent<AudioSource>();
+      //  sprite = anim.GetComponent<SpriteRenderer>();
     }
 
     float AngleToPositive(float angle)
@@ -46,7 +50,7 @@ public class RagazzoMucca : MonoBehaviour {
 
     void Update ()
     {
-        if (AngleToPositive(transform.rotation.eulerAngles.z) > 45 && AngleToPositive(transform.rotation.eulerAngles.z) < 225)
+       /* if (AngleToPositive(transform.rotation.eulerAngles.z) > 45 && AngleToPositive(transform.rotation.eulerAngles.z) < 225)
         {
             sprite.flipX = true;
         }
@@ -55,7 +59,7 @@ public class RagazzoMucca : MonoBehaviour {
             sprite.flipX = false;
         }
         anim.SetBool("isSleeping", isSleeping);
-        anim.SetFloat("angle", transform.rotation.eulerAngles.z);
+        anim.SetFloat("angle", transform.rotation.eulerAngles.z); */
         hasSeenPlayer = fieldOfView.FindVisibleTarget();
 
 	    if (player.isMyTurn && !imDead)
@@ -124,6 +128,12 @@ public class RagazzoMucca : MonoBehaviour {
         {
             // animazione sparo 
             // bool player morto
+            if (soundTrigger)
+            {
+                ragazzoMuccaSoundPlayer.clip = ragazzoMuccaAttackSound;
+                ragazzoMuccaSoundPlayer.Play();
+                soundTrigger = false;
+            }
             player.Die();
             Debug.Log("Pew pew pew. Git Gud sei morto casual");
             canKillPlayer = false;
@@ -155,6 +165,6 @@ public class RagazzoMucca : MonoBehaviour {
     private void LateUpdate()
     {
         enemyRear.position = transform.position - transform.up;
-        spriteTransform.position = transform.position;
+      //  spriteTransform.position = transform.position;
     }
 }

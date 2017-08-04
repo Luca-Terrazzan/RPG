@@ -42,8 +42,8 @@ public class Bracciante : MonoBehaviour
     public Animator anim;
     public SpriteRenderer braccianteSprite;
 
-    public AudioClip[] braccianteSoundsList;
-    private AudioSource braccianteSound;
+    public AudioClip braccianteAttackSound;
+    private AudioSource braccianteSoundPlayer;
 
 
     // Use this for initialization
@@ -51,7 +51,7 @@ public class Bracciante : MonoBehaviour
     {
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         playerTransform = GameObject.Find("Player").transform;
-        braccianteSound = GetComponent<AudioSource>();
+        braccianteSoundPlayer = GetComponent<AudioSource>();
         grid = AstarPath.active.data.gridGraph;
         seeker = GetComponent<Seeker>();
         aiLerp = GetComponent<AILerp>();
@@ -348,7 +348,7 @@ public class Bracciante : MonoBehaviour
     {
         aiLerp.canMove = false;
         aiLerp.enableRotation = false;
-        braccianteSound.clip = braccianteSoundsList[0];
+        braccianteSoundPlayer.clip = braccianteAttackSound;
         transform.up =  playerTransform.position - transform.position;
         StartCoroutine("KillPlayerWithDelay");  
     }
@@ -357,7 +357,7 @@ public class Bracciante : MonoBehaviour
     {
         anim.SetTrigger("Attack");
         
-        braccianteSound.Play();
+        braccianteSoundPlayer.Play();
         yield return new WaitForSeconds(1);
         playerTransform.GetComponent<PlayerActions>().Die();
     }
