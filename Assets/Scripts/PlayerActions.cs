@@ -282,17 +282,16 @@ public class PlayerActions : MonoBehaviour{
                             }
                             if (clickCollider.tag == "ClickableSprite" && hearCollider.tag == "HearRange")
                             {
-                                Vector3 dirFromAtoB = (hearCollider.transform.position - clickCollider.transform.position).normalized;
-
-
                                 GameObject enemy = hearCollider.transform.parent.parent.GetChild(0).gameObject;
-
-                                float dotProd = Vector3.Dot(dirFromAtoB, enemy.transform.forward);
-                                if (dotProd > 0.7)
+                                if (enemy.GetComponent<FieldOfView>().CheckIfPositionSeen(new Vector3(pathNodeList[i+1].x, pathNodeList[i+1].y, 0)))
                                 {
                                     clickCollider.GetComponent<SpriteRenderer>().color = Color.red;
+
                                 }
-                                else clickCollider.GetComponent<SpriteRenderer>().color = Color.yellow;
+                                else
+                                {
+                                    clickCollider.GetComponent<SpriteRenderer>().color = Color.yellow;
+                                }
                             }
 
                         }

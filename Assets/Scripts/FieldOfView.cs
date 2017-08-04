@@ -89,6 +89,45 @@ public class FieldOfView : MonoBehaviour {
         }
     }
 
+    public bool CheckIfPositionSeen(Vector3 position)
+    {
+        Vector3 dirToTarget = (position - transform.position).normalized;
+        float distToTarget = Vector3.Distance(position, transform.position);
+        if (Vector3.Angle(transform.up, dirToTarget) < viewAngle / 2)
+        {
+            RaycastHit hit;
+
+            if (!Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, obstacleMask) && !Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, lowObstacleMask))
+            {
+
+                return true;
+            }
+            else
+            {
+                
+                if (Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, lowObstacleMask) && !Physics.Raycast(transform.position, dirToTarget, out hit, distToTarget, obstacleMask))
+                {
+                    if (player.lowInvisible && player.isCrouched)
+                    {
+                        Debug.Log("non ti vedo piu porcodio");
+
+                        return false;
+                    }
+                    else
+                    {
+                        Debug.Log("non sei abbassato/vicino a low obstacle");
+                        return true;
+                    }
+                }
+                else
+                {
+
+                    return false;
+                }
+            }
+        } else return false;
+    }
+
     public bool FindVisibleTarget()
     {
         Collider[] targetsInViewRadius = Physics.OverlapSphere(new Vector3(transform.position.x,transform.position.y,transform.position.z), viewRadius,playerMask);
