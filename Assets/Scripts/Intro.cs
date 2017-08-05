@@ -10,6 +10,8 @@ public class Intro : MonoBehaviour {
 
     private Image wakandaLogo, backgorundLogo;
     private Button startGame, toDesktop;
+    private AudioSource menuAudio;
+    private bool audioTrigger = true;
 
 
     // Use this for initialization
@@ -21,6 +23,7 @@ public class Intro : MonoBehaviour {
         toDesktop = transform.GetChild(3).GetComponentInChildren<Button>();
         startGame.onClick.AddListener(GoToIntroVideo);
         toDesktop.onClick.AddListener(ExitGame);
+        menuAudio = GetComponent<AudioSource>();
         FreeRoamingPos.i = 0;
 
     }
@@ -39,6 +42,12 @@ public class Intro : MonoBehaviour {
         }
         else
         {
+            if (audioTrigger)
+            {
+                menuAudio.Play();
+                audioTrigger = false;
+            }
+            
             backgorundLogo.gameObject.SetActive(true);
             startGame.gameObject.SetActive(true);
             toDesktop.gameObject.SetActive(true);
