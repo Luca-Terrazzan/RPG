@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RagazzoMucca : MonoBehaviour {
 
-    private TurnManager turnManager;
+    public TurnManager turnManager;
     private PlayerActions player; //da mettere se si vuole gestire la morte del player tramite un metodo
     private FieldOfView fieldOfView;
 
@@ -32,7 +32,7 @@ public class RagazzoMucca : MonoBehaviour {
         fieldOfView = GetComponent<FieldOfView>();
         originalViewAngle = fieldOfView.viewAngle;
         ragazzoMuccaSoundPlayer = GetComponent<AudioSource>();
-      //  sprite = anim.GetComponent<SpriteRenderer>();
+        sprite = anim.GetComponent<SpriteRenderer>();
     }
 
     float AngleToPositive(float angle)
@@ -50,7 +50,7 @@ public class RagazzoMucca : MonoBehaviour {
 
     void Update ()
     {
-       /* if (AngleToPositive(transform.rotation.eulerAngles.z) > 45 && AngleToPositive(transform.rotation.eulerAngles.z) < 225)
+        if (AngleToPositive(transform.rotation.eulerAngles.z) > 45 && AngleToPositive(transform.rotation.eulerAngles.z) < 225)
         {
             sprite.flipX = true;
         }
@@ -59,7 +59,7 @@ public class RagazzoMucca : MonoBehaviour {
             sprite.flipX = false;
         }
         anim.SetBool("isSleeping", isSleeping);
-        anim.SetFloat("angle", transform.rotation.eulerAngles.z); */
+        anim.SetFloat("angle", transform.rotation.eulerAngles.z); 
         hasSeenPlayer = fieldOfView.FindVisibleTarget();
 
 	    if (player.isMyTurn && !imDead)
@@ -87,6 +87,7 @@ public class RagazzoMucca : MonoBehaviour {
 	
 	public void StartTurn()
     {
+        Debug.Log("i'm in");
         if (imDead)
         {
             StartCoroutine("ChangeTurnDelay", waitTimer);
@@ -165,6 +166,6 @@ public class RagazzoMucca : MonoBehaviour {
     private void LateUpdate()
     {
         enemyRear.position = transform.position - transform.up;
-      //  spriteTransform.position = transform.position;
+        spriteTransform.position = transform.position;
     }
 }

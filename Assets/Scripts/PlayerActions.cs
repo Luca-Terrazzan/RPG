@@ -55,7 +55,7 @@ public class PlayerActions : MonoBehaviour{
    
     private Button crouchButton, endTurnButton, menuButton, goToExitInterface, backToGame, goToMainMenu, backToGameTwo, resetScene, tutorial, goToMenuFromDeath;
 
-    private Image exitInterface, menuInterface, actionsBar, fakeActionsBar, backgroundBar, menuImage, deathInterface, stand, crouch;
+    private Image exitInterface, menuInterface, actionsBar, fakeActionsBar, backgroundBar, menuImage, deathInterface, stand, crouch, missingKey;
 
     private Text fakeInterfacePoint, totActionPointLeft;
 
@@ -65,6 +65,8 @@ public class PlayerActions : MonoBehaviour{
 
 
     private SpriteRenderer wakandaSprite;
+
+   
 
    
     // Use this for initialization
@@ -111,6 +113,7 @@ public class PlayerActions : MonoBehaviour{
         crouch = GameObject.Find("Crouched").GetComponent<Image>();
         kill = GameObject.Find("Killable");
         unKillable = GameObject.Find("Unkillable");
+        missingKey = GameObject.Find("MissingKey").GetComponent<Image>();
         
         #endregion
 
@@ -214,9 +217,33 @@ public class PlayerActions : MonoBehaviour{
             {
                 if (hit.collider != null)
                 {
-                    Debug.Log(hit.collider.tag);
+                    if (hit.collider.CompareTag("EnemyRear"))
+                    {
+                        if (!aiLerp.canMove)
+                        {
+                            if (playerActions - fakePlayerActions >= 6)
+                            {
+                                kill.SetActive(true);
+                                unKillable.SetActive(false);
+                                kill.transform.position = Input.mousePosition;
+                            }
+                            else
+                            {
+                                kill.SetActive(false);
+                                unKillable.SetActive(true);
+                                unKillable.transform.position = Input.mousePosition;
+                            }
+                        }
 
-                    if (hit.collider.CompareTag("ClickableSprite") || hit.collider.CompareTag("EnemyRear"))
+                    }
+                    else
+                    {
+                        kill.SetActive(false);
+                        unKillable.SetActive(false);
+                    }
+                   
+
+                    if (hit.collider.CompareTag("ClickableSprite"))
                     {
                         lineOfMovement.enabled = true;
                         Path p = seeker.StartPath(this.transform.position, hit.transform.position);
@@ -224,30 +251,7 @@ public class PlayerActions : MonoBehaviour{
                         List<Vector3> pathNodeList = p.vectorPath;
                         lineOfMovement.positionCount = pathNodeList.Count;
 
-                        if (hit.collider.CompareTag("EnemyRear"))
-                        {
-                            if (!aiLerp.canMove)
-                            {
-                                if (playerActions - fakePlayerActions >= 6)
-                                {
-                                    kill.SetActive(true);
-                                    unKillable.SetActive(false);
-                                    kill.transform.position = Input.mousePosition;
-                                }
-                                else
-                                {
-                                    kill.SetActive(false);
-                                    unKillable.SetActive(true);
-                                    unKillable.transform.position = Input.mousePosition;
-                                }
-                            }
-
-                        } 
-                        else
-                        {
-                            kill.SetActive(false);
-                            unKillable.SetActive(false);
-                        }
+                      
                         
 
 
@@ -347,6 +351,7 @@ public class PlayerActions : MonoBehaviour{
                             SubtractMovementActions(hit.transform.position);
                             DestroyClickableGrid();
                             fakePlayerActions = 0;
+
                             if (isCrouched)
                             {
                                 canBeHeard = false;
@@ -356,6 +361,28 @@ public class PlayerActions : MonoBehaviour{
                                 canBeHeard = true;
                                 StartCoroutine("ChangeCanBeHeardWithDelay");
                             }
+
+                            if (hit.collider.CompareTag("ExitDoor") && !hasKey)
+                            {
+                                missingKey.transform.position = Input.mousePosition;
+                                missingKey.gameObject.SetActive(true);
+                            }
+                            else
+                            {
+                                missingKey.gameObject.SetActive(false);
+                            }
+                        }
+                    }
+                    
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        if (hit.collider.CompareTag("ExitDoor") && !hasKey)
+                        {
+                            missingKey.gameObject.SetActive(true);
+                        }
+                        else
+                        {
+                            missingKey.gameObject.SetActive(false);
                         }
                     }
 
@@ -572,6 +599,7 @@ public class PlayerActions : MonoBehaviour{
         tutorialInterface.SetActive(false);
         kill.SetActive(false);
         unKillable.SetActive(false);
+        missingKey.gameObject.SetActive(false);
     }
 
     public void TargetReached()
