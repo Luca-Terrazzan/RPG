@@ -21,6 +21,7 @@ public class RagazzoMucca : MonoBehaviour {
     private SpriteRenderer sprite;
     private AudioSource ragazzoMuccaSoundPlayer;
     public AudioClip ragazzoMuccaAttackSound;
+    public Transform soundVisualization;
     private bool soundTrigger = true;
 
     private bool canKillPlayer = true;
@@ -167,5 +168,6 @@ public class RagazzoMucca : MonoBehaviour {
     {
         enemyRear.position = transform.position - transform.up;
         spriteTransform.position = transform.position;
+        soundVisualization.rotation = transform.rotation;
     }
 }
