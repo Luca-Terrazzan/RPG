@@ -66,9 +66,12 @@ public class PlayerActions : MonoBehaviour{
 
     private SpriteRenderer wakandaSprite;
 
-   
+    private AudioSource soundPlayer;
+    public AudioClip[] wakandaSoundsList; 
 
-   
+
+
+
     // Use this for initialization
     void Start ()
     {
@@ -114,7 +117,8 @@ public class PlayerActions : MonoBehaviour{
         kill = GameObject.Find("Killable");
         unKillable = GameObject.Find("Unkillable");
         missingKey = GameObject.Find("MissingKey").GetComponent<Image>();
-        
+        soundPlayer = GetComponent<AudioSource>();
+
         #endregion
 
         #region Click Buttons 
@@ -303,34 +307,7 @@ public class PlayerActions : MonoBehaviour{
                                
                             }
 
-                            /*GameObject clickCollider = gameObject;
-                            GameObject hearCollider = gameObject;
-                            for (int j = 0; j < changeColor.Length; j++)
-                            {
-                                if (changeColor[j].tag == "HearRange")
-                                {
-                                    hearCollider = changeColor[j].gameObject;
-                                }
-                                if (changeColor[j].tag == "ClickableSprite")
-                                {
-                                    clickCollider = changeColor[j].gameObject;
-                                }
-
-
-                            }
-                            if (clickCollider.tag == "ClickableSprite" && hearCollider.tag == "HearRange")
-                            {
-                                GameObject enemy = hearCollider.transform.parent.parent.GetChild(0).gameObject;
-                                if (enemy.GetComponent<FieldOfView>().CheckIfPositionSeen(new Vector3(pathNodeList[i + 1].x, pathNodeList[i + 1].y, 0)))
-                                {
-                                    clickCollider.GetComponent<SpriteRenderer>().color = Color.red;
-
-                                }
-                                else
-                                {
-                                    clickCollider.GetComponent<SpriteRenderer>().color = Color.yellow;
-                                }
-                            }*/
+                           
 
                         }
 
@@ -345,6 +322,7 @@ public class PlayerActions : MonoBehaviour{
 
                         if (Input.GetMouseButtonDown(0))
                         {
+                            WakandaSounds(wakandaSoundsList[1]);
                             kill.SetActive(false);
                             unKillable.SetActive(false);
                             aiLerp.canMove = true;
@@ -686,6 +664,8 @@ public class PlayerActions : MonoBehaviour{
     {
         transform.up = (Vector3)grid.GetNearest(enemy.transform.position).node.position - transform.position;
         anim.SetTrigger("Attack");
+        WakandaSounds(wakandaSoundsList[0]);
+        
         StartCoroutine(BackStabWithDelay(enemy));
     }
       
@@ -714,7 +694,11 @@ public class PlayerActions : MonoBehaviour{
         }
     }
 
-   
+    private void WakandaSounds(AudioClip soundToPlay)
+    {
+        soundPlayer.PlayOneShot(soundToPlay);
+
+    }
     #endregion
 
     private void LateUpdate()
