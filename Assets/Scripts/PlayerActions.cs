@@ -708,7 +708,7 @@ public class PlayerActions : MonoBehaviour{
     private void LateUpdate()
     {
         transform.position = new Vector3(transform.position.x,transform.position.y,0);
-        wakandaSpriteTransform.position = transform.position + new Vector3(-0.5f, 0.5f, 0);
+        wakandaSpriteTransform.position = transform.position; //+ new Vector3(-0.5f, 0.5f, 0);
     }
 
    

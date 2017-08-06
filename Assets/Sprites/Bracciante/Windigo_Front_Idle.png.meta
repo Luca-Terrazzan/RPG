@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 4c1a49fbca2a51e4f9812fa35460b8be
-timeCreated: 1501426691
+timeCreated: 1502017929
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -102,7 +102,7 @@ TextureImporter:
         width: 1096
         height: 786
       alignment: 9
-      pivot: {x: 0.45, y: 0.6}
+      pivot: {x: 0.47, y: 0.45}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -115,7 +115,7 @@ TextureImporter:
         width: 1096
         height: 786
       alignment: 9
-      pivot: {x: 0.45, y: 0.6}
+      pivot: {x: 0.47, y: 0.45}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -128,7 +128,7 @@ TextureImporter:
         width: 1096
         height: 786
       alignment: 9
-      pivot: {x: 0.45, y: 0.6}
+      pivot: {x: 0.47, y: 0.45}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -141,7 +141,7 @@ TextureImporter:
         width: 1096
         height: 786
       alignment: 9
-      pivot: {x: 0.45, y: 0.6}
+      pivot: {x: 0.47, y: 0.45}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -154,7 +154,7 @@ TextureImporter:
         width: 1096
         height: 786
       alignment: 9
-      pivot: {x: 0.45, y: 0.6}
+      pivot: {x: 0.47, y: 0.45}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -167,7 +167,7 @@ TextureImporter:
         width: 1096
         height: 786
       alignment: 9
-      pivot: {x: 0.45, y: 0.6}
+      pivot: {x: 0.47, y: 0.45}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -180,7 +180,7 @@ TextureImporter:
         width: 1096
         height: 786
       alignment: 9
-      pivot: {x: 0.45, y: 0.6}
+      pivot: {x: 0.47, y: 0.45}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -193,7 +193,7 @@ TextureImporter:
         width: 1096
         height: 786
       alignment: 9
-      pivot: {x: 0.45, y: 0.6}
+      pivot: {x: 0.47, y: 0.45}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
