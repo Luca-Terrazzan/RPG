@@ -67,7 +67,9 @@ public class PlayerActions : MonoBehaviour{
     private SpriteRenderer wakandaSprite;
 
     private AudioSource soundPlayer;
-    public AudioClip[] wakandaSoundsList; 
+    public AudioClip[] wakandaSoundsList;
+    private int enemysNumber;
+    private int currentEnemysNumber;
 
 
 
@@ -88,6 +90,8 @@ public class PlayerActions : MonoBehaviour{
         else
         {
             turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
+            enemysNumber = GameObject.FindGameObjectsWithTag("Bracciante").Length + GameObject.FindGameObjectsWithTag("Prostituta").Length + GameObject.FindGameObjectsWithTag("CowBoy").Length;
+            currentEnemysNumber = enemysNumber;
         }
         menuInterface = GameObject.Find("MenuInterface").GetComponent<Image>();
         backgroundBar = GameObject.Find("BackgroundBar").GetComponent<Image>();
@@ -118,6 +122,8 @@ public class PlayerActions : MonoBehaviour{
         unKillable = GameObject.Find("Unkillable");
         missingKey = GameObject.Find("MissingKey").GetComponent<Image>();
         soundPlayer = GetComponent<AudioSource>();
+       
+
 
         #endregion
 
@@ -169,7 +175,17 @@ public class PlayerActions : MonoBehaviour{
     // Update is called once per frame
     void Update()
     {
-        
+        if (currentEnemysNumber == enemysNumber)
+        {
+            FreeRoamingPos.isWakandaNice = true;
+            //nokiller
+        }
+        else if (currentEnemysNumber < enemysNumber)
+        {
+            FreeRoamingPos.isWakandaNice = false;
+            //killer
+        }
+
 
         if (AngleToPositive(transform.rotation.eulerAngles.z) > 45 && AngleToPositive(transform.rotation.eulerAngles.z) < 225)
         {
@@ -665,7 +681,10 @@ public class PlayerActions : MonoBehaviour{
         transform.up = (Vector3)grid.GetNearest(enemy.transform.position).node.position - transform.position;
         anim.SetTrigger("Attack");
         WakandaSounds(wakandaSoundsList[0]);
-        
+        if (enemysNumber > 0)
+        {
+            currentEnemysNumber--;
+        }
         StartCoroutine(BackStabWithDelay(enemy));
     }
       
@@ -697,6 +716,8 @@ public class PlayerActions : MonoBehaviour{
             playerActions -= 6;
         }
     }
+
+  
 
     public void WakandaSounds(AudioClip soundToPlay)
     {
