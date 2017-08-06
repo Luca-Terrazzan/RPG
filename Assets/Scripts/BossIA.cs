@@ -24,7 +24,9 @@ public class BossIA : MonoBehaviour {
     private AudioSource bossAudioPlayer;
     public AudioClip[] bossSounds;
     private Animator playerAnim;
-    private bool allarmTrigger = true;
+    private AILerp playerMovement;
+    private bool allarmTrigger = true, playerDead;
+    private PlayerActions playerActions;
    
   
     
@@ -40,6 +42,8 @@ public class BossIA : MonoBehaviour {
         fov = GetComponent<FieldOfView>();
         fovMaterial.SetColor("_EmissionColor", Color.white);
         bossAudioPlayer = GetComponent<AudioSource>();
+        playerMovement = GameObject.Find("Player").GetComponent<AILerp>();
+        playerActions = GameObject.Find("Player").GetComponent<PlayerActions>();
         
     }
 
@@ -57,7 +61,8 @@ public class BossIA : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update ()
+    {
 
         if (AngleToPositive(transform.rotation.eulerAngles.z) > 260 && AngleToPositive(transform.rotation.eulerAngles.z) < 280)
         {
@@ -99,10 +104,12 @@ public class BossIA : MonoBehaviour {
             hasHeardPlayer = false;
             allarmTrigger = true;
         }
-        if (!playerAnim.GetBool("isMoving") && hasHeardPlayer && allarmTrigger)
+
+
+        if (!playerMovement.canMove && hasHeardPlayer && allarmTrigger)
         {
-         //   bossAudioPlayer.PlayOneShot(bossSounds[0]);
-            allarmTrigger = false;
+             BossSound(bossSounds[0]);
+             allarmTrigger = false;
         }
     }
 
@@ -201,7 +208,13 @@ public class BossIA : MonoBehaviour {
 
     public void KillPlayer()
     {
-
+        
+        if (!playerDead)
+        {
+            playerActions.Die();
+            BossSound(bossSounds[1]);
+            playerDead = true;
+        }
     }
 
     public void ThrowBomb(Vector3 position)
@@ -224,6 +237,7 @@ public class BossIA : MonoBehaviour {
         GameObject expl = Instantiate(explosion, b.transform.position, Quaternion.identity);
         Destroy(b);
         Destroy(expl, 1);
+        BossSound(bossSounds[2]);
         yield return null;
     }
 
