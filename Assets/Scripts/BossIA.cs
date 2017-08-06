@@ -21,6 +21,8 @@ public class BossIA : MonoBehaviour {
     public Material fovMaterial;
     public SpriteRenderer sprite;
     public Animator anim;
+    private AudioSource bossAudioPlayer;
+    public AudioClip[] bossSounds;
 
 
     // Use this for initialization
@@ -29,6 +31,7 @@ public class BossIA : MonoBehaviour {
         player = GameObject.Find("Player").transform;
         fov = GetComponent<FieldOfView>();
         fovMaterial.SetColor("_EmissionColor", Color.white);
+        bossAudioPlayer = GetComponent<AudioSource>();
     }
 
     float AngleToPositive(float angle)
@@ -85,18 +88,7 @@ public class BossIA : MonoBehaviour {
         {
             hasHeardPlayer = false;
         }
-        if (Random.Range(0f, 10000f) > 9999)
-        {
-            try
-            {
-                throw new System.Exception();
-            }
-            catch(System.Exception e)
-            {
-                print("Porcodio Exception Generated Procedurally Diocan" + e.ToString());
-            }
-
-        }
+      
 	}
 
     public void StartTurn()
@@ -194,6 +186,7 @@ public class BossIA : MonoBehaviour {
 
     public void KillPlayer()
     {
+
     }
 
     public void ThrowBomb(Vector3 position)
@@ -232,5 +225,16 @@ public class BossIA : MonoBehaviour {
         return result *= 90;
         
     }
+    
+    void Die ()
+    {
+       
+        Debug.Log("Sono morto" + this.gameObject.tag);
+        BossSound()
+    }
 
+     void BossSound (AudioClip soundEffect)
+     {
+
+     }
 }

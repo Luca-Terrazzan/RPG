@@ -688,6 +688,10 @@ public class PlayerActions : MonoBehaviour{
             {
                 e.GetComponent<RagazzaAmbiziosa>().Die();
             }
+            else if (e.CompareTag("Boss"))
+            {
+                e.GetComponent<BossIA>().Die();
+            }
             GameObject clone = Instantiate(clickableSprite, new Vector3(lastEnemyPos.x, lastEnemyPos.y, 0), Quaternion.identity);
             clickableSpriteList.Add(clone);
             playerActions -= 6;
