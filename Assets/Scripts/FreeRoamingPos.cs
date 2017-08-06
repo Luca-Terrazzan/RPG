@@ -37,11 +37,16 @@ public class FreeRoamingPos : MonoBehaviour {
         if (i > 1)
         {
             staticFuochiFatui++;
-
-            goodKarma[k] = isWakandaNice;
-            k++;
-
         }
         
     }
+    public void KarmaSystem()
+    {
+        if (i > 1)
+        {
+            goodKarma[k] = isWakandaNice;
+            k++;
+        }
+    }
+  
 }
