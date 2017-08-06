@@ -690,7 +690,7 @@ public class PlayerActions : MonoBehaviour{
             }
             else if (e.CompareTag("Boss"))
             {
-                e.GetComponent<BossIA>().Die();
+                //boss muore orcodio
             }
             GameObject clone = Instantiate(clickableSprite, new Vector3(lastEnemyPos.x, lastEnemyPos.y, 0), Quaternion.identity);
             clickableSpriteList.Add(clone);
