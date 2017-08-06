@@ -4,18 +4,23 @@ using UnityEngine;
 
 public class TransparencyOnOver : MonoBehaviour {
     private SpriteRenderer sprite;
-    private void Awake()
+
+    void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
     }
-
-    private void OnMouseEnter()
+    void Update()
     {
-        sprite.color = new Color(1, 1, 1, 0.5f);
-    }
-
-    private void OnMouseExit()
-    {
-        sprite.color = new Color(1, 1, 1, 1);
+        RaycastHit hit;
+        if (Camera.main.WorldToScreenPoint(transform.position).y < Input.mousePosition.y)
+        {
+            sprite.color = new Color(1, 1, 1, 0.5f);
+        }
+        else
+        {
+            sprite.color = new Color(1, 1, 1, 1);
+        }
+        
+        
     }
 }
