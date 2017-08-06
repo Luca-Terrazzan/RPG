@@ -128,7 +128,8 @@ public class RagazzoMucca : MonoBehaviour {
     {
         if (canKillPlayer)
         {
-            // animazione sparo 
+            // animazione sparo
+            anim.SetTrigger("Attack"); 
             // bool player morto
             if (soundTrigger)
             {
