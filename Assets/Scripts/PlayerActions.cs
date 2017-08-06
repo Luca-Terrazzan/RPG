@@ -68,9 +68,7 @@ public class PlayerActions : MonoBehaviour{
 
     private AudioSource soundPlayer;
     public AudioClip[] wakandaSoundsList;
-    private int enemysNumber;
-    private int currentEnemysNumber;
-
+    [SerializeField]  private int enemysNumber, currentEnemysNumber;
 
 
 
@@ -81,16 +79,21 @@ public class PlayerActions : MonoBehaviour{
         if(SceneManager.GetActiveScene().name == "Saloon")
         {
             FreeRoamingPos.staticFuochiFatui++;
+            FreeRoamingPos.goodKarma[FreeRoamingPos.k] = FreeRoamingPos.isWakandaNice;
+            FreeRoamingPos.k++;
+
+
         }
         if (isFreeRoaming)
         {
             newPos = GameObject.Find("FreeRoamingManager").GetComponent<FreeRoamingPos>();
             newPos.ChangeFreeroamingPos();
+            newPos.KarmaSystem();
         }
         else
         {
             turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
-            enemysNumber = GameObject.FindGameObjectsWithTag("Bracciante").Length + GameObject.FindGameObjectsWithTag("Prostituta").Length + GameObject.FindGameObjectsWithTag("CowBoy").Length;
+            enemysNumber = turnManager.charactersArray.Length - 1;
             currentEnemysNumber = enemysNumber;
         }
         menuInterface = GameObject.Find("MenuInterface").GetComponent<Image>();
@@ -180,7 +183,7 @@ public class PlayerActions : MonoBehaviour{
             FreeRoamingPos.isWakandaNice = true;
             //nokiller
         }
-        else if (currentEnemysNumber < enemysNumber)
+        else if (currentEnemysNumber <= 0)
         {
             FreeRoamingPos.isWakandaNice = false;
             //killer
