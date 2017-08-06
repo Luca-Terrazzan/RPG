@@ -202,6 +202,7 @@ public class BossIA : MonoBehaviour {
     IEnumerator FinalAttack()
     {
         fov.viewAngle = 360;
+        BossSound(bossSounds[3]);
         yield return new WaitForSeconds(2);
         fov.viewAngle = 90.1f;
     }

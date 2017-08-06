@@ -7,6 +7,7 @@ public class PlaceObjectsBoss : MonoBehaviour {
     public SpriteRenderer botRightSprite, topRightSprite, topLeftSprite, botLeftSprite;
     private PlayerActions player;
     private BossIA boss;
+    public AudioClip pickUpSound;
 	// Use this for initialization
 	void Start () {
         player = GetComponent<PlayerActions>();
@@ -30,6 +31,7 @@ public class PlaceObjectsBoss : MonoBehaviour {
                         player.DestroyClickableGrid();
                         player.canCreateGrid = true;
                         hit.collider.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
+                        player.WakandaSounds(pickUpSound);
                     }
                 }
             }

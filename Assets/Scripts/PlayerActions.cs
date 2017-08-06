@@ -698,7 +698,7 @@ public class PlayerActions : MonoBehaviour{
         }
     }
 
-    private void WakandaSounds(AudioClip soundToPlay)
+    public void WakandaSounds(AudioClip soundToPlay)
     {
         soundPlayer.PlayOneShot(soundToPlay);
 
