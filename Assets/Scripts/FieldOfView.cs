@@ -34,7 +34,7 @@ public class FieldOfView : MonoBehaviour {
     
     public AudioClip allarmSound;
 
-    private bool allarmTrigger = true;
+    [HideInInspector] public bool allarmTrigger = true;
 
 
 
@@ -69,6 +69,7 @@ public class FieldOfView : MonoBehaviour {
                 allarmTrigger = false;
             }
         }
+     
     }
    
    

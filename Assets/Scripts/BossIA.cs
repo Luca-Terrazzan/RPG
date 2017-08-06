@@ -5,7 +5,7 @@ using UnityEngine;
 public class BossIA : MonoBehaviour {
 
     private FieldOfView fov;
-    private bool hasHeardPlayer;
+    [SerializeField] private bool hasHeardPlayer;
     private TurnManager turnManager;
     public Transform player;
     Vector3 targetDir;
@@ -23,15 +23,24 @@ public class BossIA : MonoBehaviour {
     public Animator anim;
     private AudioSource bossAudioPlayer;
     public AudioClip[] bossSounds;
+    private Animator playerAnim;
+    private bool allarmTrigger = true;
+   
+  
+    
 
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
+        
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         player = GameObject.Find("Player").transform;
+        playerAnim = GameObject.Find("WakandaSprite").GetComponent<Animator>();
         fov = GetComponent<FieldOfView>();
         fovMaterial.SetColor("_EmissionColor", Color.white);
         bossAudioPlayer = GetComponent<AudioSource>();
+        
     }
 
     float AngleToPositive(float angle)
@@ -81,15 +90,21 @@ public class BossIA : MonoBehaviour {
         }
 
         if (fov.AmIHearingPlayer())
-        {
+        { 
             hasHeardPlayer = true;
+            
         }
         else
         {
             hasHeardPlayer = false;
+            allarmTrigger = true;
         }
-      
-	}
+        if (!playerAnim.GetBool("isMoving") && hasHeardPlayer && allarmTrigger)
+        {
+         //   bossAudioPlayer.PlayOneShot(bossSounds[0]);
+            allarmTrigger = false;
+        }
+    }
 
     public void StartTurn()
     {
@@ -230,11 +245,12 @@ public class BossIA : MonoBehaviour {
     {
        
         Debug.Log("Sono morto" + this.gameObject.tag);
-        BossSound()
+        
     }
 
      void BossSound (AudioClip soundEffect)
      {
+        bossAudioPlayer.PlayOneShot(soundEffect);
 
      }
 }
