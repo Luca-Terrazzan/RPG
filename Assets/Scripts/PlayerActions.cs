@@ -714,7 +714,8 @@ public class PlayerActions : MonoBehaviour{
             yield return new WaitForSeconds(1);
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////
-
+            DestroyClickableGrid();
+            canCreateGrid = true;
             aiLerp.enableRotation = true;
         }
     }
