@@ -233,8 +233,9 @@ public class RagazzaAmbiziosa : MonoBehaviour {
         anim.SetTrigger("attack");
         aiLerp.canMove = false;
         yield return new WaitForSeconds(0.5f);
-
-        GameObject b = Instantiate(bomb, transform.position, Quaternion.identity);
+        Quaternion bombRot = new Quaternion();
+        bombRot.eulerAngles = new Vector3(-35, -45, 60);
+        GameObject b = Instantiate(bomb, transform.position, bombRot);
         float timer = 0;
         float timeToLerp = 1;
         while (timer < timeToLerp)
@@ -243,7 +244,7 @@ public class RagazzaAmbiziosa : MonoBehaviour {
             b.transform.position = Vector3.Lerp(b.transform.position, position, timer / timeToLerp);
             yield return null;
         }
-        GameObject expl = Instantiate(explosion, b.transform.position, Quaternion.identity);
+        GameObject expl = Instantiate(explosion, b.transform.position+new Vector3(-1,1,0), bombRot);
         Destroy(b);
         Destroy(expl, 1);
         aiLerp.canMove = true;
@@ -287,13 +288,15 @@ public class RagazzaAmbiziosa : MonoBehaviour {
     public void Die()
     {
         aiLerp.canMove = false;
-        this.transform.position = new Vector3(100, 100, 100);
-        Debug.Log(this.transform.position);
-        imDead = true;
-        Debug.Log("Sono morto" + this.gameObject.tag);
-
+        anim.SetTrigger("Die");
     }
 
+    IEnumerator DieDelay()
+    {
+        yield return new WaitForSeconds(2);
+        this.transform.position = new Vector3(100, 100, 100);
+        imDead = true;
+    }
     public void GoToNode(Vector3 targetPos)     //vai al nodo scelto
     {
         Path p = seeker.StartPath(transform.position, targetPos);

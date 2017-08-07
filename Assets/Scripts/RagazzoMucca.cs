@@ -23,8 +23,9 @@ public class RagazzoMucca : MonoBehaviour {
     public AudioClip ragazzoMuccaAttackSound;
     public Transform soundVisualization;
     private bool soundTrigger = true;
-
     private bool canKillPlayer = true;
+
+    public GameObject thunder;
 
     private void Start()
     {
@@ -128,6 +129,10 @@ public class RagazzoMucca : MonoBehaviour {
     {
         if (canKillPlayer)
         {
+            Quaternion rot = new Quaternion();
+            rot.eulerAngles = new Vector3(-35, -45, 60);
+            GameObject clone = Instantiate(thunder, player.transform.position, rot);
+            Destroy(clone, 1);
             // animazione sparo
             anim.SetTrigger("Attack"); 
             // bool player morto
@@ -157,12 +162,14 @@ public class RagazzoMucca : MonoBehaviour {
 
     public void Die()
     {
+        anim.SetTrigger("Die");
         imDead = true;
+    }
+
+    IEnumerator DieDelay()
+    {
+        yield return new WaitForSeconds(2);
         this.transform.position = new Vector3(100, 100, 100);
-        Debug.Log(this.transform.position);
-        imDead = true;
-        Debug.Log("Sono morto" + this.gameObject.tag);
-        //anim dead
     }
 
     private void LateUpdate()

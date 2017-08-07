@@ -396,12 +396,16 @@ public class Bracciante : MonoBehaviour
 
     public void Die()
     {
+        anim.SetTrigger("Die");
         aiLerp.canMove = false;
-        this.transform.position = new Vector3(100, 100, 100);
-        Debug.Log(this.transform.position);
-        imDead = true;
-        Debug.Log("Sono morto" + this.gameObject.tag);
+        StartCoroutine(DieDelay());       
+    }
 
+    IEnumerator DieDelay()
+    {
+        yield return new WaitForSeconds(2);
+        this.transform.position = new Vector3(100, 100, 100);
+        imDead = true;
     }
     public void GoToNode(Vector3 targetPos)     //vai al nodo scelto
     {
