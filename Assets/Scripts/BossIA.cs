@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BossIA : MonoBehaviour {
 
@@ -27,6 +28,7 @@ public class BossIA : MonoBehaviour {
     private AILerp playerMovement;
     private bool allarmTrigger = true, playerDead;
     private PlayerActions playerActions;
+    
    
   
     
@@ -260,12 +262,22 @@ public class BossIA : MonoBehaviour {
     {
        
         Debug.Log("Sono morto" + this.gameObject.tag);
-        
+        //inserire animazione porcodio
+        StartCoroutine(LoadingLastCutScene(5f)); // inserire al posto di 5 la durata dell'animazione del boss
     }
 
+    IEnumerator LoadingLastCutScene(float bossDeathAnimation)
+    {
+        yield return new WaitForSeconds(bossDeathAnimation);
+        SceneManager.LoadScene("EndingVideo");
+
+    }
      void BossSound (AudioClip soundEffect)
      {
         bossAudioPlayer.PlayOneShot(soundEffect);
 
      }
+
+        
+
 }
