@@ -8,8 +8,9 @@ public class PlaceObjectsBoss : MonoBehaviour {
     private PlayerActions player;
     private BossIA boss;
     public AudioClip pickUpSound;
-	// Use this for initialization
-	void Start () {
+    private bool canKillBoss = true;
+    // Use this for initialization
+    void Start () {
         player = GetComponent<PlayerActions>();
         boss = GameObject.Find("Boss").GetComponent<BossIA>();
 	}
@@ -47,6 +48,14 @@ public class PlaceObjectsBoss : MonoBehaviour {
             if (botRightSprite.enabled && topRightSprite.enabled && topLeftSprite.enabled)
             {
                 boss.thirdState = true;
+            }
+            if (botRightSprite.enabled && topRightSprite.enabled && topLeftSprite.enabled && botLeftSprite.enabled)
+            {
+                if (canKillBoss)
+                {
+                    boss.Die();
+                    canKillBoss = false;
+                }
             }
         }
     }
