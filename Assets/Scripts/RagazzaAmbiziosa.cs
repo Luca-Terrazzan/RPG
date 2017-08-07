@@ -229,29 +229,27 @@ public class RagazzaAmbiziosa : MonoBehaviour {
 
     IEnumerator BombLerp(Vector3 position)
     {
-        
+
         anim.SetTrigger("attack");
         aiLerp.canMove = false;
         yield return new WaitForSeconds(0.5f);
-        if (attackTrigger)
-        {
-            prostititutaSoundPlayer.clip = prostitutaAttackSound;
-            prostititutaSoundPlayer.Play();
-            attackTrigger = false;
-        }
+
         GameObject b = Instantiate(bomb, transform.position, Quaternion.identity);
         float timer = 0;
         float timeToLerp = 1;
         while (timer < timeToLerp)
         {
             timer += Time.deltaTime;
-            b.transform.position = Vector3.Lerp(b.transform.position, position,timer/timeToLerp);
+            b.transform.position = Vector3.Lerp(b.transform.position, position, timer / timeToLerp);
             yield return null;
         }
-        GameObject expl = Instantiate(explosion, b.transform.position,Quaternion.identity);
+        GameObject expl = Instantiate(explosion, b.transform.position, Quaternion.identity);
         Destroy(b);
         Destroy(expl, 1);
         aiLerp.canMove = true;
+        prostititutaSoundPlayer.clip = prostitutaAttackSound;
+        prostititutaSoundPlayer.Play();
+
         yield return null;
     }
 
