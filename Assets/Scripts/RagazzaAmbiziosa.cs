@@ -288,14 +288,16 @@ public class RagazzaAmbiziosa : MonoBehaviour {
     public void Die()
     {
         aiLerp.canMove = false;
+        imDead = true;
         anim.SetTrigger("Die");
+        sprite.transform.localScale *= 4;
+        StartCoroutine(DieDelay());
     }
 
     IEnumerator DieDelay()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.5f);
         this.transform.position = new Vector3(100, 100, 100);
-        imDead = true;
     }
     public void GoToNode(Vector3 targetPos)     //vai al nodo scelto
     {

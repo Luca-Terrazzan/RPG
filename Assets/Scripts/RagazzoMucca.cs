@@ -163,12 +163,14 @@ public class RagazzoMucca : MonoBehaviour {
     public void Die()
     {
         anim.SetTrigger("Die");
+        sprite.transform.localScale *= 4;
         imDead = true;
+        StartCoroutine(DieDelay());
     }
 
     IEnumerator DieDelay()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.5f);
         this.transform.position = new Vector3(100, 100, 100);
     }
 

@@ -397,13 +397,14 @@ public class Bracciante : MonoBehaviour
     public void Die()
     {
         anim.SetTrigger("Die");
+        braccianteSprite.transform.localScale *= 4;
         aiLerp.canMove = false;
         StartCoroutine(DieDelay());       
     }
 
     IEnumerator DieDelay()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.5f);
         this.transform.position = new Vector3(100, 100, 100);
         imDead = true;
     }
