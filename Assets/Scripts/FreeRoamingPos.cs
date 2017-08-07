@@ -9,9 +9,10 @@ public class FreeRoamingPos : MonoBehaviour {
     public GameObject[] newPos;
     public static int i = 0;
     public static int staticFuochiFatui = 0;
-    public static bool[] goodKarma = new bool [4];
-    public static int k;
-    public static bool isWakandaNice;
+    public static int[] karmaLevel = new int [5];
+    public static int j;
+   
+    public static bool triggerOnceEvent = true;
 
 	// Use this for initialization
 	void Awake ()
@@ -20,15 +21,37 @@ public class FreeRoamingPos : MonoBehaviour {
         
 	}
 
-    private void Update()
-    {
-        if (i > 1)
-        {
-            Debug.Log("state " + goodKarma[k] + " index " + k);
-            Debug.Log("prima " + goodKarma[k - 1] + " indexprima" + (k-1));
-        }
+/*
+        int goodCounter=0, badCounter=0;
         
-    }
+
+        for ( int i=0; i < goodKarma.Length; i++)
+        {
+           if (goodKarma[i]==0)
+           {
+                goodCounter++;
+           }
+           else if  (goodKarma[i] == 1)
+           {
+                badCounter++;
+           }
+           
+        }
+        if (goodCounter == goodKarma.Length)
+        {
+            //finale bello
+        }
+        else if (badCounter == goodKarma.Length)
+        {
+            //finale cattivo!!! non si fa!!!
+        }
+        else
+        {
+            //finale boh, schifo
+
+        }
+        */
+    
     public void ChangeFreeroamingPos ()
     {
         
@@ -40,13 +63,5 @@ public class FreeRoamingPos : MonoBehaviour {
         }
         
     }
-    public void KarmaSystem()
-    {
-        if (i > 1)
-        {
-            goodKarma[k] = isWakandaNice;
-            k++;
-        }
-    }
-  
+    
 }

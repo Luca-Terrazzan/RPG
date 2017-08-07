@@ -68,7 +68,7 @@ public class PlayerActions : MonoBehaviour{
 
     private AudioSource soundPlayer;
     public AudioClip[] wakandaSoundsList;
-    [SerializeField]  private int enemysNumber, currentEnemysNumber;
+    public int enemysNumber, currentEnemysNumber;
 
 
 
@@ -78,9 +78,12 @@ public class PlayerActions : MonoBehaviour{
         #region FindObjects
         if(SceneManager.GetActiveScene().name == "Saloon")
         {
-            FreeRoamingPos.staticFuochiFatui++;
-            FreeRoamingPos.goodKarma[FreeRoamingPos.k] = FreeRoamingPos.isWakandaNice;
-            FreeRoamingPos.k++;
+            if (FreeRoamingPos.triggerOnceEvent)
+            {
+                FreeRoamingPos.staticFuochiFatui++;
+                FreeRoamingPos.triggerOnceEvent = false;
+
+            }
 
 
         }
@@ -88,7 +91,7 @@ public class PlayerActions : MonoBehaviour{
         {
             newPos = GameObject.Find("FreeRoamingManager").GetComponent<FreeRoamingPos>();
             newPos.ChangeFreeroamingPos();
-            newPos.KarmaSystem();
+            
         }
         else
         {
@@ -178,18 +181,7 @@ public class PlayerActions : MonoBehaviour{
     // Update is called once per frame
     void Update()
     {
-        if (currentEnemysNumber == enemysNumber)
-        {
-            FreeRoamingPos.isWakandaNice = true;
-            //nokiller
-        }
-        else if (currentEnemysNumber <= 0)
-        {
-            FreeRoamingPos.isWakandaNice = false;
-            //killer
-        }
-
-
+       
         if (AngleToPositive(transform.rotation.eulerAngles.z) > 45 && AngleToPositive(transform.rotation.eulerAngles.z) < 225)
         {
             wakandaSprite.flipX = true;
@@ -689,10 +681,7 @@ public class PlayerActions : MonoBehaviour{
 
         anim.SetTrigger("Attack");
         WakandaSounds(wakandaSoundsList[0]);
-        if (enemysNumber > 0)
-        {
-            currentEnemysNumber--;
-        }
+        currentEnemysNumber--;
         StartCoroutine(BackStabWithDelay(enemy));
     }
       
@@ -729,6 +718,7 @@ public class PlayerActions : MonoBehaviour{
             aiLerp.enableRotation = true;
         }
     }
+
 
   
 

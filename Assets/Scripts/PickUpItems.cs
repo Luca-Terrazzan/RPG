@@ -57,13 +57,16 @@ public class PickUpItems : MonoBehaviour {
                 if (SceneManager.GetActiveScene().name == "Bordello") 
                 {
                     SceneManager.LoadScene("Saloon");
+                    KarmaCheck();
                 }
                 else
                 {
+                    
                     SceneManager.LoadScene("GhostTown");
+                    KarmaCheck();
                 }
+              
 
-               
             }
             else
             {
@@ -163,6 +166,26 @@ public class PickUpItems : MonoBehaviour {
        
 
 
+
+    }
+
+    private void KarmaCheck()
+    {
+        if ( player.currentEnemysNumber == player.enemysNumber)
+        {
+            FreeRoamingPos.karmaLevel[FreeRoamingPos.j] = 0;
+        }
+        else if (player.currentEnemysNumber <= 0)
+        {
+            FreeRoamingPos.karmaLevel[FreeRoamingPos.j] = 1;
+        }
+        else
+        {
+            FreeRoamingPos.karmaLevel[FreeRoamingPos.j] = 2;
+        }
+        Debug.Log("state " + FreeRoamingPos.karmaLevel[FreeRoamingPos.j] + " index " + FreeRoamingPos.j);
+        
+        FreeRoamingPos.j++;
 
     }
 
