@@ -183,7 +183,7 @@ public class BossIA : MonoBehaviour {
         anim.SetBool("isAttacking", true);
         Quaternion rot = new Quaternion();
         rot.eulerAngles = new Vector3(-35, -45, 60);
-        clown = Instantiate(charging, transform.position+ new Vector3(-10,6,0), rot);
+        clown = Instantiate(charging, new Vector3(-10,7,0), rot);
         turnDelay += 5;
         fov.viewAngle = 360;
         fov.viewRadius = 0;
