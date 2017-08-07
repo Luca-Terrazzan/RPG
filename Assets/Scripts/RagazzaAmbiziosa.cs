@@ -244,9 +244,9 @@ public class RagazzaAmbiziosa : MonoBehaviour {
             b.transform.position = Vector3.Lerp(b.transform.position, position, timer / timeToLerp);
             yield return null;
         }
-        GameObject expl = Instantiate(explosion, b.transform.position+new Vector3(-1,1,0), bombRot);
+        GameObject expl = Instantiate(explosion, b.transform.position, Quaternion.identity);
         Destroy(b);
-        Destroy(expl, 1);
+        Destroy(expl, 0.9f);
         aiLerp.canMove = true;
         prostititutaSoundPlayer.clip = prostitutaAttackSound;
         prostititutaSoundPlayer.Play();
