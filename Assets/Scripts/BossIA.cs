@@ -256,7 +256,7 @@ public class BossIA : MonoBehaviour {
         
     }
     
-    void Die ()
+    public void Die ()
     {
        
         Debug.Log("Sono morto" + this.gameObject.tag);
