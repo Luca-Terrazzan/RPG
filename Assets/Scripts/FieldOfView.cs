@@ -170,13 +170,11 @@ public class FieldOfView : MonoBehaviour {
                     {
                         if (player.lowInvisible && player.isCrouched)
                         {
-                            Debug.Log("non ti vedo piu porcodio");
 
                             return false;
                         }
                         else
                         {
-                            Debug.Log("non sei abbassato/vicino a low obstacle");
                             return true;
                         }
                     }
