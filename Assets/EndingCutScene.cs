@@ -14,6 +14,7 @@ public class EndingCutScene : MonoBehaviour
     {
         video = GetComponent<VideoPlayer>();
         audio = GetComponent<AudioSource>();
+        video.Stop();
         video.clip = ClipToPlay();
         video.SetTargetAudioSource(0,audio);
         video.Play();
