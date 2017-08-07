@@ -260,9 +260,9 @@ public class BossIA : MonoBehaviour {
         }
         Quaternion rot = new Quaternion();
         rot.eulerAngles = new Vector3(-35, -45, 60);
-        GameObject expl = Instantiate(explosion, b.transform.position, rot);
+        GameObject expl = Instantiate(explosion, b.transform.position, Quaternion.identity);
         Destroy(b);
-        Destroy(expl, 1);
+        Destroy(expl, 0.9f);
         BossSound(bossSounds[2]);
         yield return null;
     }
