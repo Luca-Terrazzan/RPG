@@ -259,7 +259,7 @@ public class PlayerActions : MonoBehaviour{
                     }
                    
 
-                    if (hit.collider.CompareTag("ClickableSprite")||hit.collider.CompareTag("EnemyRear"))
+                    if (hit.collider.CompareTag("ClickableSprite"))
                     {
                         lineOfMovement.enabled = true;
                         Path p = seeker.StartPath(this.transform.position, hit.transform.position);
