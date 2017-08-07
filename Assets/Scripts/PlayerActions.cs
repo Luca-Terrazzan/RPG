@@ -18,6 +18,7 @@ public class PlayerActions : MonoBehaviour{
     public int attackActions;
     public LayerMask enemyMask;
     public LayerMask obstacle;
+    public LayerMask armadioFrontLayer;
     public Transform wakandaSpriteTransform;
     private GameObject kill, unKillable;
 
@@ -273,7 +274,11 @@ public class PlayerActions : MonoBehaviour{
                         for (int i = 0; i < clickableSpriteList.Count; i++)
                         {
                             if (clickableSpriteList[i] != null)
+                            {
+                                if(clickableSpriteList[i].GetComponent<SpriteRenderer>().color!=Color.green)
                                 clickableSpriteList[i].GetComponent<SpriteRenderer>().color = Color.white;
+
+                            }
                         }
 
 
@@ -637,6 +642,11 @@ public class PlayerActions : MonoBehaviour{
                     {
                         GameObject clone = Instantiate(clickableSprite, nodePos, Quaternion.identity);
                         clickableSpriteList.Add(clone);
+                        if (Physics.Raycast(nodePos + new Vector3(0, 0, -1), Vector3.forward,Mathf.Infinity,armadioFrontLayer))
+                        {
+                            Debug.Log(nodePos.ToString());
+                            clone.GetComponent<SpriteRenderer>().color = Color.green;
+                        }
                     }
                 }
 
@@ -687,7 +697,10 @@ public class PlayerActions : MonoBehaviour{
       
     IEnumerator BackStabWithDelay(GameObject e)
     {
+        Quaternion rot = transform.rotation;
         yield return new WaitForSeconds(1);
+        aiLerp.enableRotation = false;
+        transform.up = e.transform.position - transform.position;
         if (playerActions >= 6)
         {
             Vector3 lastEnemyPos = new Vector3(e.transform.position.x, e.transform.position.y, 0);
@@ -711,10 +724,10 @@ public class PlayerActions : MonoBehaviour{
             GameObject clone = Instantiate(clickableSprite, new Vector3(lastEnemyPos.x, lastEnemyPos.y, 0), Quaternion.identity);
             clickableSpriteList.Add(clone);
             playerActions -= 6;
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(2);
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////
-
+            transform.rotation = rot;
             aiLerp.enableRotation = true;
         }
     }
