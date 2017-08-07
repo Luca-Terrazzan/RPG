@@ -71,6 +71,8 @@ public class PlayerActions : MonoBehaviour{
     public AudioClip[] wakandaSoundsList;
     public int enemysNumber, currentEnemysNumber;
 
+    public LayerMask clickableMask;
+
 
 
     // Use this for initialization
@@ -231,137 +233,42 @@ public class PlayerActions : MonoBehaviour{
             RaycastHit hit;
             if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit))
             {
-                if (hit.collider != null)
+                if (!EventSystem.current.IsPointerOverGameObject())
                 {
-                    if (hit.collider.CompareTag("EnemyRear"))
+                    if (hit.collider != null)
                     {
-                        if (!aiLerp.canMove)
+                        if (hit.collider.CompareTag("EnemyRear"))
                         {
-                            if (playerActions - fakePlayerActions >= 6)
+                            if (!aiLerp.canMove)
                             {
-                                kill.SetActive(true);
-                                unKillable.SetActive(false);
-                                kill.transform.position = Input.mousePosition;
-                            }
-                            else
-                            {
-                                kill.SetActive(false);
-                                unKillable.SetActive(true);
-                                unKillable.transform.position = Input.mousePosition;
-                            }
-                        }
-
-                    }
-                    else
-                    {
-                        kill.SetActive(false);
-                        unKillable.SetActive(false);
-                    }
-                   
-
-                    if (hit.collider.CompareTag("ClickableSprite"))
-                    {
-                        lineOfMovement.enabled = true;
-                        Path p = seeker.StartPath(this.transform.position, hit.transform.position);
-                        p.BlockUntilCalculated();
-                        List<Vector3> pathNodeList = p.vectorPath;
-                        lineOfMovement.positionCount = pathNodeList.Count;
-
-                      
-                        
-
-
-                        for (int i = 0; i < clickableSpriteList.Count; i++)
-                        {
-                            if (clickableSpriteList[i] != null)
-                            {
-                                if(clickableSpriteList[i].GetComponent<SpriteRenderer>().color!=Color.green)
-                                clickableSpriteList[i].GetComponent<SpriteRenderer>().color = Color.white;
-
-                            }
-                        }
-
-
-
-                        for (int i = 0; i < pathNodeList.Count - 1; i++)
-                        {
-                            Collider[] changeColor = Physics.OverlapBox(new Vector3(pathNodeList[i + 1].x, pathNodeList[i + 1].y, 0), new Vector3(this.transform.localScale.x / 2, this.transform.localScale.y / 2, 6f));
-                            lineOfMovement.SetPosition(i, new Vector3(pathNodeList[i].x, pathNodeList[i].y, 0));
-                            lineOfMovement.SetPosition(i + 1, new Vector3(pathNodeList[i + 1].x, pathNodeList[i + 1].y, 0));
-
-                            GameObject clickCollider = gameObject;
-                            List<GameObject> hearCollider = new List<GameObject>();
-                            for (int j = 0; j < changeColor.Length; j++)
-                            {
-                                if (changeColor[j].tag == "HearRange")
+                                if (playerActions - fakePlayerActions >= 6)
                                 {
-                                    hearCollider.Add( changeColor[j].gameObject);
+                                    kill.SetActive(true);
+                                    unKillable.SetActive(false);
+                                    kill.transform.position = Input.mousePosition;
                                 }
-                                if (changeColor[j].tag == "ClickableSprite")
+                                else
                                 {
-                                    clickCollider = changeColor[j].gameObject;
+                                    kill.SetActive(false);
+                                    unKillable.SetActive(true);
+                                    unKillable.transform.position = Input.mousePosition;
                                 }
-
-
-                            }
-                            if (clickCollider.tag == "ClickableSprite" && hearCollider.Count>0)
-                            {
-                                bool isSeen = false;
-                                for(int k=0; k<hearCollider.Count;k++)
-                                {
-                                    GameObject enemy = hearCollider[k].transform.parent.parent.GetChild(0).gameObject;
-                                    if (enemy.GetComponent<FieldOfView>().CheckIfPositionSeen(new Vector3(pathNodeList[i + 1].x, pathNodeList[i + 1].y, 0)))
-                                    {
-                                        if(clickCollider.GetComponent<SpriteRenderer>().color!=Color.green)
-                                        {
-                                            clickCollider.GetComponent<SpriteRenderer>().color = Color.red;
-                                            isSeen = true;
-                                        }                                        
-                                    }
-                                    else if(!isSeen && clickCollider.GetComponent<SpriteRenderer>().color != Color.green)
-                                    {
-                                        clickCollider.GetComponent<SpriteRenderer>().color = Color.yellow;
-                                    }
-                                }
-                               
                             }
 
-                           
-
-                        }
-
-                        if (isCrouched)
-                        {
-                            fakePlayerActions = Mathf.RoundToInt(p.GetTotalLength()) * 2;
                         }
                         else
                         {
-                            fakePlayerActions = Mathf.RoundToInt(p.GetTotalLength());
+                            kill.SetActive(false);
+                            unKillable.SetActive(false);
                         }
+
+
+
 
                         if (Input.GetMouseButtonDown(0))
                         {
-                            WakandaSounds(wakandaSoundsList[1]);
-                            kill.SetActive(false);
-                            unKillable.SetActive(false);
-                            aiLerp.canMove = true;
-                            SubtractMovementActions(hit.transform.position);
-                            DestroyClickableGrid();
-                            fakePlayerActions = 0;
-
-                            if (isCrouched)
-                            {
-                                canBeHeard = false;
-                            }
-                            else
-                            {
-                                canBeHeard = true;
-                                StartCoroutine("ChangeCanBeHeardWithDelay");
-                            }
-
                             if (hit.collider.CompareTag("ExitDoor") && !hasKey)
                             {
-                                missingKey.transform.position = Input.mousePosition;
                                 missingKey.gameObject.SetActive(true);
                             }
                             else
@@ -369,12 +276,162 @@ public class PlayerActions : MonoBehaviour{
                                 missingKey.gameObject.SetActive(false);
                             }
                         }
+
+                        if (hit.collider.tag == "Armadio" && canHide && !isHidden && armadioFrontTransform.transform.parent.position == hit.transform.position)
+                        {
+                            fakePlayerActions = 3;
+                            if (Input.GetMouseButton(0))
+                            {
+                                if (playerActions >= 3)
+                                {
+                                    armadioFrontTransform.parent.gameObject.layer = 0;
+                                    AstarPath.active.Scan();
+                                    DestroyClickableGrid();
+                                    isHidden = true;
+                                    Path p = seeker.StartPath(this.transform.position, hit.transform.position);
+                                    p.BlockUntilCalculated();
+                                    aiLerp.canMove = true;
+                                    playerActions -= 3;
+                                    canBeHeard = false;
+                                    GetComponent<Collider>().enabled = false;
+                                    wakandaSprite.enabled = false;
+                                    armadioFrontTransform.parent.GetChild(1).GetComponent<Animator>().SetBool("isEmpty", false);
+                                    fakePlayerActions = 0;
+                                }
+                            }
+                        }
+
+                        if (hit.collider.tag == "HideSprite" && isHidden)
+                        {
+                            if (Input.GetMouseButton(0))
+                            {
+                                DestroyClickableGrid();
+                                isHidden = false;
+                                Path p = seeker.StartPath(this.transform.position, hit.transform.position);
+                                p.BlockUntilCalculated();
+                                aiLerp.canMove = true;
+                                canBeHeard = false;
+                                GetComponent<Collider>().enabled = true;
+                                armadioFrontTransform.parent.gameObject.layer = 8;
+                                AstarPath.active.Scan();
+                                armadioFrontTransform.parent.GetChild(1).GetComponentInParent<Animator>().SetBool("isEmpty", true);
+                                wakandaSprite.enabled = true;
+                            }
+                        }
+
+
                     }
-                    
+
+
+                }
+            }
+
+            if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), Mathf.Infinity, clickableMask))
+            {
+                if (!EventSystem.current.IsPointerOverGameObject())
+                {
+
+                    lineOfMovement.enabled = true;
+                    Path p = seeker.StartPath(this.transform.position, hit.transform.position);
+                    p.BlockUntilCalculated();
+                    List<Vector3> pathNodeList = p.vectorPath;
+                    lineOfMovement.positionCount = pathNodeList.Count;
+
+
+
+
+
+                    for (int i = 0; i < clickableSpriteList.Count; i++)
+                    {
+                        if (clickableSpriteList[i] != null)
+                        {
+                            if (clickableSpriteList[i].GetComponent<SpriteRenderer>().color != Color.green)
+                                clickableSpriteList[i].GetComponent<SpriteRenderer>().color = Color.white;
+
+                        }
+                    }
+
+
+
+                    for (int i = 0; i < pathNodeList.Count - 1; i++)
+                    {
+                        Collider[] changeColor = Physics.OverlapBox(new Vector3(pathNodeList[i + 1].x, pathNodeList[i + 1].y, 0), new Vector3(this.transform.localScale.x / 2, this.transform.localScale.y / 2, 6f));
+                        lineOfMovement.SetPosition(i, new Vector3(pathNodeList[i].x, pathNodeList[i].y, 0));
+                        lineOfMovement.SetPosition(i + 1, new Vector3(pathNodeList[i + 1].x, pathNodeList[i + 1].y, 0));
+
+                        GameObject clickCollider = gameObject;
+                        List<GameObject> hearCollider = new List<GameObject>();
+                        for (int j = 0; j < changeColor.Length; j++)
+                        {
+                            if (changeColor[j].tag == "HearRange")
+                            {
+                                hearCollider.Add(changeColor[j].gameObject);
+                            }
+                            if (changeColor[j].tag == "ClickableSprite")
+                            {
+                                clickCollider = changeColor[j].gameObject;
+                            }
+
+
+                        }
+                        if (clickCollider.tag == "ClickableSprite" && hearCollider.Count > 0)
+                        {
+                            bool isSeen = false;
+                            for (int k = 0; k < hearCollider.Count; k++)
+                            {
+                                GameObject enemy = hearCollider[k].transform.parent.parent.GetChild(0).gameObject;
+                                if (enemy.GetComponent<FieldOfView>().CheckIfPositionSeen(new Vector3(pathNodeList[i + 1].x, pathNodeList[i + 1].y, 0)))
+                                {
+                                    if (clickCollider.GetComponent<SpriteRenderer>().color != Color.green)
+                                    {
+                                        clickCollider.GetComponent<SpriteRenderer>().color = Color.red;
+                                        isSeen = true;
+                                    }
+                                }
+                                else if (!isSeen && clickCollider.GetComponent<SpriteRenderer>().color != Color.green)
+                                {
+                                    clickCollider.GetComponent<SpriteRenderer>().color = Color.yellow;
+                                }
+                            }
+
+                        }
+
+
+
+                    }
+
+                    if (isCrouched)
+                    {
+                        fakePlayerActions = Mathf.RoundToInt(p.GetTotalLength()) * 2;
+                    }
+                    else
+                    {
+                        fakePlayerActions = Mathf.RoundToInt(p.GetTotalLength());
+                    }
+
                     if (Input.GetMouseButtonDown(0))
                     {
+                        WakandaSounds(wakandaSoundsList[1]);
+                        kill.SetActive(false);
+                        unKillable.SetActive(false);
+                        aiLerp.canMove = true;
+                        SubtractMovementActions(hit.transform.position);
+                        DestroyClickableGrid();
+                        fakePlayerActions = 0;
+
+                        if (isCrouched)
+                        {
+                            canBeHeard = false;
+                        }
+                        else
+                        {
+                            canBeHeard = true;
+                            StartCoroutine("ChangeCanBeHeardWithDelay");
+                        }
+
                         if (hit.collider.CompareTag("ExitDoor") && !hasKey)
                         {
+                            missingKey.transform.position = Input.mousePosition;
                             missingKey.gameObject.SetActive(true);
                         }
                         else
@@ -383,52 +440,7 @@ public class PlayerActions : MonoBehaviour{
                         }
                     }
 
-                    if (hit.collider.tag == "Armadio" && canHide && !isHidden && armadioFrontTransform.transform.parent.position == hit.transform.position)
-                    {
-                        fakePlayerActions = 3;
-                        if (Input.GetMouseButton(0))
-                        {
-                            if (playerActions >= 3)
-                            {
-                                armadioFrontTransform.parent.gameObject.layer = 0;
-                                AstarPath.active.Scan();
-                                DestroyClickableGrid();
-                                isHidden = true;
-                                Path p = seeker.StartPath(this.transform.position, hit.transform.position);
-                                p.BlockUntilCalculated();
-                                aiLerp.canMove = true;
-                                playerActions -= 3;
-                                canBeHeard = false;
-                                GetComponent<Collider>().enabled = false;
-                                wakandaSprite.enabled = false;
-                                armadioFrontTransform.parent.GetChild(1).GetComponent<Animator>().SetBool("isEmpty", false);
-                                fakePlayerActions = 0;
-                            }
-                        }
-                    }
-
-                    if (hit.collider.tag == "HideSprite" && isHidden)
-                    {
-                        if (Input.GetMouseButton(0))
-                        {
-                            DestroyClickableGrid();
-                            isHidden = false;
-                            Path p = seeker.StartPath(this.transform.position, hit.transform.position);
-                            p.BlockUntilCalculated();
-                            aiLerp.canMove = true;
-                            canBeHeard = false;
-                            GetComponent<Collider>().enabled = true;
-                            armadioFrontTransform.parent.gameObject.layer = 8;
-                            AstarPath.active.Scan();
-                            armadioFrontTransform.parent.GetChild(1).GetComponentInParent<Animator>().SetBool("isEmpty", true);
-                            wakandaSprite.enabled = true;
-                        }
-                    }
-
-
                 }
-
-
             }
 
         }
