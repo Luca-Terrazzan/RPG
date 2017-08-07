@@ -681,7 +681,12 @@ public class PlayerActions : MonoBehaviour{
     /// <param name="enemy"> The Casual to kill</param>
     public void BackStabEnemy(GameObject enemy)
     {
-        transform.up = (Vector3)grid.GetNearest(enemy.transform.position).node.position - transform.position;
+        aiLerp.enableRotation = false;
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ 
+
         anim.SetTrigger("Attack");
         WakandaSounds(wakandaSoundsList[0]);
         if (enemysNumber > 0)
@@ -717,6 +722,11 @@ public class PlayerActions : MonoBehaviour{
             GameObject clone = Instantiate(clickableSprite, new Vector3(lastEnemyPos.x, lastEnemyPos.y, 0), Quaternion.identity);
             clickableSpriteList.Add(clone);
             playerActions -= 6;
+            yield return new WaitForSeconds(1);
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            aiLerp.enableRotation = true;
         }
     }
 
