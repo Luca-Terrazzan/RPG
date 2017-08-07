@@ -162,11 +162,6 @@ public class PickUpItems : MonoBehaviour {
 
             }           
         }
-
-       
-
-
-
     }
 
     private void KarmaCheck()

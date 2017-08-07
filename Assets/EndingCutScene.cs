@@ -5,13 +5,17 @@ using UnityEngine.Video;
 
 public class EndingCutScene : MonoBehaviour
 {
-    private VideoPlayer video;
+    
+    AudioSource audio;
+    VideoPlayer video;
     public VideoClip[] videoToPlay;
 	// Use this for initialization
 	void Start ()
     {
         video = GetComponent<VideoPlayer>();
+        audio = GetComponent<AudioSource>();
         video.clip = ClipToPlay();
+        video.SetTargetAudioSource(0,audio);
         video.Play();
 	}
 	

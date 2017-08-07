@@ -21,37 +21,6 @@ public class FreeRoamingPos : MonoBehaviour {
         
 	}
 
-/*
-        int goodCounter=0, badCounter=0;
-        
-
-        for ( int i=0; i < goodKarma.Length; i++)
-        {
-           if (goodKarma[i]==0)
-           {
-                goodCounter++;
-           }
-           else if  (goodKarma[i] == 1)
-           {
-                badCounter++;
-           }
-           
-        }
-        if (goodCounter == goodKarma.Length)
-        {
-            //finale bello
-        }
-        else if (badCounter == goodKarma.Length)
-        {
-            //finale cattivo!!! non si fa!!!
-        }
-        else
-        {
-            //finale boh, schifo
-
-        }
-        */
-    
     public void ChangeFreeroamingPos ()
     {
         
