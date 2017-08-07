@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
+using UnityEngine.SceneManagement;
 
 public class EndingCutScene : MonoBehaviour
 {
@@ -18,8 +19,19 @@ public class EndingCutScene : MonoBehaviour
         video.clip = ClipToPlay();
         video.SetTargetAudioSource(0,audio);
         video.Play();
+        StartCoroutine(VideoTimer((float) video.clip.length));
+
 	}
-	
+
+     void Update()
+     {
+        if (Input.GetMouseButton(0) || Input.GetKeyDown("escape") || Input.GetKeyDown("space"))
+        {
+            SceneManager.LoadScene("MenuIniziale");
+        }
+     }
+
+
     VideoClip ClipToPlay()
     {
         int goodCounter = 0, badCounter = 0;
@@ -53,6 +65,13 @@ public class EndingCutScene : MonoBehaviour
             //finale boh, schifo
 
         }
+    }
+
+    IEnumerator VideoTimer(float videoLenght)
+    {
+        yield return new WaitForSeconds(videoLenght);
+        SceneManager.LoadScene("MenuIniziale");
+
     }
    
 }
