@@ -9,6 +9,7 @@ public class PlaceObjectsBoss : MonoBehaviour {
     private BossIA boss;
     public AudioClip pickUpSound;
     private bool canKillBoss = true;
+    public bool botRight, topRight, topLeft, botLeft;
     // Use this for initialization
     void Start () {
         player = GetComponent<PlayerActions>();
@@ -36,26 +37,40 @@ public class PlaceObjectsBoss : MonoBehaviour {
                     }
                 }
             }
-
-            if (botRightSprite.enabled && topRightSprite.enabled && topLeftSprite.enabled && botLeftSprite.enabled)
-            {
-                Debug.Log("Hai vinto bravo wow");
-            }
-            if (botRightSprite.enabled && topRightSprite.enabled)
+            if(botRight && topRight)
             {
                 boss.secondState = true;
             }
-            if (botRightSprite.enabled && topRightSprite.enabled && topLeftSprite.enabled)
+            if(botRight && topRight && topLeft)
             {
                 boss.thirdState = true;
             }
-            if (botRightSprite.enabled && topRightSprite.enabled && topLeftSprite.enabled && botLeftSprite.enabled)
+            if(botRight && topRight && topLeft && botLeft)
             {
                 if (canKillBoss)
                 {
                     boss.Die();
                     canKillBoss = false;
                 }
+            }
+
+            if (botRightSprite.enabled && topRightSprite.enabled)
+            {
+                botRight = true;
+                topRight = true;
+            }
+            if (botRightSprite.enabled && topRightSprite.enabled && topLeftSprite.enabled)
+            {
+                botRight = true;
+                topRight = true;
+                topLeft = true;
+            }
+            if (botRightSprite.enabled && topRightSprite.enabled && topLeftSprite.enabled && botLeftSprite.enabled)
+            {
+                botRight = true;
+                topRight = true;
+                topLeft = true;
+                botLeft = true;
             }
         }
     }

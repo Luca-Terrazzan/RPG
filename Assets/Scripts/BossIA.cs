@@ -28,6 +28,11 @@ public class BossIA : MonoBehaviour {
     private AILerp playerMovement;
     private bool allarmTrigger = true, playerDead;
     private PlayerActions playerActions;
+    private float turnDelay = 0;
+    public GameObject thunder;
+    public GameObject charging;
+    public GameObject final;
+    private GameObject clown;
     
    
   
@@ -117,7 +122,7 @@ public class BossIA : MonoBehaviour {
 
     public void StartTurn()
     {
-        
+        turnDelay = 1;
 
         if(secondState)
         {
@@ -151,7 +156,7 @@ public class BossIA : MonoBehaviour {
         }
 
         ChangeAngleIfHeardPlayer();
-        StartCoroutine(ChangeTurnWithDelay(2));
+        StartCoroutine(ChangeTurnWithDelay(turnDelay));
 
     }
 
@@ -175,6 +180,11 @@ public class BossIA : MonoBehaviour {
 
     IEnumerator FinalAttackPreview()
     {
+        anim.SetBool("isAttacking", true);
+        Quaternion rot = new Quaternion();
+        rot.eulerAngles = new Vector3(-35, -45, 60);
+        clown = Instantiate(charging, transform.position+ new Vector3(-10,6,0), rot);
+        turnDelay += 5;
         fov.viewAngle = 360;
         fov.viewRadius = 0;
         float timer = 0;
@@ -203,10 +213,17 @@ public class BossIA : MonoBehaviour {
 
     IEnumerator FinalAttack()
     {
+        Destroy(clown);
+        Quaternion rot = new Quaternion();
+        rot.eulerAngles = new Vector3(-35, -45, 60);
+        GameObject clone = Instantiate(final, transform.position, rot);
+        turnDelay += 2;
         fov.viewAngle = 360;
         BossSound(bossSounds[3]);
         yield return new WaitForSeconds(2);
         fov.viewAngle = 90.1f;
+        Destroy(clone);
+        anim.SetBool("isAttacking", false);
     }
 
     public void KillPlayer()
@@ -214,6 +231,9 @@ public class BossIA : MonoBehaviour {
         
         if (!playerDead)
         {
+            Quaternion rot = new Quaternion();
+            rot.eulerAngles = new Vector3(-35, -45, 60);
+            GameObject clone = Instantiate(thunder, player.position, rot);
             playerActions.Die();
             BossSound(bossSounds[1]);
             playerDead = true;
@@ -222,6 +242,7 @@ public class BossIA : MonoBehaviour {
 
     public void ThrowBomb(Vector3 position)
     {
+        turnDelay += 1;
         Debug.Log("Lancio una bomba in posizione: " + position.ToString());
         GameObject b = Instantiate(bomb, transform.position, Quaternion.identity);
         StartCoroutine(BombLerp(b, position));
@@ -237,7 +258,9 @@ public class BossIA : MonoBehaviour {
             b.transform.position = Vector3.Lerp(b.transform.position, position, timer / timeToLerp);
             yield return null;
         }
-        GameObject expl = Instantiate(explosion, b.transform.position, Quaternion.identity);
+        Quaternion rot = new Quaternion();
+        rot.eulerAngles = new Vector3(-35, -45, 60);
+        GameObject expl = Instantiate(explosion, b.transform.position, rot);
         Destroy(b);
         Destroy(expl, 1);
         BossSound(bossSounds[2]);
