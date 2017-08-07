@@ -312,10 +312,13 @@ public class PlayerActions : MonoBehaviour{
                                     GameObject enemy = hearCollider[k].transform.parent.parent.GetChild(0).gameObject;
                                     if (enemy.GetComponent<FieldOfView>().CheckIfPositionSeen(new Vector3(pathNodeList[i + 1].x, pathNodeList[i + 1].y, 0)))
                                     {
-                                        clickCollider.GetComponent<SpriteRenderer>().color = Color.red;
-                                        isSeen = true;
+                                        if(clickCollider.GetComponent<SpriteRenderer>().color!=Color.green)
+                                        {
+                                            clickCollider.GetComponent<SpriteRenderer>().color = Color.red;
+                                            isSeen = true;
+                                        }                                        
                                     }
-                                    else if(!isSeen)
+                                    else if(!isSeen && clickCollider.GetComponent<SpriteRenderer>().color != Color.green)
                                     {
                                         clickCollider.GetComponent<SpriteRenderer>().color = Color.yellow;
                                     }
