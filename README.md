@@ -1,1 +1,1 @@
-vi amo, questa è la repository pi bella del mondo
+vi amo, questa è la repository più bella del mondo
